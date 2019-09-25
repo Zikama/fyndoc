@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> ArtVerbe ?</title>
+    <style>
+        *,
+        *::after,
+        *::before {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0
+        }
+
+        .Rectangle-1 {
+            height: 1030px;
+            background-color: #ebebeb;
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            padding-top: 8pc;
+        }
+
+        .header {
+            position: fixed;
+            top: 3%;
+            display: flex;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .Rectangle-2 {
+            width: 1286px;
+            height: 70px;
+            border-radius: 32px;
+            box-shadow: 0px 18px 103px 0 rgba(153, 174, 178, 0.69), 5px -28px #ebebeb;
+            background-color: #ffffff;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            justify-items: center;
+            align-items: center;
+            padding-right: 2pc;
+            box-sizing: border-box;
+        }
+
+        .menu_btn {
+            border: 0;
+            padding: 0;
+            background: transparent;
+            cursor: pointer;
+            margin-left: 0.9pc;
+        }
+
+        .humberg {
+            width: 52px;
+            height: 45px;
+            object-fit: contain;
+        }
+
+        .NEMIE-MADE-PORTFOLIO {
+            width: 225px;
+            height: 14px;
+            object-fit: contain;
+            font-family: Aleo;
+            font-size: 18px;
+            font-weight: normal;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: normal;
+            letter-spacing: 0.18px;
+            text-align: left;
+            color: #2ad4ff;
+        }
+
+        .Rounded-Rectangle-3 {
+            width: 47%;
+            height: 57px;
+            border-radius: 18.5px;
+            background-color: #f6f6f6;
+            display: flex;
+            padding: 0.4pc 1pc;
+            box-sizing: border-box;
+        }
+
+        .bell_container {
+            width: auto;
+            height: auto;
+            max-width: 6%;
+            max-height: 5vh;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .bell_container::after {
+            content: "";
+            background: url(./assets/img/ellipse-2.svg);
+            top: 3px;
+            right: 0px;
+            position: absolute;
+            padding: 9px;
+            background-repeat: no-repeat;
+        }
+
+        .bell_container::after {
+            content: "";
+            background: url(./assets/img/ellipse-2.svg)
+        }
+
+        .Rounded-Rectangle-3 input {
+            width: 100%;
+            border: 0;
+            background: transparent;
+            outline: none;
+            font-size: 2rem;
+            color: #4e39c1;
+        }
+
+        .notification {
+            width: 41px;
+            height: 41px;
+            object-fit: contain;
+        }
+
+        .Ellipse-1 {
+            width: 47px;
+            height: 45px;
+            object-fit: contain;
+            background-image: linear-gradient(to top, #959595, #ffffff);
+            border-radius: 5em;
+        }
+
+        .art_board {
+            display: flex;
+            justify-content: space-between;
+            width: 99%;
+        }
+
+        .left_aside {
+            width: 26%;
+            object-fit: contain;
+            border-radius: 10px;
+            background-color: #ffffff;
+            display: flex;
+            flex-wrap: wrap;
+            padding: 2pc;
+            position: fixed;
+            z-index: 10;
+            height: auto;
+            max-height: 82vh;
+            overflow-y: auto;
+        }
+
+        .right_aside {
+            position: fixed;
+            margin: auto;
+            right: 9px;
+            width: 15%;
+            z-index: 10;
+        }
+
+        .soft_container {
+            height: auto;
+            margin: 0 0 1pc;
+        }
+
+        .Rounded-Rectangle-1 {
+            width: 402px;
+            height: 887px;
+            object-fit: contain;
+            border-radius: 10px;
+            background-color: #ffffff;
+            display: flex;
+            flex-wrap: wrap;
+            padding: 2pc;
+        }
+
+        .Rounded-Rectangle-4 {
+            width: 363px;
+            height: 30px;
+            object-fit: contain;
+            border-radius: 15px;
+            background-color: #f6f6f6;
+        }
+
+        .menu_title {
+            width: 363px;
+            height: 36px;
+            object-fit: contain;
+            border-radius: 15px;
+            background-color: #f6f6f6;
+            margin: 1px -13px 8px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            font-size: 21pt;
+            color: #5d5c5c;
+        }
+
+        .menu_content {
+            width: 287px;
+            height: 24px;
+            object-fit: contain;
+            border-radius: 9px;
+            background-color: #f6f6f6;
+            margin: 5px;
+            padding: 3px 6px;
+            color: #9ebbd0;
+            cursor: pointer;
+        }
+
+        .menu_content h3 {
+            margin: 0;
+            padding: 0;
+            font-size: inherit;
+        }
+
+        .posts_con {
+            display: flex;
+            width: 43%;
+            flex-wrap: wrap;
+            flex-direction: column;
+            margin: 0 auto;
+            min-height: 118vh;
+        }
+
+        .post {
+            width: 85%;
+            height: 418px;
+            box-shadow: 0px 83px 103px 0 rgba(221, 224, 225, 0.99);
+            border: solid 1px #f1f1f1;
+            background-color: #ffffff;
+            border-radius: 2px;
+            display: flex;
+            flex-wrap: wrap;
+            position: relative;
+            overflow: hidden;
+            margin: auto;
+            margin-bottom: 7px;
+        }
+
+        .p_header {
+            width: 96%;
+            margin: auto;
+            display: flex;
+            height: auto;
+            max-height: 8vh;
+        }
+
+        .prof_ {
+            width: 61px;
+            height: 60px;
+            background-image: linear-gradient(to top, #959595, #ffffff);
+            border-radius: 5em;
+        }
+
+        ._a_prof_clip {
+            width: 61px;
+            height: 60px;
+            background-image: linear-gradient(to top, #959595, #ffffff);
+            border-radius: 5em;
+        }
+
+        .p_d_con {
+            width: 82%;
+            margin: auto;
+        }
+
+        .p_d {
+            width: 363px;
+            height: 30px;
+            object-fit: contain;
+            border-radius: 15px;
+            background-color: #f6f6f6;
+            margin: 0 0 8px;
+        }
+
+        .p_body {
+            margin: auto;
+            width: auto;
+            height: auto;
+            max-width: 95%;
+            max-height: 95%;
+        }
+
+        .simpo_barn {
+            width: 91%;
+            height: 250px;
+            border-radius: 10px;
+            background-color: #ffffff;
+            margin: 0 0 13%;
+        }
+
+        ._barn {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            background-color: #ffffff;
+            padding: 5px;
+        }
+
+        .barn_line {
+            width: 109px;
+            height: 25px;
+            border-radius: 6px;
+            background-color: #f6f6f6;
+        }
+
+        .barn_line2 {
+            width: 200px;
+            height: 69px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 0 0 rgba(203, 219, 224, 0.69);
+            border: solid 1px #f1f1f1;
+            background-color: #ffffff;
+            display: flex;
+            padding: 5px 0 0 5px;
+        }
+
+        .simpo_barn2 {
+            width: 91%;
+            border-radius: 10px;
+            box-shadow: 0px 2px 0 0 rgba(203, 219, 224, 0.69);
+            border: solid 1px #f1f1f1;
+            background-color: #ffffff;
+            height: 42vh;
+        }
+
+        .Rounded-Rectangle-4_ {
+            width: 287px;
+            height: 18px;
+            object-fit: contain;
+            border-radius: 9px;
+            background-color: #f6f6f6;
+        }
+
+        .Rectangle-_4 {
+            width: 660px;
+            height: 418px;
+            box-shadow: 0px 83px 103px 0 rgba(221, 224, 225, 0.99);
+            border: solid 1px #f1f1f1;
+            background-color: #ffffff;
+        }
+
+        .undraw_buy_house_560d,
+        .p_body_content {
+            width: 100%;
+            height: 245px;
+            object-fit: contain;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="Rectangle-1">
+        <div class="header">
+            <div class="Rectangle-2">
+                <button class="menu_btn">
+                    <img class="humberg" src="./assets/img/humberg.png">
+                </button>
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="300" height="18.624" class="NEMIE-MADE-PORTFOLIO">
+                    <text y="14.085" fill="#2AD4FF" font-family="Aleo" font-size="18">
+                        NEMIE MADE PORTFOLIO
+                    </text>
+                </svg>
+
+                <div class="Rounded-Rectangle-3">
+                    <input type="text" name="search" class="art_inp" placeholder="Search">
+                </div>
+
+                <div class="bell_container">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 229.238 229.238" class="notification">
+                        <path
+                            d="M220.228 172.242c-20.606-17.82-39.675-42.962-39.675-105.734 0-36.353-29.576-65.928-65.93-65.928-36.359 0-65.939 29.575-65.939 65.928 0 62.829-19.062 87.946-39.686 105.751C3.28 177.239 0 184.411 0 191.937a7.5 7.5 0 0 0 7.5 7.5h71.175c3.472 16.663 18.268 29.222 35.944 29.222s32.473-12.558 35.944-29.222h71.175a7.5 7.5 0 0 0 7.5-7.5 25.96 25.96 0 0 0-9.01-19.695zm-105.609 41.417c-9.34 0-17.321-5.929-20.381-14.222H135c-3.06 8.293-11.041 14.222-20.381 14.222zm-96.665-29.222c.273-.296.564-.578.871-.845 31.443-27.146 44.858-62.162 44.858-117.084 0-28.082 22.852-50.928 50.939-50.928 28.083 0 50.93 22.846 50.93 50.928 0 54.872 13.417 89.887 44.876 117.091.307.265.598.544.872.838H17.954z" />
+                    </svg>
+                </div>
+                <div class="Ellipse-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="62.688" height="60">
+                        <defs>
+                            <linearGradient id="a" x1="0%" x2="0%" y1="100%" y2="0%">
+                                <stop offset="0%" stop-color="#959595" />
+                                <stop offset="100%" stop-color="#FFF" />
+                            </linearGradient>
+                        </defs>
+                        <path fill="url(#a)" fill-rule="evenodd"
+                            d="M23.5 0C36.479 0 47 10.074 47 22.5S36.479 45 23.5 45 0 34.926 0 22.5 10.521 0 23.5 0z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="art_board">
+
+            <div class="left_aside">
+                <div class="soft_container">
+                    <div class="menu_title">Hello World
+                    </div>
+                    <div class="menu_content">
+                        <h3>Welcome</h3>
+                    </div>
+                    <div class="menu_content">
+                        <h3>Home</h3>
+                    </div>
+                </div>
+                <div class="soft_container">
+                    <div class="menu_title">Hello World
+                    </div>
+                    <div class="menu_content">
+                        <h3>Welcome</h3>
+                    </div>
+                    <div class="menu_content">
+                        <h3>Home</h3>
+                    </div>
+                </div>
+                <div class="soft_container">
+                    <div class="menu_title">Hello World
+                    </div>
+                    <div class="menu_content">
+                        <h3>Welcome</h3>
+                    </div>
+                    <div class="menu_content">
+                        <h3>Home</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="posts_con">
+                <div class="post">
+                    <div class="p_header">
+                        <div class="prof_"> </div>
+                        <div class="p_d_con">
+                            <div class="p_d"> </div>
+                            <div class="p_d"> </div>
+                        </div>
+                    </div>
+                    <div class="p_body">
+                        <div class="p_body_content">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1137" height="531.168" data-name="Layer 1"
+                                viewBox="0 0 1137 531.16816" class="undraw_buy_house_560d">
+                                <path fill="#3f3d56"
+                                    d="M125.898 528.556l-1.951-.44c21.756-96.75 76.43-184.609 153.951-247.391a444.114 444.114 0 0 1 712.155 246.21l-1.95.444C942.05 325.17 764.83 183.945 557.135 183.945c-204.974 0-386.334 144.93-431.236 344.61z" />
+                                <path fill="#a0616a"
+                                    d="M1051.5 482.5l3 22-21 2 3-27 15 3zM952.5 180.5s2 27 2 28-14 70-14 70-20 38 0 37 14-36 14-36l21-58-9-41zM985.5 482.5l-3 22 21 2-3-27-15 3z" />
+                                <path fill="#2f2e41"
+                                    d="M962.5 276.5l-5 7s-3 30 0 40 9 56 9 59 1 5 0 6-4 1-2 3 2 8 2 8v5l13 74s-8 9-2 9 28 0 27-10l-2-1s-3-66-2-69 0-9 0-9-2-3 0-4 2-9 2-9l9-61s8 41 13 45 4 14 4 14l4 88s-4 10 0 12 21 9 22-1 6-97 6-101-1-6 0-9-1-3 0-3-2-3-2-5v-49s1-10 2-12-1-4 0-7-2-13-2-13l-45-12zM997.5 500.5s5-5-2-5a32.55 32.55 0 0 0-13 3l-5 18S957 533 980 531s19.5-.5 19.5-.5 7-2 8-4-2-31-2-31-3 8-8 5zM1040.5 500.5s-5-5 2-5a32.55 32.55 0 0 1 13 3l5 18S1081 533 1058 531s-22.5-.5-22.5-.5-7-2-8-4 5-31 5-31 3 8 8 5z" />
+                                <path fill="#3f3d56" d="M286.141 177.432h8.903v351.653h-8.903z" />
+                                <path fill="#32e3f3"
+                                    d="M377.205 222.246c.566 122.964-85.946 223.048-85.946 223.048s-87.43-99.282-87.997-222.246S289.207 0 289.207 0s87.431 99.282 87.998 222.246z" />
+                                <path fill="#f2f2f2" d="M225.5 383.5h689v146h-689z" />
+                                <path fill="#3f3d56" d="M203.5 399.5l75-157h599l56 157h-730z" />
+                                <path fill="#f2f2f2" d="M390.5 252.5h278v92h-278z" />
+                                <path fill="#3f3d56" d="M408.5 177.5l-44 92h330l-26-92h-260z" />
+                                <path fill="#ccc" d="M415 412.5h219.5v117H415zM252.5 416.5h117v113h-117z" />
+                                <path fill="#3f3d56" d="M672.5 423.5H733v106h-60.5z" />
+                                <path fill="#3f3d56" d="M0 529h1137v2H0z" />
+                                <path fill="#3f3d56" d="M179.905 297.059h5.875v232.053h-5.875z" />
+                                <path fill="#32e3f3"
+                                    d="M239.997 326.631c.374 81.144-56.714 147.188-56.714 147.188s-57.695-65.515-58.07-146.659 56.715-147.187 56.715-147.187 57.695 65.515 58.07 146.658z" />
+                                <path
+                                    d="M239.997 326.631c.374 81.144-56.714 147.188-56.714 147.188s-57.695-65.515-58.07-146.659 56.715-147.187 56.715-147.187 57.695 65.515 58.07 146.658z"
+                                    opacity=".1" />
+                                <path fill="#3f3d56" d="M103.533 297.059h5.875v232.053h-5.875z" />
+                                <path fill="#32e3f3"
+                                    d="M163.625 326.631C164 407.775 106.91 473.82 106.91 473.82S49.215 408.304 48.842 327.16s56.714-147.187 56.714-147.187 57.695 65.515 58.07 146.658z" />
+                                <path fill="#3f3d56"
+                                    d="M798.5 429.5H828V457h-29.5zM838 429.5h29.5V457H838zM798.5 467H828v28.5h-29.5zM838 467h29.5v28.5H838zM416 277.674h23.087v21.522H416zM446.913 277.674H470v21.522h-23.087zM416 307.022h23.087v22.304H416zM446.913 307.022H470v22.304h-23.087zM589 277.674h23.087v21.522H589zM619.913 277.674H643v21.522h-23.087zM589 307.022h23.087v22.304H589zM619.913 307.022H643v22.304h-23.087zM503 277.674h23.087v21.522H503zM533.913 277.674H557v21.522h-23.087zM503 307.022h23.087v22.304H503zM533.913 307.022H557v22.304h-23.087z" />
+                                <path fill="#f2f2f2"
+                                    d="M686 434.239h14.536v13.551H686zM705.464 434.239H720v13.551h-14.536zM686 452.717h14.536v14.043H686zM705.464 452.717H720v14.043h-14.536z" />
+                                <circle cx="725" cy="484" r="4" fill="#f2f2f2" />
+                                <path fill="#f2f2f2"
+                                    d="M415 425h220v2H415zM415 434h220v2H415zM415 443h220v2H415zM415 452h220v2H415zM415 461h220v2H415zM415 470h220v2H415zM415 479h220v2H415zM415 488h220v2H415zM415 497h220v2H415zM415 506h220v2H415zM415 515h220v2H415zM252.5 425h117v2h-117zM252.5 434h117v2h-117zM252.5 443h117v2h-117zM252.5 452h117v2h-117zM252.5 461h117v2h-117zM252.5 470h117v2h-117zM252.5 479h117v2h-117zM252.5 488h117v2h-117zM252.5 497h117v2h-117zM252.5 506h117v2h-117zM252.5 515h117v2h-117z" />
+                                <circle cx="877" cy="242" r="81" fill="#32e3f3" />
+                                <path fill="#fff" d="M928 234h-43v-43h-16v43h-43v16h43v43h16v-43h43v-16z" />
+                                <circle cx="975.5" cy="75.5" r="26" fill="#a0616a" />
+                                <path fill="#a0616a" d="M966.5 94.5s4 20 4 23 17 12 17 12l19-24s-12-17-12-21z" />
+                                <path fill="#d0cde1"
+                                    d="M981.5 120.5s-8.716-2.32-11.358-6.16c0 0-27.642 27.16-27.642 32.16l22 39s0 14 2 15 0 0 0 4-6 30-4 34 4 1 2 7-7 38-7 38 18-6 44 4 57-4 57-4-8-18-6-24-5-17-5-17l-5-92s7-41 2-43l-10-4-32.024-3.936S994.5 119.5 981.5 120.5z" />
+                                <path fill="#d0cde1" d="M952.5 139.5l-10 7s-5 15 0 22 7 17 7 17l20-2z" />
+                                <path fill="#a0616a"
+                                    d="M1026.5 148.5s-5.79 14.89-4.581 29.624a15.614 15.614 0 0 0 2.581 7.376l-70.944 33.681S921.5 222.5 929.5 236.5s37-7 37-7 76-11 82-22 10-57 10-57z" />
+                                <path fill="#2f2e41"
+                                    d="M955.65 48.022l-4.51-1.805s9.43-10.382 22.55-9.48L970 32.676s9.02-3.61 17.22 5.868c4.31 4.983 9.297 10.84 12.406 17.438h4.83l-2.016 4.44 7.056 4.438-7.242-.798a24.561 24.561 0 0 1-.685 11.496l.194 3.508s-8.394-12.987-8.394-14.793v4.514s-4.51-4.062-4.51-6.77l-2.46 3.16-1.23-4.966L970 65.175l2.46-4.062-9.43 1.354 3.69-4.965s-10.66 5.868-11.07 10.833-5.74 11.285-5.74 11.285l-2.46-4.514s-3.69-20.313 8.2-27.084z" />
+                                <path fill="#d0cde1" d="M1029.5 107.5h15s11 2 14 22 6 25 3 25-39-1-39-2 7-45 7-45z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="post">
+                    <div class="p_header">
+                        <div class="prof_"> </div>
+                        <div class="p_d_con">
+                            <div class="p_d"> </div>
+                            <div class="p_d"> </div>
+                        </div>
+                    </div>
+                    <div class="p_body">
+                        <div class="p_body_content">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="1040.97" height="817.84" data-name="Layer 1" viewBox="0 0 1040.97 817.84"
+                                class="p_body_content">
+                                <defs>
+                                    <linearGradient id="a" x1="519.52" x2="519.52" y1="832.49" y2="85.35"
+                                        gradientTransform="matrix(-1 0 0 1 1096.85 0)" gradientUnits="userSpaceOnUse">
+                                        <stop offset="0" stop-color="gray" stop-opacity=".25" />
+                                        <stop offset=".54" stop-color="gray" stop-opacity=".12" />
+                                        <stop offset="1" stop-color="gray" stop-opacity=".1" />
+                                    </linearGradient>
+                                    <linearGradient id="b" x1="572.55" x2="572.55" y1="577.92" y2="263.34"
+                                        xlink:href="#a" />
+                                </defs>
+                                <path fill="#32e3f3"
+                                    d="M508.29 71.73c-37.27-4.47-72.13-18.2-107.31-29.81a959 959 0 0 0-119.5-30.88c-43.1-8.24-87.53-13.61-130.74-9.77S65.37 18.92 37.81 44.17C-8.88 87-4.94 151.92 10.48 209.14c18.3 67.89 49.94 135 101.73 192.82 36.81 41.1 83 76.68 128.78 112 25.88 19.93 52 40 82.23 55.67 28.12 14.56 59.17 25 90 35.29 32.92 11 65.92 22.06 99.91 30.47 108.49 26.84 222.7 26 334.37 23.61 39.3-.83 80.38-2.2 113.35-17.55 25.69-12 44-31.44 57.87-52.17 18.15-27.16 29.61-59.57 16.72-89.86-19-44.68-84.12-71-105.8-115-27.78-56.46 26.18-116.14 10.91-174.91-6.35-24.45-24.26-46.55-43.24-67.16C852.04 93.21 791.87 48.45 711 54.99c-68.47 5.52-130.92 25.36-202.71 16.74z"
+                                    opacity=".1" />
+                                <path fill="url(#a)"
+                                    d="M420.84 85.35h313a31 31 0 0 1 31 30.9v685.34a31 31 0 0 1-31 30.9h-313a31 31 0 0 1-31-30.9V116.24a31 31 0 0 1 31-30.89z"
+                                    transform="translate(-79.52 -41.08)" />
+                                <rect width="369.28" height="738.56" x="392.68" y="91.07" fill="#4e5a86" rx="26.87"
+                                    ry="26.87" transform="rotate(-180 537.565 439.81)" />
+                                <path fill="#fff" d="M655.25 719.85H340.36V118.7h314.89z" />
+                                <circle cx="535.02" cy="84.34" r="2.86" fill="#fff" />
+                                <rect width="62.98" height="5.73" x="537.25" y="122.56" fill="#fff" rx="1" ry="1"
+                                    transform="rotate(180 528.975 104.88)" />
+                                <circle cx="499.24" cy="748.47" r="20.04" fill="#fff" />
+                                <ellipse cx="482.81" cy="768.84" fill="#32e3f3" opacity=".1" rx="254" ry="49" />
+                                <path fill="#32e3f3" d="M376.31 211.84h243v325h-243z" opacity=".1" />
+                                <path fill="url(#b)"
+                                    d="M663.9 410.47c-.6-.68-1.21-1.34-1.84-2 4.83-5.48 9.84-11.11 9.79-18.15-.05-8.57-7.65-15.14-10.49-23.24-3.86-11 1.5-22.82 3.7-34.27a64.28 64.28 0 0 0-13.94-52.94c-2.23-2.64-4.82-5.19-8.15-6.23-5.05-1.6-10.43.62-15.69 1.27-17.39 2.14-33.21-12.84-50.68-11.5a9.41 9.41 0 0 0-3.36.76c-2.26 1.08-3.48 3.46-4.88 5.52-5.43 8-14.54 12-23.61 16a12.68 12.68 0 0 0-3.22 1.48c-2.72 1.27-5.4 2.59-7.93 4.09-12.6 7.56-14.6 17.25-10.67 25.33a24.73 24.73 0 0 0 6.12 7.78 14.6 14.6 0 0 1-.36 1.45c-2.57 9.24-11.57 17.53-9.93 27.14a16.79 16.79 0 0 0 2 5.31c2.67 4.83 7.09 9 8.79 14.24a14.25 14.25 0 0 1 .43 1.62c.92 4.58-.54 8.94-2.55 13.27-19.16 4.43-40.8 12.59-42.48 27-2.94 25.06-11.78 94.28-11.78 94.28s-5.92 32 8.34 35.9c4.49 1.22 11-.37 20.34-6.66l-.5 1.48c-.11.33-.22.65-.32 1a293.17 293.17 0 0 0-9.78 37.5h137.6a150.87 150.87 0 0 0-5.37-23.57c-.17-.56-.34-1.07-.49-1.55a105.45 105.45 0 0 0 12 4.32c5.07 1.52 9.14 1.5 12.41.53 11.91-3.55 13.17-19.68 13.17-19.68l5.12-39.32 6.12-58.63a23.35 23.35 0 0 0 1.35-7.92c0-5.65-1.92-13.25-9.26-21.61zm-104.48-36.92c.07-.68.12-1.37.16-2.05l.18.12c0 .65-.07 1.3-.14 1.94v.11a25.87 25.87 0 0 1-1.3 6 38.62 38.62 0 0 0 1.1-6.12zm69.44 141.82c-3.07 1.4-7.16-.61-7.16-.61.35.64.68 1.26 1 1.88a.25.25 0 0 1 0 .07l-.22-.12-2.35-1.2a57.93 57.93 0 0 1 4.62-13.74 114.46 114.46 0 0 0 4.78-11.18 77.36 77.36 0 0 0 1.48-4.64 158.87 158.87 0 0 0 .91 18.86c.88 6.81-.81 9.67-3.06 10.68z"
+                                    transform="translate(-79.52 -41.08)" />
+                                <path fill="#b0605d"
+                                    d="M455.31 254.45c-3.27 2.23-6.7 4.81-7.86 8.6-1.88 6.11 2.84 12.24 3.3 18.62.85 11.59-12.26 21.17-10.33 32.64 1.32 7.86 9.38 13.2 10.93 21 2.26 11.4-10.09 21.45-9.12 33 .52 6.17 4.81 11.41 9.67 15.23a47.09 47.09 0 0 0 23.63 9.7c-.57-9.91-7.93-18.94-6.66-28.79.87-6.75 5.62-12.28 8.37-18.51 4.83-10.94 3.28-23.6.39-35.2s-7.08-23.07-7.29-35c-.13-7.2 3.25-17.77.77-24.6-3.01-8.28-10.19-.51-15.8 3.31z" />
+                                <path
+                                    d="M456.31 252.45c-3.27 2.23-6.7 4.81-7.86 8.6-1.88 6.11 2.84 12.24 3.3 18.62.85 11.59-12.26 21.17-10.33 32.64 1.32 7.86 9.38 13.2 10.93 21 2.26 11.4-10.09 21.45-9.12 33 .52 6.17 4.81 11.41 9.67 15.23a47.09 47.09 0 0 0 23.63 9.7c-.57-9.91-7.93-18.94-6.66-28.79.87-6.75 5.62-12.28 8.37-18.51 4.83-10.94 3.28-23.6.39-35.2s-7.08-23.07-7.29-35c-.13-7.2 3.25-17.77.77-24.6-3.01-8.28-10.19-.51-15.8 3.31z"
+                                    opacity=".1" />
+                                <path fill="#ffb9b9"
+                                    d="M466.89 402.77s-53-54-13-50c9.07.91 15.21-.71 19.28-3.75 4.64-3.46 6.59-8.76 7.13-14.29 1.1-11-3.41-23-3.41-23s54-43 43 11a92.06 92.06 0 0 0-2.1 16.69c-.18 11.46 3.59 15.85 8.88 17.65 8.92 3.05 22.18-1.22 28.22 8.66 11 18.04-88 37.04-88 37.04z" />
+                                <path
+                                    d="M519.89 322.77a92.06 92.06 0 0 0-2.1 16.69 40.82 40.82 0 0 1-4.39 1.25 43.08 43.08 0 0 1-33.1-6c1.1-11-3.41-23-3.41-23s54-42.94 43 11.06z"
+                                    opacity=".05" />
+                                <path fill="#ffb9b9"
+                                    d="M546.89 296.77a43 43 0 0 1-86 0c0-.8 0-1.6.07-2.39a43 43 0 0 1 85.93 2.39z" />
+                                <path
+                                    d="M466.89 402.77s-53-54-13-50c9.07.91 15.21-.71 19.28-3.75-7.69 12.84-16.45 35.9 22.72 33.75 35.85-2 35.24-16.28 30.78-25.66 8.92 3.05 22.18-1.22 28.22 8.66 11 18-88 37-88 37z"
+                                    opacity=".05" />
+                                <path fill="#ffd6ef"
+                                    d="M589.82 400.64a13.61 13.61 0 0 1-.93 2.13l-13.59 10.37-1.73 1.33-22.67 17.3s2.08 3.64-.89 14.3a96.36 96.36 0 0 1-6.11 15.7 58.48 58.48 0 0 0-4.52 13.62 1.55 1.55 0 0 1 0 .21c-.17.87-.32 1.73-.44 2.58a73 73 0 0 0 .73 25.57 3.4 3.4 0 0 0 .07.34c.48 2.28.93 3.83 1.11 4.41l.09.27s.48 1.28 1.2 3.52l.06.2a152.33 152.33 0 0 1 5.66 24.35H413.65a296.75 296.75 0 0 1 9.75-37.61l.49-1.46c-.82.56-1.62 1.09-2.39 1.57-9.3 5.84-15.47 6.45-19.52 4.2-11.27-6.27-6.09-34.77-6.09-34.77s8.63-68.65 11.5-93.5c1.65-14.29 22.77-22.38 41.47-26.78a221.22 221.22 0 0 1 28.83-4.7h.2s-.28.34-.75 1l-.06.08c-.35.46-.8 1.05-1.3 1.77a68.92 68.92 0 0 0-8.17 14.61c-3.1 8.16-3.63 17.07 5.44 21.6 4.57 2.29 11.57 3.47 21.89 2.9 15.95-.88 24.69-4.21 29.08-8.45a11.93 11.93 0 0 0 3.61-6.51c1.15-6.08-2.55-12.48-5.12-16.06a34.92 34.92 0 0 0-2.28-2.84l26.22 1.87a52.12 52.12 0 0 1 33.91 15.63c.62.63 1.22 1.29 1.8 2 11.46 13.29 9.32 24.69 7.66 29.25z" />
+                                <path d="M432.89 398.77s2 16-2 21-5 28 0 42z" opacity=".05" />
+                                <rect width="68" height="28" x="437.89" y="432.76" fill="#cdd0db" rx="3.75" ry="3.75" />
+                                <rect width="68" height="28" x="437.89" y="432.76" opacity=".05" rx="3.75" ry="3.75" />
+                                <rect width="68" height="28" x="437.89" y="433.76" fill="#cdd0db" rx="3.75" ry="3.75" />
+                                <circle cx="491.39" cy="447.26" r="3" fill="#9da7c0" />
+                                <path
+                                    d="M408.95 477.11a19.45 19.45 0 0 1 11.3-11.9c3.42-1.42 7.59-4 9.7-8.71 3.94-8.73 10.94-17.73 28.94-11.73s-5 10-5 10 41-6 25 6-36 19-36 19l-9.85 10.43c-6 6.37-16.42 6.34-22-.44-2.5-3.06-3.81-7.18-2.09-12.65z"
+                                    opacity=".05" />
+                                <path fill="#ffb9b9"
+                                    d="M407.95 475.11a19.45 19.45 0 0 1 11.3-11.9c3.42-1.42 7.59-4 9.7-8.71 3.94-8.73 10.94-17.73 28.94-11.73s-5 10-5 10 41-6 25 6-36 19-36 19l-9.85 10.43c-6 6.37-16.42 6.34-22-.44-2.5-3.06-3.81-7.18-2.09-12.65z" />
+                                <path
+                                    d="M548.89 495.77l-7 17-9-6.59-25-18.41-17-11c-24-18 0-21 0-21-9-4 0-8 0-8 32-7 26 19 26 19l20.27 10.51 6.73 3.49z"
+                                    opacity=".05" />
+                                <path fill="#ffb9b9"
+                                    d="M550.89 493.77l-7 17-9-6.59-25-18.41-17-11c-24-18 0-21 0-21-9-4 0-8 0-8 32-7 26 19 26 19l20.27 10.51 6.73 3.49z" />
+                                <path d="M550.89 493.77l-7 17-9-6.59c8.11.29 17.69-3.63 4.23-28.9l6.73 3.49z"
+                                    opacity=".05" />
+                                <path fill="#ffd6ef"
+                                    d="M587.89 392.77l1.93 7.87-5.93 58.13-5 39s-2 26-25 19-25-14-25-14 33 11 12-28c0 0 12 6 10-10s0-44 0-44z" />
+                                <path
+                                    d="M546.89 296.77a43 43 0 0 1-33.49 41.94c-1.44-4.16-2.46-8.3-1.41-12.51 2-8.17 11.46-14.13 10.41-22.48a5.54 5.54 0 0 0-1-2.62c-2.11-2.78-6.41-1.4-9.83-.71-8.84 1.76-18.52-4.21-20.92-12.9a29.23 29.23 0 0 1-29.74 6.89 43 43 0 0 1 85.93 2.39z"
+                                    opacity=".05" />
+                                <path fill="#b0605d"
+                                    d="M491.71 285.49c2.39 8.69 12.08 14.66 20.91 12.89 3.42-.68 7.72-2.06 9.83.72a5.4 5.4 0 0 1 .95 2.61c1.06 8.36-8.37 14.31-10.4 22.49-2.09 8.42 4 16.55 5.35 25.12.71 4.69 0 9.47 0 14.21s1.12 9.84 4.64 13 10 3.22 12.37-.9c11.25 5.95 6.76 24.38 15.3 33.81 4.71 5.2 12.46 6.45 19.45 5.79a8.2 8.2 0 0 0 4.57-1.48 8 8 0 0 0 2.24-4.2 34.11 34.11 0 0 0-.87-20.23c-1.12-3.11-2.73-6.25-2.31-9.52.32-2.56 1.85-4.79 3.47-6.8 5.37-6.66 12.7-13.1 12.65-21.66s-7.47-15-10.24-23c-3.77-10.93 1.46-22.64 3.61-34a64.49 64.49 0 0 0-13.61-52.5c-2.18-2.62-4.71-5.15-8-6.19-4.93-1.58-10.18.62-15.33 1.26-17 2.13-32.41-12.73-49.47-11.4a9.08 9.08 0 0 0-3.28.75c-2.21 1.07-3.4 3.44-4.77 5.48-7.53 11.25-22.33 14.46-33.93 21.44-33.83 20.37 10.95 57.25 36.87 32.31z" />
+                                <path fill="none" stroke="#535461" stroke-miterlimit="10" stroke-width="2"
+                                    d="M698.06 780.23s-14.48-73.36 15.34-123.64a113.3 113.3 0 0 0 15.63-69.94 190.55 190.55 0 0 0-7-34.14" />
+                                <path fill="#32e3f3"
+                                    d="M740.65 520.71c-.8 8.75-19 32.68-19 32.68s-13.52-26.84-12.71-35.6a15.92 15.92 0 1 1 31.7 2.91zM762.4 571.6c-5.43 6.91-33.7 17.12-33.7 17.12s3.24-29.88 8.67-36.79a15.92 15.92 0 0 1 25 19.67zM753.64 654.36c-8.18 3.22-37.73-2.24-37.73-2.24s17.88-24.16 26.06-27.38a15.92 15.92 0 0 1 11.67 29.62zM732.92 715.49c-7.52 4.56-37.57 4.17-37.57 4.17s13.54-26.83 21.06-31.39a15.92 15.92 0 1 1 16.51 27.22zM695.26 587.36c5.72 6.68 34.39 15.68 34.39 15.68s-4.5-29.72-10.21-36.39a15.92 15.92 0 1 0-24.18 20.71zM671.93 659.15c7.45 4.66 37.51 4.67 37.51 4.67s-13.18-27-20.64-31.67a15.92 15.92 0 1 0-16.87 27zM658.82 732.05C665.38 737.9 695 743 695 743s-8.43-28.85-15-34.7a15.92 15.92 0 1 0-21.19 23.76zM445.8 157.7a37.86 37.86 0 0 0-37.86-37.86H201.66a37.86 37.86 0 0 0 0 75.72l172.47-.33 39.67 34.61v-34.79a37.83 37.83 0 0 0 32-37.35z" />
+                                <circle cx="208.2" cy="159" r="13.06" fill="#fff" opacity=".2" />
+                                <circle cx="252.58" cy="159" r="13.06" fill="#fff" opacity=".2" />
+                                <circle cx="296.97" cy="159" r="13.06" fill="#fff" opacity=".2" />
+                                <path fill="#32e3f3" d="M375.81 588.84h104v31h-104z" />
+                                <path fill="#32e3f3" d="M514.81 588.84h104v31h-104z" opacity=".1" />
+                            </svg>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right_aside">
+                <div class="simpo_barn">
+                    <div class="_barn">
+                        <div class="barn_line2">
+                            <div class="_clip_container">
+                                <div class="_a_prof_clip"></div>
+                            </div>
+                            <div class="barn_line"> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="simpo_barn2">
+                    <div class="_barn">
+                        <div class="barn_line2">
+                            <div class="_clip_container">
+                                <div class="_a_prof_clip"></div>
+                            </div>
+                            <div class="barn_line"> </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <style>
+        .reader_modal {
+            position: fixed;
+            top: 0;
+            z-index: 15;
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            justify-content: space-around;
+            background-color: rgba(233, 234, 234, 0.98);
+            height: 100vh;
+            max-height: 100vh;
+            overflow: auto;
+            display: none;
+        }
+
+        .reader_modal_header {
+            width: 81%;
+            height: 65px;
+            border-radius: 32px;
+            box-shadow: 0px 18px 103px 0 rgba(153, 174, 178, 0.69);
+            background-color: #ffffff;
+            margin: 1pc auto;
+            display: flex;
+            align-items: center;
+            padding: 0 1pc;
+        }
+
+        .reader_modal_back {
+            width: 5%;
+            height: 62px;
+            object-fit: contain;
+            border: 0;
+            background: transparent;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .header_head {
+            width: 18%;
+            margin: auto;
+        }
+
+        .header_title {
+            width: 70%;
+        }
+
+        .header_title h3 {
+            margin: 0;
+        }
+
+        .header_deatails p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .reader_modal_content {
+            width: 60%;
+            height: auto;
+            box-shadow: 0px 83px 103px 0 rgba(221, 224, 225, 0.99);
+            margin: auto;
+        }
+
+        .reader_modal_content_ {
+            width: auto;
+            height: auto;
+            max-width: 85%;
+            margin: auto;
+        }
+    </style>
+    <div class="rectangle-2">
+        <div class="reader_modal">
+            <div class="reader_modal_header">
+                <button class="reader_modal_back"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32.635 32.635">
+                        <path d="M32.135 16.817H.5a.5.5 0 0 1 0-1h31.635a.5.5 0 0 1 0 1z" />
+                        <path
+                            d="M13.037 29.353a.502.502 0 0 1-.354-.146L.146 16.669a.504.504 0 0 1 0-.708L12.684 3.429a.5.5 0 0 1 .707.707L1.207 16.315l12.184 12.184a.5.5 0 0 1-.354.854z" />
+                    </svg>
+                </button>
+                <div class="header_head">
+                    <div class="header_title">
+                        <h3>Nehemie Zikama</h3>
+                    </div>
+                    <div class="header_deatails">
+                        <p>08/02/2020</p>
+                    </div>
+                </div>
+                <div class="header_title">
+                    <h1>Lorem ipsum</h1>
+                </div>
+            </div>
+            <div class="reader_modal_content">
+                <div class="reader_modal_content_">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1137" height="531.168" data-name="Layer 1"
+                        viewBox="0 0 1137 531.16816" class="undraw_buy_house_560d">
+                        <path fill="#3f3d56"
+                            d="M125.898 528.556l-1.951-.44c21.756-96.75 76.43-184.609 153.951-247.391a444.114 444.114 0 0 1 712.155 246.21l-1.95.444C942.05 325.17 764.83 183.945 557.135 183.945c-204.974 0-386.334 144.93-431.236 344.61z" />
+                        <path fill="#a0616a"
+                            d="M1051.5 482.5l3 22-21 2 3-27 15 3zM952.5 180.5s2 27 2 28-14 70-14 70-20 38 0 37 14-36 14-36l21-58-9-41zM985.5 482.5l-3 22 21 2-3-27-15 3z" />
+                        <path fill="#2f2e41"
+                            d="M962.5 276.5l-5 7s-3 30 0 40 9 56 9 59 1 5 0 6-4 1-2 3 2 8 2 8v5l13 74s-8 9-2 9 28 0 27-10l-2-1s-3-66-2-69 0-9 0-9-2-3 0-4 2-9 2-9l9-61s8 41 13 45 4 14 4 14l4 88s-4 10 0 12 21 9 22-1 6-97 6-101-1-6 0-9-1-3 0-3-2-3-2-5v-49s1-10 2-12-1-4 0-7-2-13-2-13l-45-12zM997.5 500.5s5-5-2-5a32.55 32.55 0 0 0-13 3l-5 18S957 533 980 531s19.5-.5 19.5-.5 7-2 8-4-2-31-2-31-3 8-8 5zM1040.5 500.5s-5-5 2-5a32.55 32.55 0 0 1 13 3l5 18S1081 533 1058 531s-22.5-.5-22.5-.5-7-2-8-4 5-31 5-31 3 8 8 5z" />
+                        <path fill="#3f3d56" d="M286.141 177.432h8.903v351.653h-8.903z" />
+                        <path fill="#32e3f3"
+                            d="M377.205 222.246c.566 122.964-85.946 223.048-85.946 223.048s-87.43-99.282-87.997-222.246S289.207 0 289.207 0s87.431 99.282 87.998 222.246z" />
+                        <path fill="#f2f2f2" d="M225.5 383.5h689v146h-689z" />
+                        <path fill="#3f3d56" d="M203.5 399.5l75-157h599l56 157h-730z" />
+                        <path fill="#f2f2f2" d="M390.5 252.5h278v92h-278z" />
+                        <path fill="#3f3d56" d="M408.5 177.5l-44 92h330l-26-92h-260z" />
+                        <path fill="#ccc" d="M415 412.5h219.5v117H415zM252.5 416.5h117v113h-117z" />
+                        <path fill="#3f3d56" d="M672.5 423.5H733v106h-60.5z" />
+                        <path fill="#3f3d56" d="M0 529h1137v2H0z" />
+                        <path fill="#3f3d56" d="M179.905 297.059h5.875v232.053h-5.875z" />
+                        <path fill="#32e3f3"
+                            d="M239.997 326.631c.374 81.144-56.714 147.188-56.714 147.188s-57.695-65.515-58.07-146.659 56.715-147.187 56.715-147.187 57.695 65.515 58.07 146.658z" />
+                        <path
+                            d="M239.997 326.631c.374 81.144-56.714 147.188-56.714 147.188s-57.695-65.515-58.07-146.659 56.715-147.187 56.715-147.187 57.695 65.515 58.07 146.658z"
+                            opacity=".1" />
+                        <path fill="#3f3d56" d="M103.533 297.059h5.875v232.053h-5.875z" />
+                        <path fill="#32e3f3"
+                            d="M163.625 326.631C164 407.775 106.91 473.82 106.91 473.82S49.215 408.304 48.842 327.16s56.714-147.187 56.714-147.187 57.695 65.515 58.07 146.658z" />
+                        <path fill="#3f3d56"
+                            d="M798.5 429.5H828V457h-29.5zM838 429.5h29.5V457H838zM798.5 467H828v28.5h-29.5zM838 467h29.5v28.5H838zM416 277.674h23.087v21.522H416zM446.913 277.674H470v21.522h-23.087zM416 307.022h23.087v22.304H416zM446.913 307.022H470v22.304h-23.087zM589 277.674h23.087v21.522H589zM619.913 277.674H643v21.522h-23.087zM589 307.022h23.087v22.304H589zM619.913 307.022H643v22.304h-23.087zM503 277.674h23.087v21.522H503zM533.913 277.674H557v21.522h-23.087zM503 307.022h23.087v22.304H503zM533.913 307.022H557v22.304h-23.087z" />
+                        <path fill="#f2f2f2"
+                            d="M686 434.239h14.536v13.551H686zM705.464 434.239H720v13.551h-14.536zM686 452.717h14.536v14.043H686zM705.464 452.717H720v14.043h-14.536z" />
+                        <circle cx="725" cy="484" r="4" fill="#f2f2f2" />
+                        <path fill="#f2f2f2"
+                            d="M415 425h220v2H415zM415 434h220v2H415zM415 443h220v2H415zM415 452h220v2H415zM415 461h220v2H415zM415 470h220v2H415zM415 479h220v2H415zM415 488h220v2H415zM415 497h220v2H415zM415 506h220v2H415zM415 515h220v2H415zM252.5 425h117v2h-117zM252.5 434h117v2h-117zM252.5 443h117v2h-117zM252.5 452h117v2h-117zM252.5 461h117v2h-117zM252.5 470h117v2h-117zM252.5 479h117v2h-117zM252.5 488h117v2h-117zM252.5 497h117v2h-117zM252.5 506h117v2h-117zM252.5 515h117v2h-117z" />
+                        <circle cx="877" cy="242" r="81" fill="#32e3f3" />
+                        <path fill="#fff" d="M928 234h-43v-43h-16v43h-43v16h43v43h16v-43h43v-16z" />
+                        <circle cx="975.5" cy="75.5" r="26" fill="#a0616a" />
+                        <path fill="#a0616a" d="M966.5 94.5s4 20 4 23 17 12 17 12l19-24s-12-17-12-21z" />
+                        <path fill="#d0cde1"
+                            d="M981.5 120.5s-8.716-2.32-11.358-6.16c0 0-27.642 27.16-27.642 32.16l22 39s0 14 2 15 0 0 0 4-6 30-4 34 4 1 2 7-7 38-7 38 18-6 44 4 57-4 57-4-8-18-6-24-5-17-5-17l-5-92s7-41 2-43l-10-4-32.024-3.936S994.5 119.5 981.5 120.5z" />
+                        <path fill="#d0cde1" d="M952.5 139.5l-10 7s-5 15 0 22 7 17 7 17l20-2z" />
+                        <path fill="#a0616a"
+                            d="M1026.5 148.5s-5.79 14.89-4.581 29.624a15.614 15.614 0 0 0 2.581 7.376l-70.944 33.681S921.5 222.5 929.5 236.5s37-7 37-7 76-11 82-22 10-57 10-57z" />
+                        <path fill="#2f2e41"
+                            d="M955.65 48.022l-4.51-1.805s9.43-10.382 22.55-9.48L970 32.676s9.02-3.61 17.22 5.868c4.31 4.983 9.297 10.84 12.406 17.438h4.83l-2.016 4.44 7.056 4.438-7.242-.798a24.561 24.561 0 0 1-.685 11.496l.194 3.508s-8.394-12.987-8.394-14.793v4.514s-4.51-4.062-4.51-6.77l-2.46 3.16-1.23-4.966L970 65.175l2.46-4.062-9.43 1.354 3.69-4.965s-10.66 5.868-11.07 10.833-5.74 11.285-5.74 11.285l-2.46-4.514s-3.69-20.313 8.2-27.084z" />
+                        <path fill="#d0cde1" d="M1029.5 107.5h15s11 2 14 22 6 25 3 25-39-1-39-2 7-45 7-45z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>

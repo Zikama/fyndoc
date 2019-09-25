@@ -1,0 +1,113 @@
+<div
+  class="post art-tab-names art-tab"
+  id="send_a_proposal"
+  style="margin-top: 0; display: none;"
+  hidden
+>
+  <div class="p_body">
+    <div class="p_body_content">
+      <div class="p_body_content_wrapper">
+        <form
+          class="uls under_submit_form"
+          style="width: 70%"
+          action="/send/proposal"
+          method="POST"
+          enctype="multipart/form-data"
+        >
+          <!-- Dashboard -->
+          <legend class="art-dop_down io_aro  lis " id="dashboard">
+            Send Proposal document
+          </legend>
+          <!-- Sale Tab container  -->
+          <ul
+            class="art-dop_col w-100 ul art_flex art_flex_wr "
+            id="pa-dashboard"
+            style="padding: 0 10px; border-radius: 0pc 0pc 1pc 1pc;"
+          >
+            <li
+              class="li  ma-l-r-5 art_inp_co  no-opa-hover w-46"
+              style="background: #f6f6f6 ;margin-bottom: 1pc;"
+            >
+              <input
+                type="text"
+                class="art_inp"
+                placeholder="Enter receiver's name"
+                name="person"
+                required
+              />
+            </li>
+            <li
+              class="li  ma-l-r-5 art_inp_co  no-opa-hover w-46"
+              style="background: #f6f6f6 ;margin-bottom: 1pc;"
+            >
+              <input
+                type="text"
+                class="art_inp"
+                placeholder="Enter company name"
+                name="company"
+              />
+            </li>
+            <li
+              class="li  ma-l-r-5 art_inp_co  no-opa-hover w-94"
+              style="background: #f6f6f6 ;margin-bottom: 1pc;"
+            >
+              <textarea
+                type="text"
+                class="art_inp"
+                placeholder="Custom message   (Optional)"
+                name="msg"
+              ></textarea>
+            </li>
+            <li
+              class="li  ma-l-r-5 art_inp_co  no-opa-hover w-46"
+              style="background: #f6f6f6 ;margin-bottom: 1pc;"
+            >
+              <input
+                type="text"
+                class="art_inp"
+                placeholder="Enter the email address of the receiver"
+                name="email"
+                required
+              />
+            </li>
+            <li
+              class="li  ma-l-r-5 art_inp_co  no-opa-hover w-46"
+              style="background: #f6f6f6 ;margin-bottom: 1pc;"
+            >
+              <select
+                id="template_proposal"
+                name="template"
+                class="art_inp"
+                style="width:100%;border: 0;background: transparent;"
+              >
+                <option value="Use Tamplate">Use Tamplate</option>
+                <option value="Do Not use Tamplate">
+                  Do Not use Tamplate
+                </option>
+              </select>
+            </li>
+            <li
+              class="li  no-opa-hover ma-l-r-5 commanded_by_template_proposal hidden w-100"
+            >
+              <p style="margin: auto">Or</p>
+            </li>
+            <li
+              class="li  ma-l-r-5 art_inp_co  no-opa-hover w-46 commanded_by_template_proposal hidden w-94"
+              style="background: #f6f6f6 !important;margin-bottom: 1pc;"
+            >
+              <input
+                type="file"
+                class="art_inp"
+                name="templateFile"
+                accept="application/pdf"
+              />
+            </li>
+            <div class="container">
+              <button type="submit" class="under_submit">Send</button>
+            </div>
+          </ul>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,111 @@
+<% if(art_p_success_msg !==""||art_p_error_msg !=="") {%>
+<main class="main_ hide-art_alert">
+  <style>
+    .art_alert.alert-success {
+      width: 70%;
+      display: flex;
+      justify-content: space-around;
+      margin: 0 auto 17px;
+      background: rgba(0, 197, 34, 0.22);
+      padding: 11px;
+      border-radius: 6px;
+      font-size: 14pt;
+      color: #027706;
+      box-shadow: 0 0 2px 0px #8c8c8c;
+    }
+    .art_alert.alert-warning {
+      width: 70%;
+      display: flex;
+      justify-content: space-around;
+      margin: 0 auto 17px;
+      background: rgba(197, 166, 5, 0.28);
+      padding: 11px;
+      border-radius: 6px;
+      font-size: 14pt;
+      color: #867000;
+      box-shadow: 0 0 3px 0px rgba(140, 129, 50, 0.86);
+    }
+
+    .art_close {
+      margin: -11px -20px -11px 0;
+      padding: 0 29px;
+      font-size: xx-large;
+      border: 0;
+      background: transparent;
+      color: brown;
+      cursor: pointer;
+    }
+    .art_p_success.alert-warning {
+      width: 70%;
+      display: flex;
+      justify-content: space-around;
+      margin: 0 auto 17px;
+      background: rgb(233, 255, 242);
+      padding: 11px;
+      border-radius: 6px;
+      font-size: 14pt;
+      color: #068038;
+      box-shadow: 0 0 3px 0px rgba(140, 129, 50, 0.86);
+    }
+    .main_ {
+      width: 100%;
+      position: fixed;
+      top: 3px;
+      z-index: 19999;
+    }
+  </style>
+
+  <% if (art_p_success_msg != "") {%>
+  <div
+    class="art_p_success alert-warning alert-dismissible fade show"
+    role="alert"
+  >
+    <%= art_p_success_msg%>
+    <button
+      type="button"
+      class="art_close no-focus"
+      data-dismiss="alert"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <% } %> <% if (art_p_error_msg !="") {%>
+  <div
+    class="art_p_error alert-warning alert-dismissible fade show"
+    role="alert"
+  >
+    <%= art_p_error_msg %>
+    <button
+      type="button"
+      class="art_close"
+      data-dismiss="alert"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <% } %>
+
+  <script>
+    let art_close_ = document.querySelector(".art_close");
+
+    if (art_close_) {
+      art_close_.addEventListener("click", e => {
+        if (
+          art_close_.parentElement.parentElement.classList.contains(
+            "hide-art_alert"
+          )
+        ) {
+          art_close_.parentElement.remove();
+        } else {
+          let hideArt_alert = art_close_.parentElement.parentElement.querySelector(
+            ".hide-art_alert"
+          );
+          hideArt_alert.remove();
+        }
+      });
+    }
+  </script>
+</main>
+<%}%>

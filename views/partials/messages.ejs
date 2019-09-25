@@ -1,0 +1,99 @@
+<style>
+  .art_alert.alert-success {
+    width: 70%;
+    display: flex;
+    justify-content: space-around;
+    margin: 0 auto 17px;
+    background: rgba(0, 197, 34, 0.22);
+    padding: 11px;
+    border-radius: 6px;
+    font-size: 14pt;
+    color: #027706;
+    box-shadow: 0 0 2px 0px #8c8c8c;
+  }
+
+  .art_alert.alert-warning {
+    width: 70%;
+    display: flex;
+    justify-content: space-around;
+    margin: 0 auto 17px;
+    background: rgba(197, 166, 5, 0.28);
+    padding: 11px;
+    border-radius: 6px;
+    font-size: 14pt;
+    color: #867000;
+    box-shadow: 0 0 3px 0px rgba(140, 129, 50, 0.86);
+  }
+
+  .art_close {
+    margin: -11px -43px -11px 0;
+    padding: 0 29px;
+    font-size: xx-large;
+    border: 0;
+    background: transparent;
+    color: brown;
+    cursor: pointer;
+  }
+</style>
+<% if (typeof errors != "undefined" ) { %> <% errors.forEach(function(err){ %>
+<div class="art_alert alert-warning alert-dismissible fade show" role="alert">
+  <%= err.msg %>
+  <button
+    type="button"
+    class="art_close"
+    data-dismiss="alert"
+    aria-label="Close"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<%})%> <% } %> <% if(success_msg != "") { %>
+<div class="art_alert alert-success alert-dismissible fade show" role="alert">
+  <%= success_msg %>
+  <button
+    type="button"
+    class="art_close"
+    data-dismiss="alert"
+    aria-label="Close"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<% } %> <% if(error_msg != "") { %>
+<div class="art_alert alert-warning alert-dismissible fade show" role="alert">
+  <%= error_msg %>
+  <button
+    type="button"
+    class="art_close"
+    data-dismiss="alert"
+    aria-label="Close"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<% } %> <% if(error !="") { %>
+<div class="art_alert alert-warning alert-dismissible fade show" role="alert">
+  <%= error %>
+  <button
+    type="button"
+    class="art_close"
+    data-dismiss="alert"
+    aria-label="Close"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<% } %>
+
+<script>
+  art_closers = document.querySelectorAll(".art_close");
+  for (let art_close of art_closers) {
+    art_close.addEventListener("click", e => {
+      tart = e.target;
+      let _tart = tart.parentElement;
+      if (_tart.parentElement.classList.contains("art_alert")) {
+        _tart.parentElement.remove();
+      }
+    });
+  }
+</script>

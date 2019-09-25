@@ -1,0 +1,48 @@
+<div class="header">
+    <div class="Rectangle-2">
+      <%if(typeof who !== 'undefined' && who === 'admin' ){%> 
+        <button class="menu_btn">
+          <img class="humberg" src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'./'%>assets/img/humberg.png" />
+        </button>
+      <%}%>
+
+        <% include ../modals/menu%> 
+            <a href="" class="menu_btn
+      <%if(typeof who !== 'undefined' && who !== 'client' && who !== 'error' ){%> opacity-0 <%}%>"><img src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets/img/sadja.png" class="company-logo" alt="Sadja Web Solutions" /></a>
+
+            <div class="Rounded-Rectangle-<%if(typeof who !== 'undefined' && who === 'admin'){%>3<%}%>" <%if(typeof who !== "undefined" && who === "login"){%> style="width: 50%;" <%}%>>
+            <%if(typeof who !== 'undefined' && who === 'admin'){%>  
+            <input type="text" name="search" class="art_inp" placeholder="Search">
+                  <%} else { %>
+                    <h4 class="ma-0 text_upper text_grey ">
+                        <%= typeof header !== "undefined" ?header:''%>
+                    </h4>
+                  <%}%>
+            </div>
+
+            <div class="bell_container <%=typeof who !== 'undefined' && who ==='error'?'opacity-0':'' %>" <%if(typeof who !== "undefined" && who === "login") {%> hidden style="display:none" <%}%>>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 229.238 229.238" class="notification">
+        <path
+          d="M220.228 172.242c-20.606-17.82-39.675-42.962-39.675-105.734 0-36.353-29.576-65.928-65.93-65.928-36.359 0-65.939 29.575-65.939 65.928 0 62.829-19.062 87.946-39.686 105.751C3.28 177.239 0 184.411 0 191.937a7.5 7.5 0 0 0 7.5 7.5h71.175c3.472 16.663 18.268 29.222 35.944 29.222s32.473-12.558 35.944-29.222h71.175a7.5 7.5 0 0 0 7.5-7.5 25.96 25.96 0 0 0-9.01-19.695zm-105.609 41.417c-9.34 0-17.321-5.929-20.381-14.222H135c-3.06 8.293-11.041 14.222-20.381 14.222zm-96.665-29.222c.273-.296.564-.578.871-.845 31.443-27.146 44.858-62.162 44.858-117.084 0-28.082 22.852-50.928 50.939-50.928 28.083 0 50.93 22.846 50.93 50.928 0 54.872 13.417 89.887 44.876 117.091.307.265.598.544.872.838H17.954z"
+        />
+      </svg>
+            </div>
+            <%if(typeof who !== 'undefined' && who === 'admin'){%>
+            <div class="Ellipse-1 opacity-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="62.688" height="60">
+        <defs>
+          <linearGradient id="a" x1="0%" x2="0%" y1="100%" y2="0%">
+            <stop offset="0%" stop-color="#959595" />
+            <stop offset="100%" stop-color="#FFF" />
+          </linearGradient>
+        </defs>
+        <path
+          fill="url(#a)"
+          fill-rule="evenodd"
+          d="M23.5 0C36.479 0 47 10.074 47 22.5S36.479 45 23.5 45 0 34.926 0 22.5 10.521 0 23.5 0z"
+        />
+      </svg>
+            </div> 
+            <%}%>
+    </div>
+</div>

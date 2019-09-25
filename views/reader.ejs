@@ -1,0 +1,136 @@
+<div class="Rectangle-1">
+    <% include ./header/index%>
+
+        <div class="art_board">
+
+            <div class="left_aside">
+                <div class="uls">
+                    <!-- Dashboard -->
+                    <button class="art-dop_down io_aro  lis " id="dashboard">Dashboard</button>
+                    <!-- Sale Tab container  -->
+                    <ul class="art-dop_col ul " id="pa-dashboard">
+                        <li class="li"><a href="#sign_in">Sign in</a></li>
+                        <li class="li"><a href="#sign_up">Create an account</a></li>
+                    </ul>
+                    <!-- PSDOC Tab -->
+                    <button class="art-dop_down io_aro  lis " id="proposal_doc"> Proposal document </button>
+                    <!-- PSDOC Tab container  -->
+                    <ul class="art-dop_col ul " id="pa-proposal_doc">
+                        <li class="li"><a href="#downloading">Download</a></li>
+                        <li class="li"><a href="#proposal_id">#7566545</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="posts_con" id="viewport">
+
+                <div class="post">
+                    <div class="p_body">
+                        <div class="p_body_content">
+                            <div class="p_body_content_wrapper">
+                                <form method="POST" name="finalizer">
+                                    <div class="sign" hidden style="display: none">
+                                        <input type="text" id="textes" hidden>
+                                        <span class="sign_wrapper">
+                                        <p>Signature: &angsph;</p><canvas id="can" class="myCanvas" width="400" height="80"></canvas></span>
+                                    </div>
+
+                                    <span class="split checkboxes">
+                                    <input type="radio" role="checkbox" id="agreed" name="agreed" value="agree"
+                                        required>
+                                    <label for="agreed">I agree</label>
+                                </span>
+
+                                    <span class="split checkboxes">
+                                    <input type="radio" role="checkbox" id="change" name="agreed" value="change">
+                                    <label for="change">I need change</label>
+                                </span>
+                                    <span class="submin">
+                                    <p class="terminal"><b>Note: </b>This agreement shall be governed under the jurisdiction of the state of High court in Uganda</p>
+                                </span>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right_aside">
+                <div class="simpo_barn">
+                    <div class="uls">
+                        <!-- LB Tab -->
+                        <button class="art-dop_down io_aro  lis " id="related_work"> Latest Books </button>
+                        <!-- LB Tab container  -->
+                        <ul class="art-dop_col ul " id="pa-related_work">
+                            <li class="li bord_bottom_5_lightgrey">
+                                <a href="https://sadjawebsolutions.com/an-ultimate-plan-for-any-business-to-grow-online/" target="_blank" class="tex_no_deco"> An ultimate plan for any business to grow online 
+                                    
+                                </a>
+                            </li>
+                            <li class="li">
+                                <a href="https://sadjawebsolutions.com/15-silly-mistakes-youre-making-business-card/" target="_blank" class="tex_no_deco">
+                                    business card 15 mistakes revealed.
+                                
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <a target="_blank" href="https://sadjawebsolutions.com/whitepapers/" class="tex_no_deco" onClick="event.preventDefault();window.open(this.href,'targetWindow',
+                                   'toolbar=no',
+                                    'location=no',
+                                    'status=no',
+                                    'menubar=no',
+                                    'scrollbars=yes',
+                                   ' resizable=yes',
+                                   ' width=550px',
+                                    'height=545px');">
+                        <button class="see_more cursor_pointer">See more...</button> </a>
+                </div>
+
+                <div class="simpo_barn2">
+                    <div class="uls">
+                        <!-- LB Tab -->
+                        <button class="art-dop_down io_aro  lis " id="related_work"> Latest News </button>
+                        <!-- LB Tab container  -->
+                        <ul class="art-dop_col ul " id="pa-related_work">
+                            <li class="li bord_bottom_5_lightgrey">
+                                <a href="https://sadjawebsolutions.com/an-ultimate-plan-for-any-business-to-grow-online/" target="_blank" class="tex_no_deco"> An ultimate plan for any business to grow online 
+                                    
+                                </a>
+                            </li>
+                            <li class="li">
+                                <a href="https://sadjawebsolutions.com/15-silly-mistakes-youre-making-business-card/" target="_blank" class="tex_no_deco">
+                                    business card 15 mistakes revealed.
+                                
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <a target="_blank" href="https://sadjawebsolutions.com/whitepapers/" class="tex_no_deco" onClick="event.preventDefault();window.open(this.href,'targetWindow',
+                                   'toolbar=no',
+                                    'location=no',
+                                    'status=no',
+                                    'menubar=no',
+                                    'scrollbars=yes',
+                                   ' resizable=yes',
+                                   ' width=550px',
+                                    'height=545px');">
+                        <button class="see_more cursor_pointer">See more...</button> </a>
+
+                </div>
+            </div>
+
+
+        </div>
+</div>
+
+<% include ./modals/custom%>
+    <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets_/pdfjs-dist/build/pdf.min.js"></script>
+    <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets/js/initPDFViewer.js"></script>
+    <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets/js/custom.js"></script>
+
+<% include ../assets/js/reader%>
+
+    <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets/js/index.js"></script>

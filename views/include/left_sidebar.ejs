@@ -1,0 +1,35 @@
+<!-- Display the Total of Three sub menu here -->
+<div class="left_aside">
+  <%if(typeof who !== 'undefined' && who === 'admin'){%> <% if(typeof menu
+  !='undefined' && menu.length) { /*If the menu length is bellow three[3], get
+  all of the length*/ menu.length<3?menu.length:menu.length; /* If the menu
+  length is above three[3], we just want the three of them*/
+  menu.length>3?menu.length:3; /* Assign the whole menu to menues*/ let menues =
+  menu; /* Go through each of the three menu length [@important Event if the
+  menu lenght is more thajn three we still get three only]*/ for (let
+  i=0;i<menu.length;i++){ let menu = menues[i]; /* Assign all the menu
+  properties to [var] menu as for each, this goes in the negative of menues[i]
+  everytime we want to get the menues property*/ let _menu = menu.menu; let
+  _container= menu.container; %> 
+  <!-- <%=_menu.id /* Commenting by id*/ %> -->
+  <button
+  /* Get classes except _active, we don't need it there! */
+    class="<%for (let _class of _menu.classes){ if(_class !==' caret-up'&&_class !==' _active'){
+      %> <%=_class%> <%}}%>"
+  >
+  <!-- Display the title -->
+    <%= _menu.title%>
+  </button>
+  <ul class="art-dop_col ul " id="pa-<%=_menu.id%>">
+    <% for(let container of _container){%>
+    <li class="<%for (let _class of container.classes){%> <%=_class%> <%}%>">
+      <button type="button" class="<%if(container.classesB){for (let _class of container.classesB){%> <%=_class%> <%}}%> art-no_tab"
+            onclick="openTab(event,`<% if(container.title == 'Upload a template'){
+               let __title = "Upload a "+ _menu.title.split(" ",1).join("") +" template";%><%=__title.toLowerCase().split(" ").join("_")%><%}else{%><%=container.title.toLowerCase().split(" ").join("_")%><%}%>`,null,null, function () {
+              document.querySelector('.layer_container').click();
+            });"><%=container.title%></button>
+    </li>
+    <%}%>
+  </ul>
+  <% } } %> <%}%>
+</div>

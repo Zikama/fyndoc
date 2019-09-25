@@ -1,0 +1,184 @@
+<div class="right_aside">
+  <div class="simpo_barn">
+    <%if(typeof who !== 'undefined' && who === 'admin'){%>
+    <form
+      class="uls"
+      style="position: relative"
+      method="POST"
+      action="update_lates_books"
+    >
+      <!-- LB Tab -->
+      <legend class="art-dop_down io_aro  lis " id="related_work">
+        Latest Books
+      </legend>
+      <!-- LB Tab container  -->
+      <ul class="art-dop_col ul " id="pa-related_work">
+        <li class="li bord_bottom_5_lightgrey">
+          <input
+            type="text"
+            name="title"
+            class="art_input_"
+            placeholder="Enter Book Titile"
+            required
+          />
+        </li>
+        <li class="li bord_bottom_5_lightgrey">
+          <input
+            type="text"
+            name="bookLink"
+            class="art_input_"
+            placeholder="Enter Book Link"
+            required
+          />
+        </li>
+        <li class="li bord_bottom_5_lightgrey">
+          <input
+            type="file"
+            name="bookThumb"
+            class="art_input_"
+            placeholder="Enter Book Link"
+            required
+          />
+        </li>
+      </ul>
+      <button type="submit" class="left_submit cursor_pointer">Submit</button>
+    </form>
+    <%} else {%>
+    <div class="uls">
+      <!-- LB Tab -->
+      <button class="art-dop_down io_aro  lis " id="related_work">
+        Latest Books
+      </button>
+      <!-- LB Tab container  -->
+      <ul class="art-dop_col ul " id="pa-related_work">
+        <li class="li bord_bottom_5_lightgrey">
+          <a
+            href="https://sadjawebsolutions.com/an-ultimate-plan-for-any-business-to-grow-online/"
+            target="_blank"
+            class="tex_no_deco"
+          >
+            An ultimate plan for any business to grow online
+          </a>
+        </li>
+        <li class="li">
+          <a
+            href="https://sadjawebsolutions.com/15-silly-mistakes-youre-making-business-card/"
+            target="_blank"
+            class="tex_no_deco"
+          >
+            business card 15 mistakes revealed.
+          </a>
+        </li>
+      </ul>
+    </div>
+    <a
+      target="_blank"
+      href="https://sadjawebsolutions.com/whitepapers/"
+      class="tex_no_deco"
+      onClick="event.preventDefault();window.open(this.href,'targetWindow',
+                                   'toolbar=no',
+                                    'location=no',
+                                    'status=no',
+                                    'menubar=no',
+                                    'scrollbars=yes',
+                                   ' resizable=yes',
+                                   ' width=550px',
+                                    'height=545px');"
+    >
+      <button class="see_more cursor_pointer">See more...</button>
+    </a>
+    <%} %>
+  </div>
+
+  <div class="simpo_barn2">
+    <%if(typeof who !== 'undefined' && who === 'admin'){%>
+    <form
+      class="uls"
+      style="position: relative"
+      method="POST"
+      action="update_lates_news"
+    >
+      <!-- LB Tab -->
+      <legend class="art-dop_down io_aro  lis " id="related_work">
+        Latest News
+      </legend>
+      <!-- LB Tab container  -->
+      <ul class="art-dop_col ul " id="pa-related_work">
+        <li class="li bord_bottom_5_lightgrey">
+          <input
+            type="text"
+            name="title"
+            class="art_input_"
+            placeholder="Enter News Titile"
+            required
+          />
+        </li>
+        <li class="li bord_bottom_5_lightgrey">
+          <input
+            type="text"
+            name="newsLink"
+            class="art_input_"
+            placeholder="Enter News Link"
+            required
+          />
+        </li>
+        <li class="li bord_bottom_5_lightgrey">
+          <input
+            type="file"
+            name="newsThumb"
+            class="art_input_"
+            placeholder="Enter News Link"
+            required
+          />
+        </li>
+      </ul>
+      <button type="submit" class="left_submit cursor_pointer">Submit</button>
+    </form>
+    <%} else {%>
+    <div class="uls">
+      <!-- LB Tab -->
+      <button class="art-dop_down io_aro  lis " id="related_work">
+        Latest News
+      </button>
+      <!-- LB Tab container  -->
+      <ul class="art-dop_col ul " id="pa-related_work">
+        <li class="li bord_bottom_5_lightgrey">
+          <a
+            href="https://sadjawebsolutions.com/an-ultimate-plan-for-any-business-to-grow-online/"
+            target="_blank"
+            class="tex_no_deco"
+          >
+            An ultimate plan for any business to grow online
+          </a>
+        </li>
+        <li class="li">
+          <a
+            href="https://sadjawebsolutions.com/15-silly-mistakes-youre-making-business-card/"
+            target="_blank"
+            class="tex_no_deco"
+          >
+            business card 15 mistakes revealed.
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <a
+      target="_blank"
+      href="https://sadjawebsolutions.com/whitepapers/"
+      class="tex_no_deco"
+      onClick="event.preventDefault();window.open(this.href,'targetWindow',
+                                   'toolbar=no',
+                                    'location=no',
+                                    'status=no',
+                                    'menubar=no',
+                                    'scrollbars=yes',
+                                   ' resizable=yes',
+                                   ' width=550px',
+                                    'height=545px');"
+    >
+      <button class="see_more cursor_pointer">See more...</button>
+    </a>
+    <%}%>
+  </div>
+</div>

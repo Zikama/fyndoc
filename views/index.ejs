@@ -1,0 +1,23 @@
+<div class="Rectangle-1">
+  <!-- Insert the Header -->
+  <% include ./partials/success%> <% include ./header/index%>
+  <!-- The board container [ this contains all the functionalities cards including the Left and Right Side bars] -->
+
+  <div class="art_board">
+    <!-- Insert the left side bar -->
+    <% include ./include/left_sidebar%>
+    <!-- This contains all the cards -->
+    <div class="posts_con" style="min-height: 83vh;margin-top: 0;">
+      <% include ./admin/sendContract %> <% include ./admin/sendProposal %> <%
+      include ./admin/uploadContractTemplate %> <% include
+      ./admin/uploadProposalTemplate %>
+    </div>
+    <!-- Insert the right side bar -->
+    <% include ./include/right_sidebar %>
+  </div>
+</div>
+
+<% include ./modals/custom%> <% include ./footer/index%>
+<!-- Scripts -->
+<script src="../assets/js/custom.js"></script>
+<script src="../assets/js/index.js"></script>

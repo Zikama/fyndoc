@@ -1,0 +1,60 @@
+<div class="Rectangle-1">
+  <% include ./header/index%> <% include ./partials/messages%>
+
+  <div class="art_board">
+    <div class="posts_con">
+      <div
+        class="post"
+        style="margin-top: 0;box-shadow:none;border:0;background-color: transparent;"
+      >
+        <div class="p_body">
+          <div class="p_body_content">
+            <div class="p_body_content_wrapper">
+              <form method="POST" name="finalizer">
+                <div class="art_inps">
+                  <label for="email" hidden>Eamil Address</label>
+                  <div class="art_inp_co">
+                    <input
+                      type="text"
+                      name="email"
+                      id="email"
+                      placeholder="Enter Email Address"
+                      class="art_inp"
+                      required
+                    />
+                  </div>
+                </div>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <div class="art_inps">
+                  <label for="password" hidden>Password</label>
+                  <div class="art_inp_co">
+                    <input
+                      type="password"
+                      name="password"
+                      id="password"
+                      placeholder="Enter Password"
+                      class="art_inp"
+                      required
+                    />
+                  </div>
+                  <div class="flex js-center ma-t-30 ">
+                    <button type="submit" class="submit" value="Login">
+                      Log in
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% include ./modals/custom%>
