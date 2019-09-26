@@ -7,36 +7,7 @@ const express = require("express"),
     // Get the proposal model
     proposal = require("../models/proposal"),
     // Get the contract model
-    contract = require("../models/contract"),
-    nodemailer = require("nodemailer"),
-    keys = require("../config/keys"),
-
-
-    mail = require("../mail");
-
-const sendNotificationViaEmail = (messageTemp, Subject, to, from, attach, context) => {
-    // We can also send another email as a reminder
-    const art_mail = new mail(nodemailer, keys.user, keys.pass); //Authenticate SMTP
-    // Send an email
-    const message = messageTemp;
-    return new Promise((resolv, rej) => {
-        art_mail.send(Subject, message, to, from, attach, context)
-            .then(sent => resolv(sent)).catch(err => rej(err));
-
-    })
-};
-sendNotificationViaEmail('index', "test1", "zikama.sadja@gmail.com", 'saphira@sadjawebtools.com', [{
-        filename: 'contract-agreement.png',
-        path: './views/templates/output.png',
-        cid: 'output.png',
-        contentType: 'image/png'
-    }], {
-        name: "Kindly click the button bellow to see the contract sent to you",
-        title: "Hi Nehemie Zikama",
-        regards: `Kind regards: Nemie`,
-        url: "http://localhost:5002/21t0i0sR/79658/sadja_web_solutions"
-    })
-    .then(sent => console.log(sent)).catch(err => console.log(err));
+    contract = require("../models/contract");
 
 // Get the real path to the root
 // This helps to go to statics on front-end with easy
