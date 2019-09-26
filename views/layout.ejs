@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="author" lang="en" content="Nehemie Zikama" />
@@ -11,47 +12,48 @@
     <link href="https://github.com/zikama" rel="author" />
 
     <!-- <link href="https://fonts.googleapis.com/css?family=Martel|Quattrocento+Sans" rel="stylesheet"> -->
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Montserra|Quattrocento"
-    />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserra|Quattrocento" />
     <meta name="theme-color" content="rgb(30, 100, 202)" />
 
-    <link
-      rel="stylesheet "
-      href="https://use.fontawesome.com/releases/v5.8.2/css/all.css "
-      integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay "
-      crossorigin="anonymous "
-    />
-    <link
-      rel="icon"
-      href="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>favicon"
-    />
+    <link rel="stylesheet " href="https://use.fontawesome.com/releases/v5.8.2/css/all.css " integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay " crossorigin="anonymous " />
+    <link rel="icon" href="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>favicon" />
     <% if (typeof no_manifest!= "undefined" &&!no_manifest) {%>
-    <link
-      rel="manifest"
-      href="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>manifest.json"
-    />
-    <% } %> <% if(typeof original_css!= "undefined"&&original_css) { %>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../../'%>assets/css/style.css"
-    />
-    <% } %> <% if(typeof custome_css!= "undefined"&& custome_css &&
+        <link rel="manifest" href="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>manifest.json" />
+        <% } %>
+            <% if(typeof original_css!= "undefined"&&original_css) { %>
+                <link rel="stylesheet" type="text/css" href="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../../'%>assets/css/style.css" />
+                <% } %>
+                    <% if(typeof custome_css!= "undefined"&& custome_css &&
     custome_css[0] !=""){ %>
-    <link
-      rel="stylesheet"
-      href="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../../'%><%=custome_css[0]%>"
-    />
-    <% } %>
+                        <link rel="stylesheet" href="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../../'%><%=custome_css[0]%>" />
+                        <% } %>
 
-    <title>
-      <% if(title.true){%> <%=title.name%> <%}%>
-    </title>
-  </head>
+                            <title>
+                                <% if(title.true){%>
+                                    <%=title.name%>
+                                        <%}%>
+                            </title>
+</head>
 
-  <body>
+<body>
     <%-body %>
-  </body>
+
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script>
+            function keepLive() {
+                axios({
+                        method: "post",
+                        url: "<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'/'%>keeplive"
+                    })
+                    .then(value => {
+                        // The server is active now
+                    })
+                    .catch(err => {
+                        console.log(err); // There was an error
+                    });
+            }
+            setInterval(keepLive, 100000);
+        </script>
+</body>
+
 </html>

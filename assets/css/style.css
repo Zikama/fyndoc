@@ -48,7 +48,6 @@ body {
     bottom: 0;
     box-shadow: 0 0 7px rgba(155, 173, 179, 0.46);
     border-radius: 0;
-    overflow: auto;
 }
 
 .footer .Rounded-Rectangle-3 {
@@ -57,6 +56,8 @@ body {
     margin: 0;
     padding: 0;
     width: 65%;
+    overflow-y: hidden;
+    overflow-x: auto;
 }
 
 .tab {
@@ -76,8 +77,6 @@ body {
     background: white;
     box-shadow: 0px 2px 0px 0px rgba(255, 31, 31, 0.39);
 }
-
-
 
 .Rectangle-2 {
     width: 1286px;
@@ -100,6 +99,7 @@ body {
     background: transparent;
     cursor: pointer;
     margin-left: 0.9pc;
+    width: auto;
 }
 
 .humberg {
@@ -243,7 +243,7 @@ body {
     border: 0;
     background: transparent;
     outline: none;
-    font-size: 2rem;
+    font-size: inherit;
     color: #4e39c1;
 }
 
@@ -361,7 +361,6 @@ body {
     width: 90%;
     padding: 14px 20px;
 }
-
 
 .art-btn-a {
     border: 0;
@@ -771,6 +770,11 @@ body {
     width: 49%;
     margin: auto;
     align-items: center;
+    background: transparent;
+    align-content: center;
+    border-radius: 5em;
+    cursor: pointer;
+    padding: 13px 0 0;
 }
 
 .sign {
@@ -937,7 +941,6 @@ body {
     margin-top: 35px;
 }
 
-
 .ma-l-r-5 {
     margin-left: 5px;
     margin-right: 5px;
@@ -998,14 +1001,16 @@ body {
 }
 
 .active_tab {
-
     /* background: #518a19;
     width: 100%;
     color: #a2e617; */
     background: #e3eff1;
     width: 100%;
     color: #009688;
+}
 
+.w-0 {
+    width: 0;
 }
 
 .w-5 {
@@ -1108,33 +1113,52 @@ body {
     justify-content: space-around;
 }
 
+.Rounded-Rectangle- {
+    width: 84%;
+    font-size: 7pt;
+    margin: auto;
+    text-align: center;
+}
+
+.under_submit_form {
+    width: 70%;
+    max-height: initial;
+}
+
+
 /* Mobile */
 
 @media screen and (min-width: 320px) {
     .Rectangle-1 {
         padding-top: 5pc;
     }
-
     .Rectangle-2 {
-        width: 97%;
+        width: 100%;
         height: 53px;
+        padding: 0;
+        border-radius: 0em;
+        -webkit-border-radius: 0em;
+        -moz-border-radius: 0em;
+        -ms-border-radius: 0em;
+        -o-border-radius: 0em;
+        box-shadow: inherit;
     }
-
     .humberg {
         width: 80%;
         height: 45px;
     }
-
     .company-logo {
         width: 80%;
     }
-
     .Rounded-Rectangle-3 {
-        width: 0%;
+        width: 60%;
         padding: 0;
-        height: 0;
+        padding-left: 7px;
+        height: 78%;
+        font-size: 18pt;
+        margin: 0;
+        margin-right: 14px;
     }
-
     .left_aside,
     .right_aside {
         transform: translate(-300%, 0);
@@ -1143,16 +1167,13 @@ body {
         -ms-transform: translate(-300%, 0);
         -o-transform: translate(-300%, 0);
     }
-
     .right_aside {
         width: 65%;
     }
-
     .posts_con {
         margin: auto;
         width: 87%;
     }
-
     /* .undraw_buy_house_560d, .p_body_content {
         zoom: 159%;width: 90%;
     } */
@@ -1161,9 +1182,61 @@ body {
         display: flex;
         flex-wrap: wrap;
     }
-
     #submit {
         padding: 10px 5pc;
+    }
+    .Rounded-Rectangle- {
+        width: 84%;
+        font-size: 7pt;
+    }
+    .Rounded-.bell_container {
+        width: 0;
+        height: 0;
+        overflow: hidden;
+    }
+    .checkbox+label,
+    .checkbox+.label,
+    .radio+label,
+    .radio+.label {
+        font-size: xx-small;
+        margin: 0;
+    }
+    .split.checkboxes {
+        width: 49%;
+        margin: auto;
+        align-items: center;
+        background: #ef6b1f;
+    }
+    .under_submit_form {
+        width: 100%;
+        max-height: initial;
+    }
+    .w-46 {
+        width: 94%;
+    }
+    .header {
+        top: 0%;
+    }
+    /* .menu_btn {
+        width: auto;
+    } */
+}
+
+
+/* Mid smart-phones */
+
+@media screen and (min-width: 425px) {
+    form {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .checkbox+label,
+    .checkbox+.label,
+    .radio+label,
+    .radio+.label {
+        font-size: initial;
+        margin: initial;
     }
 }
 
@@ -1174,27 +1247,28 @@ body {
     .Rectangle-1 {
         padding-top: 8pc;
     }
-
     .Rectangle-2 {
         width: 98%;
         height: 56px;
+        border-radius: 5em;
+        -webkit-border-radius: 5em;
+        -moz-border-radius: 5em;
+        -ms-border-radius: 5em;
+        -o-border-radius: 5em;
+        box-shadow: 0px 18px 103px 0 rgba(153, 174, 178, 0.69), 5px -28px #ebebeb;
     }
-
     .company-logo {
         width: auto;
     }
-
     .Rounded-Rectangle-3 {
         width: 47%;
         height: 75%;
         padding: 0.4pc 1pc;
     }
-
     .posts_con {
         width: 70%;
         margin-right: 13pc;
     }
-
     .right_aside {
         width: 20%;
         transform: translate(0%, 0);
@@ -1203,24 +1277,49 @@ body {
         -ms-transform: translate(0%, 0);
         -o-transform: translate(0%, 0);
     }
-
     .simpo_barn,
     .simpo_barn2 {
         width: 100%;
     }
-
     .barn_line2 {
         width: 100%;
     }
-
     .barn_line2:hover {
         border-color: #d1d5da;
         box-shadow: 0 1px 15px rgba(27, 31, 35, .15);
     }
-
     #submit {
         padding: 10px 8pc;
     }
+    .Rounded-Rectangle- {
+        width: 84%;
+        font-size: 9pt;
+    }
+    .Rounded-.bell_container {
+        width: auto;
+        height: auto;
+        overflow: inherit;
+    }
+    .checkbox+label,
+    .checkbox+.label,
+    .radio+label,
+    .radio+.label {
+        font-size: inherit;
+        margin: inherit;
+    }
+    .split.checkboxes {
+        width: 49%;
+        margin: auto;
+        align-items: center;
+        background: inherit;
+        cursor: initial;
+    }
+    .header {
+        top: 2%;
+    }
+    /*.menu_btn {
+        width: auto;
+    } */
 }
 
 
@@ -1231,7 +1330,6 @@ body {
         width: 87%;
         height: 56px;
     }
-
     .left_aside {
         width: 22%;
         transform: translate(0%, 0);
@@ -1240,27 +1338,36 @@ body {
         -ms-transform: translate(0%, 0);
         -o-transform: translate(0%, 0);
     }
-
     .posts_con {
         width: 60%;
         margin-right: 10.5pc;
     }
-
     .Rounded-Rectangle-3 {
         height: 80%;
     }
-
     .right_aside {
         width: 15%;
     }
-
     .simpo_barn,
     .simpo_barn2 {
         width: 100%;
     }
-
     .barn_line2 {
         width: 100%;
+    }
+    .Rounded-Rectangle- {
+        width: 84%;
+        font-size: 13pt;
+    }
+    .under_submit_form {
+        width: 70%;
+        max-height: initial;
+    }
+    .w-46 {
+        width: 46%;
+    }
+    .header {
+        top: 3%;
     }
 }
 

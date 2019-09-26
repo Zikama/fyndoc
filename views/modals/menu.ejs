@@ -1,86 +1,100 @@
 <style>
-  .layer_container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(38, 52, 56, 0.21);
-    z-index: 19;
-  }
-
-  .art-menu {
-    position: fixed;
-    top: 3%;
-    left: 0;
-    background: white;
-    max-width: 33%;
-    min-width: 33%;
-    max-height: 89vh;
-    height: 89vh;
-    z-index: 20;
-    box-shadow: 0px 1px 20px 176px rgba(209, 212, 213, 0.71);
-    border-radius: 5px;
-  }
-
-  .art-menu_header {
-    display: flex;
-    width: 100%;
-    background: #f6f6f6;
-    justify-content: space-between;
-    box-shadow: 0px 2px 0 0 rgba(203, 219, 224, 0.69);
-    border-radius: 0px 5px 0 0;
-  }
-
-  .art-menu_back_btn {
-    width: 12%;
-    height: 62px;
-    object-fit: contain;
-    border: 0;
-    background: transparent;
-    cursor: pointer;
-    outline: none;
-  }
-
-  .art-menu_body {
-    max-width: 100%;
-    max-height: 88vh;
-    height: auto;
-    overflow: auto;
-  }
-
-  .art-trans_off {
-    -webkit-transform: translate(-300%, 0);
-    -moz-transform: translate(-300%, 0);
-    -ms-transform: translate(-300%, 0);
-    -o-transform: translate(-300%, 0);
-    transform: translate(-300%, 0);
-  }
-
-  .art-trans_on {
-    -webkit-transform: translate(0);
-    -moz-transform: translate(0);
-    -ms-transform: translate(0);
-    -o-transform: translate(0);
-    transform: translate(0);
-  }
-
-  .overOff {
-    overflow: hidden !important;
-  }
-
-  .overOn {
-    overflow: auto !important;
-  }
+    .layer_container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(38, 52, 56, 0.21);
+        z-index: 19;
+    }
+    
+    .art-menu {
+        position: fixed;
+        top: 3%;
+        left: 0;
+        background: white;
+        max-width: 33%;
+        min-width: 33%;
+        max-height: 89vh;
+        height: 89vh;
+        z-index: 20;
+        box-shadow: 0px 1px 20px 176px rgba(209, 212, 213, 0.71);
+        border-radius: 5px;
+    }
+    
+    .art-menu_header {
+        display: flex;
+        width: 100%;
+        background: #f6f6f6;
+        justify-content: space-between;
+        box-shadow: 0px 2px 0 0 rgba(203, 219, 224, 0.69);
+        border-radius: 0px 5px 0 0;
+    }
+    
+    .art-menu_back_btn {
+        width: 12%;
+        height: 62px;
+        object-fit: contain;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        outline: none;
+    }
+    
+    .art-menu_body {
+        max-width: 100%;
+        max-height: 88vh;
+        height: auto;
+        overflow: auto;
+    }
+    
+    .art-trans_off {
+        -webkit-transform: translate(-300%, 0);
+        -moz-transform: translate(-300%, 0);
+        -ms-transform: translate(-300%, 0);
+        -o-transform: translate(-300%, 0);
+        transform: translate(-300%, 0);
+    }
+    
+    .art-trans_on {
+        -webkit-transform: translate(0);
+        -moz-transform: translate(0);
+        -ms-transform: translate(0);
+        -o-transform: translate(0);
+        transform: translate(0);
+    }
+    
+    .overOff {
+        overflow: hidden !important;
+    }
+    
+    .overOn {
+        overflow: auto !important;
+    }
+    
+    @media screen and (min-width: 320px) {
+        .art-menu {
+            max-width: 72%;
+            min-width: 50%;
+        }
+    }
+    
+    @media screen and (min-width: 768px) {
+        .art-menu {
+            max-width: 33%;
+            min-width: 33%;
+        }
+    }
 </style>
 
 <div class="layer_container art-trans_off">
-  <!-- null -->
+    <!-- null -->
 </div>
 <div class="art-menu art-trans_off">
-  <div class="art-menu_header">
-    <!-- Go back button -->
-    <button class="art-menu_back_btn">
+    <div class="art-menu_header">
+        <!-- Go back button -->
+        <button class="art-menu_back_btn">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32.635 32.635">
         <path d="M32.135 16.817H.5a.5.5 0 0 1 0-1h31.635a.5.5 0 0 1 0 1z" />
         <path
@@ -88,98 +102,89 @@
         />
       </svg>
     </button>
-    <!-- Company Logo -->
-    <a href="" style=" margin: auto;">
+        <!-- Company Logo -->
+        <a href="" style=" margin: auto;">
       <img
         src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets/img/sadja.png"
         class="company-logo"
         alt="Sadja Web Solutions"
       />
     </a>
-  </div>
-  <div class="art-menu_body">
-    <br />
-    <div class="uls">
-      <% if(typeof menu !='undefined' && menu.length) { let menues = menu; for
+    </div>
+    <div class="art-menu_body">
+        <br />
+        <div class="uls">
+            <% if(typeof menu !='undefined' && menu.length) { let menues = menu; for
       (let menu of menues){ let _menu = menu.menu; let _container =
       menu.container; %>
-      <!-- <%=_menu.id%> -->
-      <button
-        class="<%for (let _class of _menu.classes){ %> <%=_class%> <%}%>"
-        id="<%=_menu.id%>"
-        onclick='!function initAccordion(event){
+                <!-- <%=_menu.id%> -->
+                <button class="<%for (let _class of _menu.classes){ %> <%=_class%> <%}%>" id="<%=_menu.id%>" onclick='!function initAccordion(event){
                             Accordion(["init",event.currentTarget], document.querySelector("#pa-<%=_menu.id%>"), (that, second) => {
                             that.classList.toggle("caret-down");
                             that.classList.toggle("caret-up");
-                            })}(event)'
-      >
+                            })}(event)'>
         <%= _menu.title%>
       </button>
-      <ul class="art-dop_col ul " id="pa-<%=_menu.id%>" hidden>
-        <% for(let container of _container){%>
-        <li
-          class="<%for (let _class of container.classes){%> <%=_class%> <%}%>"
-        >
-          <button
-            type="button"
-            class="<%if(container.classesB){for (let _class of container.classesB){%> <%=_class%> <%}}%>"
-            onclick="openTab(event,`<% if(container.title == 'Upload a template'){
+                <ul class="art-dop_col ul " id="pa-<%=_menu.id%>" hidden>
+                    <% for(let container of _container){%>
+                        <li class="<%for (let _class of container.classes){%> <%=_class%> <%}%>">
+                            <button type="button" class="<%if(container.classesB){for (let _class of container.classesB){%> <%=_class%> <%}}%>" onclick="openTab(event,`<% if(container.title == 'Upload a template'){
                let __title = 'Upload a '+ _menu.title.split(' ',1).join('') +' template';%><%=__title.toLowerCase().split(' ').join('_')%><%}else{%><%=container.title.toLowerCase().split(' ').join('_')%><%}%>`,null,null, function () {
               document.querySelector('.layer_container').click();
-            });"
-          >
+            });">
             <%=container.title%>
           </button>
-        </li>
-        <%}%>
-      </ul>
-      <% } } %>
+                        </li>
+                        <%}%>
+                </ul>
+                <% } } %>
+        </div>
     </div>
-  </div>
-  <div class="art-menu_footer"></div>
+    <div class="art-menu_footer"></div>
 </div>
 
 <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../../'%>assets/js/accordion/index.js"></script>
 <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../../'%>assets/js/tabs/index.js"></script>
 <script>
-  [g, gA] = [k => document.querySelector(k), k => document.querySelectorAll(k)];
+    [g, gA] = [k => document.querySelector(k), k => document.querySelectorAll(k)];
 
-  let bd = g("body");
-  let menu = g(".art-menu");
-  let menu_btn = g(".menu_btn");
-  if (menu_btn) {
-    menu_btn.addEventListener("click", displayMenu);
-  }
-  let layer_container = g(".layer_container");
-  let menu_back_btn = g(".art-menu_back_btn");
-  layer_container.addEventListener("click", backHideMenu);
-  menu_back_btn.addEventListener("click", backHideMenu);
+    let bd = g("body");
+    let menu = g(".art-menu");
+    let menu_btn = g(".menu_btn");
+    if (menu_btn) {
+        menu_btn.addEventListener("click", displayMenu);
+    }
+    let layer_container = g(".layer_container");
+    let menu_back_btn = g(".art-menu_back_btn");
+    layer_container.addEventListener("click", backHideMenu);
+    menu_back_btn.addEventListener("click", backHideMenu);
 
-  function displayMenu() {
-    menu.classList.add("art-trans_on");
-    menu.classList.toggle("art-trans_off");
-    layer_container.classList.toggle("art-trans_off");
-    layer_container.classList.add("art-trans_on");
-    bd.classList.add("overOff");
-    bd.classList.remove("overOn");
-  }
+    function displayMenu() {
+        menu.classList.add("art-trans_on");
+        menu.classList.toggle("art-trans_off");
+        layer_container.classList.toggle("art-trans_off");
+        layer_container.classList.add("art-trans_on");
+        bd.classList.add("overOff");
+        bd.classList.remove("overOn");
+    }
 
-  function backHideMenu(params) {
-    menu.classList.add("art-trans_off");
-    layer_container.classList.add("art-trans_off");
-    menu.classList.remove("art-trans_on");
-    layer_container.classList.remove("art-trans_on");
-    bd.classList.add("overOn");
-    bd.classList.remove("overOff");
-  }
-  function initializeAccordion() {
-    Accordion(
-      ["init", event.currentTarget],
-      document.querySelector("#pa-" + item.id),
-      (that, second) => {
-        that.classList.toggle("caret-down");
-        that.classList.toggle("caret-up");
-      }
-    );
-  }
+    function backHideMenu(params) {
+        menu.classList.add("art-trans_off");
+        layer_container.classList.add("art-trans_off");
+        menu.classList.remove("art-trans_on");
+        layer_container.classList.remove("art-trans_on");
+        bd.classList.add("overOn");
+        bd.classList.remove("overOff");
+    }
+
+    function initializeAccordion() {
+        Accordion(
+            ["init", event.currentTarget],
+            document.querySelector("#pa-" + item.id),
+            (that, second) => {
+                that.classList.toggle("caret-down");
+                that.classList.toggle("caret-up");
+            }
+        );
+    }
 </script>

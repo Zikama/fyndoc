@@ -165,7 +165,12 @@ router.get("/:shortUrl/:documentId/:name", (req, res) => {
         .catch(err => console.log(err))
 });
 
-
+router.get("/keeplive", (req, res) => {
+    res.json({ res: Date.now() + 200000000 });
+});
+router.post("/keeplive", (req, res) => {
+    res.json({ res: Date.now() + 200000000 });
+});
 // Login handler
 function loginToDB() {
 
