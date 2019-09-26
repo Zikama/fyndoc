@@ -1,17 +1,6 @@
 <script>
-  console.log(
-    `<%= typeof contract !='undefined'? contract.split("\\").join("/"):''%>`
-  );
-
-  initPDFViewer(
-    `<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%><%= typeof contract !='undefined'? contract.split("\\").join("/"):'./assets/uploads/contracts/sadja-contract.pdf'%>`,
-    "#viewport",
-    `<div class="post">
-        <div class="p_body">
-            <div class="p_body_content">
-                <canvas></canvas>
-            </div>
-        </div>
-    </div>`
-  );
+    initPDFViewer(
+        `<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%><%= typeof contract !='undefined'? contract.split("\\").join("/"):'./assets/uploads/contracts/sadja-contract.pdf'%>`,
+        "#viewport"
+    );
 </script>

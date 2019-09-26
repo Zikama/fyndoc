@@ -23,6 +23,7 @@
             </div>
 
             <div class="posts_con" id="viewport">
+
                 <div class="post">
                     <div class="p_body">
                         <div class="p_body_content">
@@ -124,58 +125,12 @@
 
         </div>
 </div>
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/pdf.min.js"> </script>-->
-
 
 <% include ./modals/custom%>
     <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets_/pdfjs-dist/build/pdf.min.js"></script>
-
     <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets/js/initPDFViewer.js"></script>
     <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets/js/custom.js"></script>
 
-    <% include ../assets/js/reader%>
+<% include ../assets/js/reader%>
 
-        <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets/js/index.js"></script>
-        <script>
-            //     var myState = {
-            //         pdf: null,
-            //         currentPage: 1,
-            //         zoom: 1
-            //     }
-            //     initPDFViewer(
-            //         `<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%><%= typeof contract !='undefined'? contract.split("\\").join("/"):'./assets/uploads/contracts/sadja-contract.pdf'%>`,
-            //         "#viewport",
-            //         `<div class="post">
-            //       <div class="p_body">
-            //           <div class="p_body_content">
-            //               <canvas></canvas>
-            //           </div>
-            //       </div>
-            //   </div>`);
-
-            // more code here 
-            /* pdfjsLib.getDocument(`<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../ '%><%= typeof contract !='undefined'? contract.split("\\").join("/"):'./ assets / uploads / contracts / sadja - contract.pdf'%>`).then((pdf) => {
-                myState.pdf = pdf;
-                render();
-                // more code here
-                function render() {
-                    myState.pdf.getPage(myState.currentPage).then((page) => {
-
-                        // more code here
-                        var canvas = document.getElementById("pdf_renderer");
-                        var ctx = canvas.getContext('2d');
-
-                        var viewport = page.getViewport(myState.zoom + 2);
-                        page.render({
-                            canvasContext: ctx,
-                            viewport: viewport
-                        });
-                        canvas.width = viewport.width;
-                        canvas.height = viewport.height;
-                        // more code here
-
-
-                    });
-                }
-            }); */
-        </script>
+    <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets/js/index.js"></script>

@@ -1130,6 +1130,15 @@ body {
     box-shadow: none;
 }
 
+svg {
+    width: 100%;
+    display: flex;
+    overflow: auto;
+    justify-content: center;
+    flex-wrap: wrap;
+    height: 100%;
+}
+
 
 /* Mobile */
 
