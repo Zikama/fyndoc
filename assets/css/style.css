@@ -1217,7 +1217,7 @@ body {
     }
     .header {
         top: 0%;
-        box-shadow: 0px 2px 0 0 rgba(203, 219, 224, 0.69);
+        box-shadow: 0 0 7px rgba(155, 173, 179, 0.46);
     }
     /* .menu_btn {
         width: auto;
