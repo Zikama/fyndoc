@@ -1126,6 +1126,10 @@ body {
     max-height: initial;
 }
 
+.no-shado {
+    box-shadow: none;
+}
+
 
 /* Mobile */
 
