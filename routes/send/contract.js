@@ -83,7 +83,7 @@ sendContract = (router, ensureAuthenticated, upload, ) => router.post("/contract
                                                     console.log(err);
                                                     // An error occured
                                                     // Redirect the user 
-                                                    req.flash("art_p_error_msg", `There was an error sending the Contractto ${done.email}, Try again in a while.`);
+                                                    req.flash("art_p_error_msg", `There was an error sending the Contract to ${done.email}, Try again in a while.`);
                                                     res.redirect("../..");
                                                 });
                                         }
@@ -148,7 +148,7 @@ sendContract = (router, ensureAuthenticated, upload, ) => router.post("/contract
                                         console.log(err);
                                         // An error occured
                                         // Redirect the user 
-                                        req.flash("art_p_error_msg", `There was an error sending the Contractto ${done.email}, Try again in a while.`);
+                                        req.flash("art_p_error_msg", `There was an error sending the Contract to ${done.email}, Try again in a while.`);
                                         res.redirect("../..");
                                     });
                             }
