@@ -66,7 +66,7 @@ sendContract = (router, ensureAuthenticated, upload, ) => router.post("/contract
                                                     cid: 'output.png',
                                                     contentType: 'image/png'
                                                 }], {
-                                                    name: `${done.message}, Kindly click the button bellow to see the contract sent to you`,
+                                                    name: `${done.message}`,
                                                     title: `Hi ${done.person.split(" ")[0]},`,
                                                     regards: `Kind regards: Nemie`,
                                                     url: `${req['header']('origin') + '/' + done.link}`
@@ -132,7 +132,7 @@ sendContract = (router, ensureAuthenticated, upload, ) => router.post("/contract
                                         cid: 'output.png',
                                         contentType: 'image/png'
                                     }], {
-                                        name: `${done.message}, Kindly click the button bellow to see the contract sent to you`,
+                                        name: `${done.message}`,
                                         title: `Hi ${done.person.split(" ")[0]},`,
                                         regards: `Kind regards: Nemie`,
                                         url: `${req['header']('origin') + '/' + done.link}`
