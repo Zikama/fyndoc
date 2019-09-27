@@ -78,10 +78,10 @@
 
     function renderPage(page) {
         // Set scale (zoom) level
-        var scale = 1.5;
+        var scale = 2;
 
         // Get viewport (dimensions)
-        var viewport = page.getViewport(scale);
+        var viewport = page.getViewport({ scale: 554 });
 
         // Get div#the-svg
         var container = document.querySelectorAll('.p_body_content');
