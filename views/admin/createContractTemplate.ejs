@@ -98,7 +98,7 @@
         });
         <% if(typeof contractDraft != 'undefined') { %>
         let data = "<%-contractDraft.data%>";
-        document.querySelector("#contract_template").insertAdjacentHTML("beforeEnd", data);
+        document.querySelector("#contract_template").insertAdjacentHTML("beforeEnd", "<%-contractDraft.data%>");
 
         <%}%>
     </script>

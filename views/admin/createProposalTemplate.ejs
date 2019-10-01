@@ -100,7 +100,7 @@
         });
         <% if (typeof proposalDraft != 'undefined') { %>
         let _data = "<%-proposalDraft.data%>";
-        document.querySelector("#proposal_template").insertAdjacentHTML("beforeEnd", _data);
+        document.querySelector("#proposal_template").insertAdjacentHTML("beforeEnd", "<%-proposalDraft.data%>");
 
         <%}%>
     </script>

@@ -66,7 +66,20 @@ module.exports = (passport) => {
                                         ProposalDraft.findOne({})
                                             .then((pro_draft) => {
                                                 if (pro_draft) {
-                                                    done(err, [user, menu, co_draft, pro_draft]);
+                                                    ContractDraft.find({}).sort([
+                                                        ['date', -1]
+                                                    ]).then(contracts => {
+                                                        if (contracts) {
+                                                            ProposalDraft.find({}).sort([
+                                                                ['date', -1]
+                                                            ]).then(proposals => {
+                                                                if (proposals) {
+                                                                    done(err, [user, menu, co_draft, pro_draft, contracts, proposals]);
+                                                                }
+                                                            }).catch((err) => console.log(err));
+                                                        }
+                                                    }).catch((err) => console.log(err));
+
                                                 }
                                             }).catch((err) => console.log(err));
                                     }

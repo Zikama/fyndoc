@@ -179,6 +179,19 @@ router.get("/", ensureAuthenticated, async(req, res) => res.render("index", {
             return req.user[3]; // Proposal-draft from database
         }
     })(),
+    contractTemplate: (() => {
+        if (typeof req.user != "undefined" && typeof req.user == 'object' && req.user.length) {
+
+            return req.user[4][0]; // Proposal-draft from database
+
+        }
+    })(),
+    proposalTemplate: (() => {
+        if (typeof req.user != "undefined" && typeof req.user == 'object' && req.user.length) {
+
+            return req.user[5][0]; // Proposal-draft from database
+        }
+    })(),
     pathToTheRoot: (() => {
 
         IndexPR.pathToTheRoot = pathToTheRoot(req._parsedOriginalUrl.path);
