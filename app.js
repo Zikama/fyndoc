@@ -1,4 +1,5 @@
 const express = require("express");
+const webSocket = require("./websocketServer");
 const fetch = require('node-fetch');
 const app = express(),
     flash = require("connect-flash"),
@@ -11,13 +12,13 @@ const app = express(),
         dbname
     } = require("./config/keys"),
     sess_store = new MongoDBStore({
-        uri: sessionsURI || mongoURI,
-        // databaseName: sessions,
-        collection: dbname,
-        useNewUrlParser: true
+            uri: sessionsURI || mongoURI,
+            // databaseName: sessions,
+            collection: dbname,
+            useNewUrlParser: true
 
-    },
-        function (error) {
+        },
+        function(error) {
             if (error) {
                 console.log(error);
             }
@@ -77,23 +78,33 @@ app.use((req, res, next) => {
 app.use(expressLayouts);
 app.set("view engine", "ejs");
 
+// App port
+PORT = process.env.PORT || 5002;
+let server = app.listen(PORT, () => {
+    console.log("app listening to " + PORT);
+});
+// Web socket
+let ws = new webSocket(server);
+global.web_socket = ws;
+
 // routes
 app.use("/", require("./routes/index"));
 app.use("/send", require("./routes/send"));
 app.use("/upload", require("./routes/upload"));
 // handle 404
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
 
     // Get the real path to the root
     // This helps to go to statics on front-end with easy
     // Expample [path = '/this/is/a/pth/df/fdf/dsd/fdf/fdf] = hard to read and replacing it with ../../etc is hard
     // So better path the rootPath to pathToTheRoot so we can get the ../../etc for front-end
     function pathToTheRoot(params) {
-        let rootPath = params, rPath = [];
+        let rootPath = params,
+            rPath = [];
         rootPath = rootPath.split("");
         for (let rootPath_ of rootPath) {
-            if (rootPath_ === "/") {// make sure the contains have the [/]
-                rPath.push(".." + rootPath_)// append the ..[dots] to each [/]
+            if (rootPath_ === "/") { // make sure the contains have the [/]
+                rPath.push(".." + rootPath_) // append the ..[dots] to each [/]
             }
         };
         return rPath.join(""); ///return the real path [now this is like ../../etc]
@@ -110,17 +121,16 @@ app.use(function (req, res, next) {
         header: `Error`
     };
     res.render('404', {
-        status: 404, url: req.url,
+        status: 404,
+        url: req.url,
         pathToTheRoot: (() => {
             _404PR.pathToTheRoot = pathToTheRoot(req._parsedOriginalUrl.path);
             return _404PR.pathToTheRoot;
-        })(), ..._404PR
+        })(),
+        ..._404PR
     });
     next()
 });
-// App port
-PORT = process.env.PORT || 5002;
-app.listen(PORT, () => {
-    console.log("app listening to " + PORT);
-});
+
+
 require("./config/db");

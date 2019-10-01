@@ -160,10 +160,7 @@ sendContract = (router, ensureAuthenticated, upload, ) => router.post("/contract
                 .catch((err) => {
                     console.log(err);
                 })
-
         }
-
-
     })
 
 });

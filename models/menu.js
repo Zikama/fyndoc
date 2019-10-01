@@ -27,35 +27,43 @@ Menu.find({}, (err, results) => {
     } else {
         let data = [{
             menu: { title: "Proposal document", classes: ['art-dop_down', ' io_aro', ' caret-up', 'lis'], id: "proposal_document" },
-            container: [
-                {
-                    title: "Send a proposal", classes: ['li', 'tex_no_deco'], classesB: ['art-btn-a', 'art-tablink']
-                }, {
-                    title: "Upload a template", classes: ['li', 'tex_no_deco'], classesB: ['art-btn-a', 'art-tablink']
-                }]
+            container: [{
+                title: "Send a proposal",
+                classes: ['li', 'tex_no_deco'],
+                classesB: ['art-btn-a', 'art-tablink']
+            }, {
+                title: "Create a proposal",
+                classes: ['li', 'tex_no_deco'],
+                classesB: ['art-btn-a', 'art-tablink']
+            }]
         }, {
             menu: {
-                title: "Contract Document", classes: ['art-dop_down', ' io_aro', ' caret-up', 'lis', '_active'], id: "contract_document"
+                title: "Contract Document",
+                classes: ['art-dop_down', ' io_aro', ' caret-up', 'lis', '_active'],
+                id: "contract_document"
             },
-            container: [
-                {
-                    title: "Send a contract", classes: ['li', 'tex_no_deco'], classesB: ['art-btn-a', 'art-tablink', 'active']
+            container: [{
+                    title: "Send a contract",
+                    classes: ['li', 'tex_no_deco'],
+                    classesB: ['art-btn-a', 'art-tablink', 'active']
                 },
                 {
-                    title: "Upload a template", classes: ['li', 'tex_no_deco'], classesB: ['art-btn-a', 'art-tablink']
+                    title: "Create a contract",
+                    classes: ['li', 'tex_no_deco'],
+                    classesB: ['art-btn-a', 'art-tablink']
                 }
             ]
         }];
 
-        let total = data.length
-            , result = [];
+        let total = data.length,
+            result = [];
 
         function saveAll() {
             let doc;
             doc = new Menu(data.pop());
 
-            doc.save(function (err, saved) {
-                if (err) throw err;//handle error
+            doc.save(function(err, saved) {
+                if (err) throw err; //handle error
 
                 result.push(saved[0]);
 

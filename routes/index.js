@@ -6,8 +6,108 @@ const express = require("express"),
     } = require("../config/auth"),
     // Get the proposal model
     proposal = require("../models/proposal"),
+    // proposal_draft for saving auto drafts
+    proposal_draft = require("../models/proposal_draft"),
     // Get the contract model
-    contract = require("../models/contract");
+    contract = require("../models/contract"),
+    // contract_draft for saving auto drafts
+    contract_draft = require("../models/contract_draft");
+
+function pars(e) {
+    return JSON.parse(e)
+}
+
+function fy(e) {
+    return JSON.stringify(e)
+}
+let times = 0;
+// Test WS
+web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => {
+
+    ws.on('message', function incoming(message) {
+        message = pars(message);
+
+
+        if (message.type === 'visits') {
+            message.times = times++;
+            console.log(message);
+        }
+
+        // Save contract to draft
+        if (message.type === 'draft' && message.to === 'contract') {
+            contract_draft.findOneAndUpdate({ auto: "true" }, {
+                    data: message.data
+                })
+                .then(ress => {
+                    if (ress) {
+                        ws.send(fy({
+                            type: "draft",
+                            to: "contract",
+                            data: "Saved to draft"
+                        }))
+                    }
+                })
+                .catch(err => console.log(err))
+        }
+        // Save contract to draft
+
+        if (message.type === 'save' && message.to === 'contract') {
+            let newcontract = new contract_draft({...message });
+            newcontract.save()
+                .then(ress => {
+                    if (ress) {
+                        ws.send(fy({
+                            type: "save",
+                            to: "contract",
+                            data: "Saved"
+                        }))
+                    }
+                })
+                .catch(err => console.log(err))
+        }
+
+        // Save proposal to draft
+
+        if (message.type === 'draft' && message.to === 'proposal') {
+
+            proposal_draft.findOneAndUpdate({ auto: "true" }, {
+                    data: message.data
+                })
+                .then(ress => {
+                    if (ress) {
+                        ws.send(fy({
+                            type: "draft",
+                            to: "proposal",
+                            data: "Saved to draft"
+                        }))
+                    }
+                })
+                .catch(err => console.log(err))
+        }
+        // Save proposal to draft
+
+        if (message.type === 'save' && message.to === 'proposal') {
+            let data = message.data;
+            let newproposal = new proposal_draft({...message });
+            newproposal.save()
+                .then(ress => {
+                    if (ress) {
+                        ws.send(fy({
+                            type: "save",
+                            to: "proposal",
+                            data: "Saved"
+                        }))
+                    }
+                })
+                .catch(err => console.log(err))
+        }
+
+
+
+    });
+})
+
+
 
 // Get the real path to the root
 // This helps to go to statics on front-end with easy

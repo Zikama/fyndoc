@@ -1,0 +1,160 @@
+<div class="post art-tab-names art-tab" id="create_a_proposal" style="margin-top: 0; display: none;" hidden>
+    <div class="p_body">
+        <div class="p_body_content">
+            <div class="p_body_content_wrapper">
+                <form class="uls " action="create/proposal" method="POST" id="create_proposal_template" style="max-height: inherit;">
+                    <!-- Dashboard -->
+                    <legend class="art-dop_down io_aro  lis " id="upload_proposal_header">
+                        Create Proposal Template Editor
+                        <div class="container_ ">
+                            <!-- Save the content -->
+                            <button type="submit" class="under_submit">Save</button>
+                            <!-- Save as a Draft = Auto in future-->
+                            <input type="button" class="under_draft" value="Save to draft">
+                        </div>
+                    </legend>
+                    <!-- Editor -->
+
+                    <div contenteditable="true" class="editable" style="width: 100%;
+        padding: 5px 23px;outline: none;font-size: inherit;min-height: 59vh; max-height: 60vh;overflow: auto;" id="proposal_template"> </div>
+
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets_/medium-editor/dist/js/medium-editor.js"></script>
+    <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets_/medium-editor-embed-button/dist/js/medium-editor-embed-button.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangy/1.3.0/rangy-core.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangy/1.3.0/rangy-classapplier.min.js"></script>
+
+    <script>
+        const __sock = new WebSocket(soc),
+            create_proposal_template = document.querySelector("#create_proposal_template");
+        rangy.init();
+
+        var HighlighterButton = MediumEditor.extensions.button.extend({
+            name: 'highlighter',
+            tagNames: ['input'],
+            contentDefault: '<b>Input</b>',
+            contentFA: '<i title="Insert an input" class="fa fa-paint-brush"></i>',
+            aria: 'input',
+            action: 'highlight',
+            title: 'Insert an input',
+            placeHolder: 'Input',
+
+            init: function() {
+                MediumEditor.extensions.button.prototype.init.call(this);
+
+                this.classApplier = rangy.createClassApplier('highlight', {
+                    elementTagName: 'input',
+                    normalize: true
+                });
+                this.button.title = 'Insert and input';
+            },
+
+            handleClick: function(event) {
+                this.classApplier.toggleSelection();
+
+                var range = MediumEditor.selection.getSelectionRange(this.document);
+                let inserted = range.endContainer.parentElement;
+                let insertedUneder = range.endContainer.wholeText;
+                inserted.setAttribute("placeholder", insertedUneder);
+                inserted.setAttribute("class", "editor_input");
+                inserted.setAttribute("size", "1");
+                inserted.setAttribute("name", insertedUneder);
+
+
+                // Ensure the editor knows about an html change so watchers are notified
+                // ie: <textarea> elements depend on the editableInput event to stay synchronized
+                this.base.checkContentChanged();
+
+            }
+        });
+        var editor = new MediumEditor('.editable', {
+            toolbar: {
+                buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3',
+                    'unorderedlist',
+                    'orderedlist', 'quote', 'highlighter',
+                    'embedButton'
+                ]
+            },
+            buttonLabels: 'fontawesome',
+            paste: {
+                cleanPastedHTML: true,
+                forcePlainText: false
+            },
+            extensions: {
+                'highlighter': new HighlighterButton(),
+                embedButton: new EmbedButtonExtension({
+                    embedOpts: {
+                        /* 3bef8c4238179ff9306315 Don not use this API, is a third part key, only use it for development/testing not for production */
+                        "oembedProxy": "http://iframe.ly/api/oembed?api_key=0f38366c7bce9ee000b5e6&url=",
+                        "msgSelectOnlyEmbadableUrl": "The URL you selected is not supported!",
+                        "msgSelectOnlyUrl": "The text you selected is not a valid URL!"
+                    }
+                })
+            },
+            placeholder: {
+                text: 'Enter your text',
+                hideOnClick: true
+            }
+        });
+        // drafter
+        let draft = create_proposal_template.querySelector(".under_draft");
+
+        __sock.onmessage = function(json) {
+            json = JSON.parse(json.data)
+            if (json.type === "draft" && json.to === "proposal") {
+                draft.style.background = "linear-gradient(45deg, #bb4343, #f0f4f5)";
+                draft.value = json.data;
+
+                setTimeout(() => {
+                    draft.style.background = "linear-gradient(45deg, #888888, #f0f4f5)";
+                    draft.value = 'Save to draft'
+                }, 1000)
+            }
+
+            // Proposal saved successfully
+            if (json.type === "save" && json.to === "proposal") {
+                let draft = create_proposal_template.querySelector(".under_draft");
+                draft.style.background = "linear-gradient(45deg, #bb4343, #f0f4f5)";
+                draft.value = json.data;
+
+                setTimeout(() => {
+                    draft.style.background = "linear-gradient(45deg, #888888, #f0f4f5)";
+                    draft.value = 'Save to draft'
+                }, 1000)
+            }
+
+        };
+        let proposal_template = document.querySelector("#proposal_template");
+        let timeouter;
+
+        function __saveToDraft() {
+            clearTimeout(timeouter);
+            timeouter = setTimeout(() => {
+                __sock.send(JSON.stringify({
+                    type: 'draft',
+                    to: 'proposal',
+                    data: `${proposal_template.innerHTML}`
+                }))
+            }, 1000)
+        }
+        proposal_template.addEventListener("keyup", __saveToDraft);
+        draft.addEventListener("click", __saveToDraft);
+
+        create_proposal_template.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            __sock.send(
+                JSON.stringify({
+                    type: 'save',
+                    to: 'proposal',
+                    _date: new Date(),
+                    auto: 'false',
+                    data: `${proposal_template.innerHTML}`
+                }))
+        })
+    </script>
+</div>
