@@ -57,18 +57,19 @@
                     })
                     .then(value => {
                         // The server is active now
+                        console.log("i'am active");
                     })
                     .catch(err => {
                         console.log(err); // There was an error
                     });
             }
-            setInterval(keepLive, 100000);
+            setInterval(keepLive, 2000);
 
             let inp = document.querySelectorAll(".editor_input");
             if (typeof inp != "undefined" && inp.length) {
                 for (_in of inp) {
                     if (_in) {
-                      _in.addEventListener("keyup", e_ => {
+                        _in.addEventListener("keyup", e_ => {
                             let lwgth = _in.value.length - 2 <= 0 ? 1 : _in.value.length - 2;
                             lwgth = _in.value.length - 3 <= 3 ? 3 : _in.value.length - 3;
                             lwgth = _in.value.length - 5 <= 5 ? 6 : _in.value.length - 5;
@@ -77,17 +78,41 @@
                     }
                 }
             }
-            const sock = new WebSocket(soc);
+            let sock;
 
-            sock.onopen = function() {
-                sock.send(
-                    JSON.stringify({
-                        type: "visits",
-                        date: Date.now(),
-                        times: 0
-                    })
-                );
-            };
+            function connect() {
+                sock = new WebSocket(soc);
+
+                sock.onopen = function() {
+                    sock.send(
+                        JSON.stringify({
+                            type: "visits",
+                            date: Date.now(),
+                            times: 0
+                        })
+                    );
+                };
+
+                sock.onclose = function(e) {
+                    console.log(
+                        "Socket is closed. Reconnect will be attempted in 5 second.",
+                        e.reason
+                    );
+                    setTimeout(function() {
+                        connect();
+                    }, 5000);
+                };
+
+                sock.onerror = function(err) {
+                    console.error(
+                        "Socket encountered error: ",
+                        err.message,
+                        "Closing socket"
+                    );
+                    sock.close();
+                };
+            }
+            connect();
         </script>
 </body>
 
