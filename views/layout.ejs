@@ -160,10 +160,7 @@
                                         data: `${contract_template.innerHTML}`
                                     })
                                 );
-                            } else {
-                                console.log(sock.readyState);
-                                console.log(sock.OPEN);
-                            }
+                            } 
                         }, 1000);
                     }
 
@@ -184,8 +181,6 @@
                                     data: `${contract_template.innerHTML}`
                                 })
                             );
-                        } else {
-                            alert("NO");
                         }
                     });
                 }

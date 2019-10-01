@@ -650,7 +650,8 @@ body {
     font-size: 12pt;
     padding: 9px;
     margin-top: 5px;
-    border: 1px solid #87d432;
+    border: 0;
+    border-bottom: 1px solid #a4c3ce;
     border-radius: 4px;
 }
 
