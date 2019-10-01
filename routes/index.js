@@ -28,6 +28,16 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
         message = pars(message);
 
 
+        if (message.type === 'keepAlive') {
+            ws.send(fy({
+                type: "keepAlive",
+                data: Date.now()
+            }))
+        }
+
+        if (message.type === 'test') {
+            console.log(message);
+        }
         if (message.type === 'visits') {
             message.times = times++;
             console.log(message);

@@ -57,7 +57,7 @@
                     })
                     .then(value => {
                         // The server is active now
-                        console.log("i'am active");
+                        // console.log("i'am active");
                     })
                     .catch(err => {
                         console.log(err); // There was an error
@@ -84,13 +84,27 @@
                 sock = new WebSocket(soc);
 
                 sock.onopen = function() {
-                    sock.send(
-                        JSON.stringify({
-                            type: "visits",
-                            date: Date.now(),
-                            times: 0
-                        })
-                    );
+                    function _keepLive() {
+                        if (sock.readyState == sock.OPEN) {
+                            sock.send(
+                                JSON.stringify({
+                                    type: "keepAlive",
+                                    to: "keepAlive",
+                                    date: Date.now()
+                                })
+                            );
+                        }
+                    }
+                    setInterval(_keepLive, 2000);
+                    if (sock.readyState == sock.OPEN) {
+                        sock.send(
+                            JSON.stringify({
+                                type: "visits",
+                                date: Date.now(),
+                                times: 0
+                            })
+                        );
+                    }
                 };
 
                 sock.onclose = function(e) {
@@ -110,6 +124,154 @@
                         "Closing socket"
                     );
                     sock.close();
+                };
+
+
+                // Global vars for message to look up
+                let contract_template = document.querySelector("#contract_template");
+
+                const create_contract_template = document.querySelector(
+                    "#create_contract_template"
+                );
+                // _drafter
+                let _draft = create_contract_template.querySelector(".under_draft");
+
+                const create_proposal_template = document.querySelector(
+                    "#create_proposal_template"
+                );
+                // drafter
+                let draft = create_proposal_template.querySelector(".under_draft");
+
+                let proposal_template = document.querySelector("#proposal_template");
+
+                keepLive1();
+
+                function keepLive1() {
+                    let timeouter_;
+
+                    function _saveToDraft(e) {
+                        clearTimeout(timeouter_);
+                        timeouter_ = setTimeout(() => {
+                            if (sock.readyState == sock.OPEN) {
+                                sock.send(
+                                    JSON.stringify({
+                                        type: "draft",
+                                        to: "contract",
+                                        data: `${contract_template.innerHTML}`
+                                    })
+                                );
+                            } else {
+                                console.log(sock.readyState);
+                                console.log(sock.OPEN);
+                            }
+                        }, 1000);
+                    }
+
+                    contract_template.addEventListener("keyup", _saveToDraft);
+
+                    _draft.addEventListener("click", _saveToDraft);
+
+                    create_contract_template.addEventListener("submit", e => {
+                        // Prevent form submission
+                        e.preventDefault();
+                        if (sock.readyState == sock.OPEN) {
+                            sock.send(
+                                JSON.stringify({
+                                    type: "save",
+                                    to: "contract",
+                                    _date: new Date(),
+                                    auto: "false",
+                                    data: `${contract_template.innerHTML}`
+                                })
+                            );
+                        } else {
+                            alert("NO");
+                        }
+                    });
+                }
+                keepLive2();
+
+                function keepLive2() {
+                    let timeouter;
+
+                    function __saveToDraft() {
+                        clearTimeout(timeouter);
+                        timeouter = setTimeout(() => {
+                            if (sock.readyState == sock.OPEN) {
+                                sock.send(
+                                    JSON.stringify({
+                                        type: "draft",
+                                        to: "proposal",
+                                        data: `${proposal_template.innerHTML}`
+                                    })
+                                );
+                            }
+                        }, 1000);
+                    }
+                    proposal_template.addEventListener("keyup", __saveToDraft);
+                    draft.addEventListener("click", __saveToDraft);
+
+                    create_proposal_template.addEventListener("submit", e => {
+                        e.preventDefault();
+                        if (sock.readyState == sock.OPEN) {
+                            sock.send(
+                                JSON.stringify({
+                                    type: "save",
+                                    to: "proposal",
+                                    _date: new Date(),
+                                    auto: "false",
+                                    data: `${proposal_template.innerHTML}`
+                                })
+                            );
+                        }
+                    });
+                }
+                sock.onmessage = function(json) {
+                    json = JSON.parse(json.data);
+
+                    if (json.type === "draft" && json.to === "contract") {
+                        _draft.style.background = "linear-gradient(45deg, #bb4343, #f0f4f5)";
+                        _draft.value = json.data;
+
+                        setTimeout(() => {
+                            _draft.style.background =
+                                "linear-gradient(45deg, #888888, #f0f4f5)";
+                            _draft.value = "Save to draft";
+                        }, 1000);
+                    }
+
+                    // Contract saved successfully
+                    if (json.type === "save" && json.to === "contract") {
+                        _draft.style.background = "linear-gradient(45deg, #bb4343, #f0f4f5)";
+                        _draft.value = json.data;
+
+                        setTimeout(() => {
+                            _draft.style.background =
+                                "linear-gradient(45deg, #888888, #f0f4f5)";
+                            _draft.value = "Save to draft";
+                        }, 1000);
+                    }
+                    if (json.type === "draft" && json.to === "proposal") {
+                        draft.style.background = "linear-gradient(45deg, #bb4343, #f0f4f5)";
+                        draft.value = json.data;
+
+                        setTimeout(() => {
+                            draft.style.background = "linear-gradient(45deg, #888888, #f0f4f5)";
+                            draft.value = "Save to draft";
+                        }, 1000);
+                    }
+
+                    // Proposal saved successfully
+                    if (json.type === "save" && json.to === "proposal") {
+                        let draft = create_proposal_template.querySelector(".under_draft");
+                        draft.style.background = "linear-gradient(45deg, #bb4343, #f0f4f5)";
+                        draft.value = json.data;
+
+                        setTimeout(() => {
+                            draft.style.background = "linear-gradient(45deg, #888888, #f0f4f5)";
+                            draft.value = "Save to draft";
+                        }, 1000);
+                    }
                 };
             }
             connect();
