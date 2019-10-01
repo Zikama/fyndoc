@@ -126,7 +126,6 @@
                     sock.close();
                 };
 
-
                 // Global vars for message to look up
                 let contract_template = document.querySelector("#contract_template");
 
@@ -144,12 +143,12 @@
 
                 let proposal_template = document.querySelector("#proposal_template");
 
-                keepLive1();
-
                 function keepLive1() {
                     let timeouter_;
 
                     function _saveToDraft(e) {
+                        console.log(contract_template);
+
                         clearTimeout(timeouter_);
                         timeouter_ = setTimeout(() => {
                             if (sock.readyState == sock.OPEN) {
@@ -160,7 +159,7 @@
                                         data: `${contract_template.innerHTML}`
                                     })
                                 );
-                            } 
+                            }
                         }, 1000);
                     }
 
@@ -184,7 +183,6 @@
                         }
                     });
                 }
-                keepLive2();
 
                 function keepLive2() {
                     let timeouter;
@@ -221,11 +219,14 @@
                         }
                     });
                 }
+                keepLive1();
+                keepLive2();
                 sock.onmessage = function(json) {
                     json = JSON.parse(json.data);
 
                     if (json.type === "draft" && json.to === "contract") {
-                        _draft.style.background = "linear-gradient(45deg, #bb4343, #f0f4f5)";
+                        _draft.style.background =
+                            "linear-gradient(45deg, #bb4343, #f0f4f5)";
                         _draft.value = json.data;
 
                         setTimeout(() => {
@@ -237,7 +238,8 @@
 
                     // Contract saved successfully
                     if (json.type === "save" && json.to === "contract") {
-                        _draft.style.background = "linear-gradient(45deg, #bb4343, #f0f4f5)";
+                        _draft.style.background =
+                            "linear-gradient(45deg, #bb4343, #f0f4f5)";
                         _draft.value = json.data;
 
                         setTimeout(() => {
@@ -251,7 +253,8 @@
                         draft.value = json.data;
 
                         setTimeout(() => {
-                            draft.style.background = "linear-gradient(45deg, #888888, #f0f4f5)";
+                            draft.style.background =
+                                "linear-gradient(45deg, #888888, #f0f4f5)";
                             draft.value = "Save to draft";
                         }, 1000);
                     }
@@ -263,7 +266,8 @@
                         draft.value = json.data;
 
                         setTimeout(() => {
-                            draft.style.background = "linear-gradient(45deg, #888888, #f0f4f5)";
+                            draft.style.background =
+                                "linear-gradient(45deg, #888888, #f0f4f5)";
                             draft.value = "Save to draft";
                         }, 1000);
                     }

@@ -44,6 +44,8 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
 
         // Save contract to draft
         if (message.type === 'draft' && message.to === 'contract') {
+            console.log(message.data);
+
             contract_draft.findOneAndUpdate({ auto: "true" }, {
                     data: message.data
                 })
