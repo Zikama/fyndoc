@@ -99,7 +99,7 @@
             }
         });
         <% if (typeof proposalDraft != 'undefined') { %>
-        document.querySelector("#proposal_template").insertAdjacentHTML("beforeEnd", '<%-proposalDraft.data%>');
+        document.querySelector("#proposal_template").insertAdjacentHTML("beforeEnd", `<%-proposalDraft.data%>`);
 
         <%}%>
     </script>
