@@ -97,7 +97,7 @@
             }
         });
         <% if(typeof contractDraft != 'undefined') { %>
-        document.querySelector("#contract_template").insertAdjacentHTML("beforeEnd", "<%-contractDraft.data%>");
+        document.querySelector("#contract_template").insertAdjacentHTML("beforeEnd", '<%-contractDraft.data%>');
 
         <%}%>
     </script>
