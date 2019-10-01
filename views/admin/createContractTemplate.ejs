@@ -96,5 +96,10 @@
                 hideOnClick: true
             }
         });
+        <% if(typeof contractDraft != 'undefined') { %>
+        let data = "<%-contractDraft.data%>";
+        document.querySelector("#contract_template").insertAdjacentHTML("beforeEnd", data);
+
+        <%}%>
     </script>
 </div>

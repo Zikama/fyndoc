@@ -40,7 +40,6 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
         }
         if (message.type === 'visits') {
             message.times = times++;
-            console.log(message);
         }
 
         // Save contract to draft
@@ -166,6 +165,18 @@ router.get("/", ensureAuthenticated, async(req, res) => res.render("index", {
     menu: (() => {
         if (typeof req.user != "undefined" && typeof req.user == 'object' && req.user.length) {
             return req.user[1]; // Menues from database
+        }
+    })(),
+    contractDraft: (() => {
+        if (typeof req.user != "undefined" && typeof req.user == 'object' && req.user.length) {
+
+            return req.user[2]; // Proposal-draft from database
+
+        }
+    })(),
+    proposalDraft: (() => {
+        if (typeof req.user != "undefined" && typeof req.user == 'object' && req.user.length) {
+            return req.user[3]; // Proposal-draft from database
         }
     })(),
     pathToTheRoot: (() => {

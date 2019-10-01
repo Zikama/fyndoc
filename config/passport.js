@@ -3,10 +3,12 @@ const LocalStrategy = require("passport-local").Strategy,
     bcrypt = require("bcryptjs"),
     // Get keys
     keys = require("./keys"),
-    // Get Nodemailer
-    // nodemailer = require("nodemailer"),
     // User model here for check up
-    User = require("../models/User"), Menu = require("../models/menu");
+    User = require("../models/User"),
+    // Initial Menu
+    Menu = require("../models/menu"),
+    ContractDraft = require("../models/contract_draft"),
+    ProposalDraft = require("../models/proposal_draft");
 
 module.exports = (passport) => {
     passport.use(
@@ -15,13 +17,13 @@ module.exports = (passport) => {
         }, (email, password, done) => {
             // Match user email
             User.findOne({
-                // email: email
-                $or: [{
-                    email: email
-                }, {
-                    username: email
-                }]
-            })
+                    // email: email
+                    $or: [{
+                        email: email
+                    }, {
+                        username: email
+                    }]
+                })
                 .then(user => {
                     if (!user) {
                         return done(null, false, {
@@ -48,7 +50,7 @@ module.exports = (passport) => {
         })
     )
 
-    passport.serializeUser(function (user, done) {
+    passport.serializeUser(function(user, done) {
         done(null, user.id);
     });
 
@@ -56,9 +58,20 @@ module.exports = (passport) => {
         User.findById(id, (err, user) => {
             if (user) {
                 Menu.find({})
-                    .then(async (menu) => {
+                    .then(async(menu) => {
                         if (menu) {
-                            done(err, [user, menu]);
+                            ContractDraft.findOne({})
+                                .then((co_draft) => {
+                                    if (co_draft) {
+                                        ProposalDraft.findOne({})
+                                            .then((pro_draft) => {
+                                                if (pro_draft) {
+                                                    done(err, [user, menu, co_draft, pro_draft]);
+                                                }
+                                            }).catch((err) => console.log(err));
+                                    }
+                                }).catch((err) => console.log(err));
+
                         }
 
                     }).catch((err) => console.log(err));
