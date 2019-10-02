@@ -34,14 +34,14 @@
                 </option>
               </select>
                         </li>
-                        <li class="li no-opa-hover commanded_by_template hidden w-100 ma-l-r-5">
-                            <p style="margin: auto">Or</p>
+                        <li class="li no-opa-hover commanded_by_template hidden w-100 ma-l-r-5" style="    box-shadow: 0px 2px 2px 0px #d0e0e669;margin-bottom: .11pc;padding: 1pc 0;">
+                            <h2 style="margin: auto">Customize the Contract</h2>
                         </li>
-                        <li class="li art_inp_co  no-opa-hover commanded_by_template hidden w-94 ma-l-r-5" style="background: #f6f6f6 !important;margin-bottom: 1pc;">
+                        <li class="li  no-opa-hover commanded_by_template hidden w-100 ma-l-r-5" style="background: #ffffff !important;margin-bottom: 1pc;">
                             <!-- Editor -->
-                            <div contenteditable="true" class="editable" style="width: 100%;padding: 5px 23px;outline: none;font-size: inherit;min-height: 59vh; max-height: 60vh;overflow: auto;" id="contract_template_send"></div>
+                            <div contenteditable="true" class="editable" style="width: 100%;padding: 5px 23px;outline: none;/* font-size: inherit; */min-height: 40vh;max-height: initial;overflow: auto;" id="contract_template_send"></div>
                         </li>
-                        <li class="li art_inp_co  no-opa-hover w-46 ma-l-r-5" style="background: #f6f6f6 ;margin-bottom: 1pc;">
+                        <li class="li art_inp_co  no-opa-hover w-46 ma-l-r-5" style="background: #f6f6f6 ;margin-bottom: 1pc;margin: auto;">
                             <input type="text" class="art_inp" placeholder="Enter Proposal ID" name="proposal_id" />
                         </li>
                         <div class="container">
@@ -94,9 +94,8 @@
         };
     }
 
-    let sendContract = document.querySelector("#sendContract");
-    sendContract.addEventListener("submit", function(e) {
-        e.preventDefault();
-        let data = formData("#" + this.id);
-    });
+    <% if (typeof contractTemplate != 'undefined') { %>
+    document.querySelector("#contract_template_send").insertAdjacentHTML("beforeEnd", `<%-contractTemplate.data%>`);
+
+    <%}%>
 </script>

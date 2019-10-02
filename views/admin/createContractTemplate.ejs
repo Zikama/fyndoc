@@ -7,14 +7,18 @@
                     <legend class="art-dop_down io_aro  lis " id="upload_contract_header">
                         Create Contract Template Editor
                         <div class="container_ ">
+                            <!-- Preview  the work-->
+                            <input type="button" class="under_preview" value="Preview">
                             <!-- Save the content -->
                             <button type="submit" class="under_submit">Save</button>
+                            <!-- Save and send the contract -->
+                            <input type="button" class="under_save_send" id="save_send_contract" value="Save and send">
                             <!-- Save as a Draft = Auto in future-->
-                            <input type="button" class="under_draft" value="Save to draft">
+                            <input type="button" class="under_draft hidden" value="Save draft">
                         </div>
                     </legend>
                     <!-- Editor -->
-                    <div contenteditable="true" class="editable" style="width: 100%;padding: 5px 23px;outline: none;font-size: inherit;min-height: 59vh; max-height: 60vh;overflow: auto;" id="contract_template"></div>
+                    <div contenteditable="true" class="editable" style="width: 100%;padding: 5px 23px;outline: none;/* font-size: inherit; */min-height: 59vh; max-height: 60vh;overflow: auto;" id="contract_template"></div>
                     </ul>
                 </form>
             </div>

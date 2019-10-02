@@ -22,7 +22,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
-    padding-top: 8pc;
+    padding-top: 7pc;
 }
 
 .header {
@@ -158,7 +158,8 @@ body {
     border-radius: 18.5px;
     background-color: #f6f6f6;
     display: flex;
-    padding: 0.4pc 1pc;
+    padding: 0;
+    overflow: hidden;
     box-sizing: border-box;
     /* box-shadow: 0px 1px 0 0 rgba(203, 219, 224, 0.69); */
 }
@@ -190,11 +191,13 @@ body {
 }
 
 .container_ {
-    width: 25%;
+    width: 35%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     /* margin: 1pc 0px; */
     padding: 10px;
+    flex-wrap: wrap;
+    position: relative;
 }
 
 .container_ .under_submit {
@@ -202,21 +205,25 @@ body {
     width: fit-content;
     margin: auto;
     border: 0;
-    padding: 2px 9%;
+    padding: 2px 6%;
     font-size: 9pt;
     border-radius: 8px;
     background: linear-gradient(45deg, #31ccad, #10b3c7);
     color: aliceblue;
     outline: none;
     cursor: pointer;
+    max-width: 58%;
+    overflow: hidden;
 }
 
-.container_ .under_draft {
+.container_ .under_draft,
+.container_ .under_preview,
+.container_ .under_save_send {
     position: relative;
     width: fit-content;
     margin: auto;
     border: 0;
-    padding: 2px 9%;
+    padding: 2px 6%;
     font-size: 9pt;
     border-radius: 8px;
     background: linear-gradient(45deg, #888888, #f0f4f5);
@@ -225,10 +232,20 @@ body {
     cursor: pointer;
 }
 
+.container_ .under_save_send {
+    background: linear-gradient(45deg, #03A9F4, #1fd5ec);
+}
+
+.under_draft {
+    position: absolute !important;
+    top: -10px;
+    right: 0;
+}
+
 .click_load {
     width: 12%;
     position: absolute;
-    top: 22%;
+    top: 10%;
     right: 5%;
     margin: auto;
 }
@@ -236,8 +253,8 @@ body {
 .art_inp_co input {
     font-size: 11pt;
     width: 100%;
+    height: 100%;
     border: 0;
-    outline: none;
     background: transparent;
     margin: auto;
 }
@@ -249,6 +266,13 @@ body {
     border: 0;
     outline: none;
     background: transparent;
+}
+
+.art_inp_co input,
+.art_inp_co select,
+.art_inp_co textarea {
+    outline: none;
+    padding: 0.4pc 1pc;
 }
 
 .bell_container {
@@ -314,6 +338,7 @@ body {
     padding: 0.5pc 2px 0;
     padding-right: .41pc;
     position: fixed;
+    left: 3%;
     z-index: auto;
     height: auto;
     max-height: 82vh;
@@ -392,6 +417,13 @@ body {
     background: #f9fafa;
 }
 
+a {
+    color: #5da111;
+    width: 90%;
+    outline: none;
+    text-decoration: none;
+}
+
 .art-btn-a,
 .art-dop_col .li a {
     color: #5da111;
@@ -421,8 +453,8 @@ body {
 .right_aside {
     position: fixed;
     top: 12%;
+    right: 3%;
     margin: auto;
-    right: 9px;
     width: 15%;
     z-index: auto;
 }
@@ -504,7 +536,7 @@ body {
 }
 
 .post {
-    width: 100%;
+    width: 90%;
     height: auto;
     /*box-shadow: 0px 83px 103px 0 rgba(221, 224, 225, 0.99);
     */
@@ -1223,6 +1255,74 @@ legend {
     margin-bottom: 11px;
 }
 
+.modal_ {
+    width: 100%;
+    position: fixed;
+    top: 0%;
+    background: transparent;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    max-height: 100vh;
+    overflow: auto;
+    bottom: 0%;
+    padding-top: 6pc;
+    padding-bottom: 2pc;
+    z-index: 11;
+}
+
+.modal_layer_ {
+    position: fixed;
+    width: 100%;
+    /* background: linear-gradient(to bottom, #ebebeb 2%, rgba(0, 150, 136, 0.18823529411764706) 15%); */
+    background: linear-gradient(to bottom, #647675a6 2%, rgba(24, 64, 60, 0.45) 15%);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.modal_content_ {
+    max-width: 60%;
+    min-width: 5vw;
+    min-height: 15vh;
+    background: white;
+    margin: auto;
+    border-radius: 9px;
+    padding: 1pc 4pc;
+    /* font-size: 10pt; */
+}
+
+div#contract_template_send a {
+    padding: 0;
+}
+
+.editable {
+    font-size: larger;
+}
+
+
+/*.modal_content_ {
+    max-width: 55%;
+    min-width: 5vw;
+    min-height: 15vh;
+    background: white;
+    margin: auto;
+    border-radius: 9px;
+    padding: 2pc 4pc;
+    font-size: larger;
+    display: flex;
+    justify-content: center;
+} div#ember1192 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+} div#ember1192 li {
+    margin: 32px 0px;
+}*/
+
 
 /* Mobile */
 
@@ -1353,7 +1453,7 @@ legend {
 
 @media screen and (min-width: 768px) {
     .Rectangle-1 {
-        padding-top: 8pc;
+        padding-top: 7pc;
     }
     .Rectangle-2 {
         width: 98%;

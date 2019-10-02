@@ -21,10 +21,12 @@ const proposalSchema = new Schema({
         required: true
     },
     person: {
-        type: String, required: true,
+        type: String,
+        required: true,
     },
     email: {
-        type: String, required: true,
+        type: String,
+        required: true,
     },
     message: {
         type: String,
@@ -32,7 +34,7 @@ const proposalSchema = new Schema({
     },
     ref: {
         type: String,
-        default: shortCode.worker(8).generate()
+        default: randexp.gen(new Date())
     },
     proposal: {
         type: String,

@@ -8,10 +8,30 @@ const express = require("express"),
     proposal = require("../models/proposal"),
     // proposal_draft for saving auto drafts
     proposal_draft = require("../models/proposal_draft"),
+
     // Get the contract model
     contract = require("../models/contract"),
     // contract_draft for saving auto drafts
-    contract_draft = require("../models/contract_draft");
+    contract_draft = require("../models/contract_draft"),
+    // Notification model
+    Notify = require("../models/notifications"),
+    // Nodemailer for sending email
+    nodemailer = require("nodemailer"),
+    keys = require("../config/keys"),
+
+    mail = require("../mail");
+
+const sendNotificationViaEmail = (messageTemp, Subject, to, from, attach, context) => {
+    // We can also send another email as a reminder
+    const art_mail = new mail(nodemailer, keys.user, keys.pass); //Authenticate SMTP
+    // Send an email
+    const message = messageTemp;
+    return new Promise((resolv, rej) => {
+        art_mail.send(Subject, message, to, from, attach, context)
+            .then(sent => resolv(sent)).catch(err => rej(err));
+
+    })
+};
 
 function pars(e) {
     return JSON.parse(e)
@@ -23,6 +43,7 @@ function fy(e) {
 let times = 0;
 // Test WS
 web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => {
+
 
     ws.on('message', function incoming(message) {
         message = pars(message);
@@ -44,8 +65,6 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
 
         // Save contract to draft
         if (message.type === 'draft' && message.to === 'contract') {
-            console.log(message.data);
-
             contract_draft.findOneAndUpdate({ auto: "true" }, {
                     data: message.data
                 })
@@ -113,12 +132,245 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                 .catch(err => console.log(err))
         }
 
+        // Send proposal
+        if (message.type === 'send' && message.to === 'proposal') {
 
+            proposal_draft.findOne({ auto: "false" }).sort([
+                ['date', -1]
+            ]).then(proposals => {
+                if (proposals && proposals.data !== "") {
+                    // proposal
+
+                    message.proposal = proposal.data
+                    let data = {
+                        company: message.data.company,
+                        person: message.data.person,
+                        email: message.data.email,
+                        message: message.data.msg,
+                        more_details: message,
+                    };
+                    let newProposal = new proposal(data);
+                    newProposal.save()
+                        .then((results) => {
+                            if (results) {
+                                // create a link
+                                proposal.findOneAndUpdate({ _id: results._id }, {
+                                        link: `${results.ref.replace("#", '')}/${_results.shortCode}/${results.company.split(" ").join("_").toLowerCase()}`,
+                                        proposal: `${results.from.replace('LTD', '')} - ${results.company} `
+                                    })
+                                    .then((ress) => {
+                                        proposal.findOne({ _id: results._id }).then((done) => {
+                                            // We can send the email
+
+                                            //#############done#################
+                                            // We can send an email
+                                            sendNotificationViaEmail('index', "test1", done.email, 'saphira@sadjawebtools.com', [{
+                                                    filename: 'contract-agreement.png',
+                                                    path: './views/templates/output.png',
+                                                    cid: 'output.png',
+                                                    contentType: 'image/png'
+                                                }], {
+                                                    name: `${done.message}`,
+                                                    title: `Hi ${done.person.split(" ")[0]},`,
+                                                    regards: `Kind regards: Nemie`,
+                                                    url: `${req.headers['origin'] + '/' + done.link}`
+                                                })
+                                                .then(sent => {
+                                                    if (sent && sent.match(/accepted/)) {
+                                                        // We can now send an email 
+                                                        // Store Notification
+                                                        let newNotify = new Notify({
+                                                            title: 'New Proposal',
+                                                            message: `You've successfully sent an new Proposal to ${done.email} with a proposal ID: #${done.ref}`,
+                                                            ref: `${done._id}`,
+                                                            link: "/proposals/" + done.ref
+                                                        });
+                                                        newNotify.save().then((_done) => {
+                                                            // Notify the admin
+                                                            // if() socket is open
+                                                            _done.status = "successful";
+                                                            ws.send(fy(_done))
+
+                                                        })
+                                                    } else {
+
+                                                        // An error occured
+                                                        // Store Notification
+                                                        let newNotify = new Notify({
+                                                            title: 'Failed Sending Proposal',
+                                                            message: `There was a problem sending a Proposal to ${done.email} with a proposal ID: #${done.ref}, error : ${err}`,
+                                                            ref: `${done._id}`,
+                                                            link: "/proposals/failure" + done.ref
+                                                        });
+                                                        newNotify.save().then((_done) => {
+                                                            // Notify the admin
+                                                            // if() socket is open
+                                                            _done.status = "failure";
+                                                            ws.send(fy(_done))
+
+                                                        }).catch((err) => {
+                                                            console.log(err);
+                                                        })
+                                                    }
+
+                                                }).catch(err => {
+                                                    console.log(err);
+
+                                                    // An error occured
+                                                    // Store Notification
+                                                    let newNotify = new Notify({
+                                                        title: 'Failed Sending Proposal',
+                                                        message: `There was a problem sending a Proposal to ${done.email} with a proposal ID: #${done.ref}, error : ${err}`,
+                                                        ref: `${done._id}`,
+                                                        link: "/proposals/failure" + done.ref
+                                                    });
+                                                    newNotify.save().then((_done) => {
+                                                        // Notify the admin
+                                                        // if() socket is open
+                                                        _done.status = "failure";
+                                                        ws.send(fy(_done))
+
+                                                    }).catch((err) => console.log(err))
+                                                });
+
+                                        }).catch((err) => console.log(err))
+
+                                    }).catch((err) => console.log(err))
+
+                            }
+
+                        })
+                        .catch((err) => console.log(err))
+
+                } else {
+                    console.log("Empty proposal Error");
+                }
+
+            }).catch((err) => {
+                console.log(err);
+
+            })
+
+
+        }
+
+        // Send Contract
+        if (message.type === 'send' && message.to === 'contract') {
+
+            contract_draft.findOne({ auto: "false" }).sort([
+                ['date', -1]
+            ]).then(contracts => {
+                if (contracts && contracts.data !== "") {
+                    message.contract = contracts.data
+                    let data = {
+                        documentID: message.data.proposal_id,
+                        ref: message.data.proposal_id,
+                        company: message.data.company,
+                        person: message.data.person,
+                        email: message.data.email,
+                        message: message.data.msg,
+                        more_details: message,
+                    };
+                    let newContract = new contract(data);
+                    newContract.save()
+                        .then((results) => {
+                            if (results) {
+                                contract.findOne({ _id: results._id }).then((_results) => {
+                                    // Create link
+                                    contract.findByIdAndUpdate({ _id: _results._id }, {
+                                        link: `${_results.shortCode}/${_results.documentID.replace("#", '')}/${_results.company.split(" ").join("_").toLowerCase()}`,
+                                        contract: `${_results.from.replace('LTD', '')} - ${_results.company} `
+                                    }).then((mesg) => {
+                                        contract.findOne({ _id: results._id }).then((done) => {
+                                            //#############done#################
+                                            // We can send an email
+                                            sendNotificationViaEmail('index', "test1", done.email, 'saphira@sadjawebtools.com', [{
+                                                    filename: 'contract-agreement.png',
+                                                    path: './views/templates/output.png',
+                                                    cid: 'output.png',
+                                                    contentType: 'image/png'
+                                                }], {
+                                                    name: `${done.message}`,
+                                                    title: `Hi ${done.person.split(" ")[0]},`,
+                                                    regards: `Kind regards: Nemie`,
+                                                    url: `${req.headers['origin'] + '/' + done.link}`
+                                                })
+                                                .then(sent => {
+                                                    if (sent && sent.match(/accepted/)) {
+                                                        // We can now send an email 
+                                                        // Store Notification
+                                                        let newNotify = new Notify({
+                                                            title: 'New Contract',
+                                                            message: `You've successfully sent an new Contract to ${done.email} with a proposal ID: #${done.ref}`,
+                                                            ref: `${done._id}`,
+                                                            link: "/contracts/" + done.ref
+                                                        });
+                                                        newNotify.save().then((_done) => {
+                                                            // Notify the admin
+                                                            // if() socket is open
+                                                            _done.status = "successful";
+                                                            ws.send(fy(_done))
+
+                                                        })
+                                                    } else {
+
+                                                        // An error occured
+                                                        // Store Notification
+                                                        let newNotify = new Notify({
+                                                            title: 'Failed Sending Contract',
+                                                            message: `There was a problem sending a Contract to ${done.email} with a proposal ID: #${done.ref}, error : ${err}`,
+                                                            ref: `${done._id}`,
+                                                            link: "/contracts/failure" + done.ref
+                                                        });
+                                                        newNotify.save().then((_done) => {
+                                                            // Notify the admin
+                                                            // if() socket is open
+                                                            _done.status = "failure";
+                                                            ws.send(fy(_done))
+
+                                                        }).catch((err) => {
+                                                            console.log(err);
+                                                        })
+                                                    }
+
+                                                }).catch(err => {
+                                                    console.log(err);
+
+                                                    // An error occured
+                                                    // Store Notification
+                                                    let newNotify = new Notify({
+                                                        title: 'Failed Sending Contract',
+                                                        message: `There was a problem sending a Contract to ${done.email} with a proposal ID: #${done.ref}, error : ${err}`,
+                                                        ref: `${done._id}`,
+                                                        link: "/contracts/failure" + done.ref
+                                                    });
+                                                    newNotify.save().then((_done) => {
+                                                        // Notify the admin
+                                                        // if() socket is open
+                                                        _done.status = "failure";
+                                                        ws.send(fy(_done))
+
+                                                    }).catch((err) => console.log(err))
+                                                });
+
+
+                                        }).catch((err) => console.log(err))
+                                    }).catch((err) => console.log(err))
+                                }).catch((err) => console.log(err))
+                            } else {
+                                console.log("Empty contracts Error");
+                            }
+
+                        }).catch((err) => console.log(err))
+                }
+
+
+
+            })
+        }
 
     });
-})
-
-
+});
 
 // Get the real path to the root
 // This helps to go to statics on front-end with easy
