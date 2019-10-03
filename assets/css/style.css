@@ -1224,7 +1224,7 @@ svg {
 
 .editor_input {
     border: 0;
-    border-bottom: 1px dotted #16507d;
+    border-bottom: 4px dotted #16507d;
     font-size: inherit;
     text-align: center;
     outline: none;
@@ -1325,7 +1325,7 @@ div#contract_template_send a {
 
 #read_tempo {
     padding: 2pc;
-    font-size: 15pt;
+    font-size: inherit;
     word-spacing: 3px;
     letter-spacing: 0px;
     font-family: sans-serif;
@@ -1333,6 +1333,36 @@ div#contract_template_send a {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    flex-flow: column;
+    word-break: break-all;
+}
+
+#read_tempo h2 {
+    font-size: 25pt;
+    line-height: 1.8em;
+    text-align: center;
+}
+
+#read_tempo b {
+    margin: auto;
+    justify-self: center;
+    align-self: center;
+    width: 114%;
+    text-align: center;
+    color: #254f71;
+}
+
+.editor_input {
+    border: 0;
+    border-bottom: 4px dotted #16507d;
+    font-size: inherit;
+    text-align: center;
+    outline: none;
+    color: #4CAF50;
+    text-transform: capitalize;
+    letter-spacing: .96px;
+    min-width: 5pc;
+    font-weight: 600;
 }
 
 .art_mo {

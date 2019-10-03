@@ -1,8 +1,38 @@
 <% if( typeof contract !='undefined') {%>
 
     <script>
+        function addScript(url) {
+            var script = document.createElement("script");
+            script.type = "application/javascript";
+            script.src = url;
+            document.head.appendChild(script);
+        }
+        addScript(
+            "https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"
+        );
         let read_tempo = document.querySelector("#read_tempo");
         read_tempo.insertAdjacentHTML("beforeEnd", `<%-contract%>`);
+        // keep The Input Length Size While Typing
+        function keepTheLength2() {
+            // Get all the elements in the DOM that requires this functionality.
+            // NOTE: Every element of type input with the class editor_input this functionality will
+            // take action to it
+            let inp = document.querySelectorAll(".editor_input");
+            if (typeof inp != "undefined" && inp.length) {
+                for (let i = 0; i < inp.length; i++) {
+                    let _in = inp[i];
+                    if (_in) {
+                        _in.addEventListener("keyup", e_ => {
+                            let lwgth = _in.value.length - 2 <= 0 ? 1 : _in.value.length - 2;
+                            lwgth = _in.value.length - 3 <= 3 ? 3 : _in.value.length - 3;
+                            lwgth = _in.value.length - 4 <= 5 ? 6 : _in.value.length - 5;
+                            _in.setAttribute("size", lwgth + 10);
+                        });
+                    }
+                }
+            }
+        }
+        setTimeout(keepTheLength2, 4444);
     </script>
 
     <%}%>
