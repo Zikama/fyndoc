@@ -468,11 +468,11 @@ const readerPR = {
 let viewTimes = 0;
 router.get("/:shortUrl/:documentId/:name", (req, res) => {
     let shortCode = req.params.shortUrl,
-        documentID = req.params.documentId,
+        ref = req.params.documentId,
         company = Capitalize(req.params.name, "_");
 
     // Double check the url params exists in our database
-    contract.find({ shortCode, documentID, company })
+    contract.find({ shortCode, ref, company })
         .then((results) => {
             if (results && results.length) {
 
@@ -499,7 +499,7 @@ router.get("/:shortUrl/:documentId/:name", (req, res) => {
                     let user_agent = req["headers"]["user-agent"];
                     readerPR.pathToTheRoot = pathToTheRoot(req._parsedOriginalUrl.path);
                     readerPR.header = `CONTRACT AGREEMENT BETWEEN: ${results.from} - ${results.company}`;
-                    readerPR.contract = results.more_details.path;
+                    readerPR.contract = results.more_details.contract;
                     res.render("reader", {
                         pathToTheRoot: (() => {
                             readerPR.pathToTheRoot = pathToTheRoot(req._parsedOriginalUrl.path);

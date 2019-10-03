@@ -1,6 +1,8 @@
-<script>
-    initPDFViewer(
-        `<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%><%= typeof contract !='undefined'? contract.split("\\").join("/"):'./assets/uploads/contracts/sadja-contract.pdf'%>`,
-        "#viewport"
-    );
-</script>
+<% if( typeof contract !='undefined') {%>
+
+    <script>
+        let read_tempo = document.querySelector("#read_tempo");
+        read_tempo.insertAdjacentHTML("beforeEnd", `<%-contract%>`);
+    </script>
+
+    <%}%>

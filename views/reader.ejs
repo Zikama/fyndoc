@@ -25,6 +25,12 @@
             <div class="posts_con" id="viewport">
                 <div class="post">
                     <div class="p_body">
+                        <div class="p_body_content" id="read_tempo">
+                        </div>
+                    </div>
+                </div>
+                <div class="post">
+                    <div class="p_body">
                         <div class="p_body_content">
                             <div class="p_body_content_wrapper">
                                 <form method="POST" name="finalizer">
@@ -128,15 +134,15 @@
 
 
 <% include ./modals/custom%>
-    <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets_/pdfjs-dist/build/pdf.min.js"></script>
+    <!-- <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets_/pdfjs-dist/build/pdf.min.js"></script>
 
     <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets/js/initPDFViewer.js"></script>
+   -->
     <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets/js/custom.js"></script>
-
     <% include ../assets/js/reader%>
-
         <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets/js/index.js"></script>
-        <script>
+
+        <!-- <script>
             //     var myState = {
             //         pdf: null,
             //         currentPage: 1,
@@ -178,4 +184,4 @@
                     });
                 }
             }); */
-        </script>
+        </script> -->
