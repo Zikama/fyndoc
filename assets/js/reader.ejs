@@ -33,6 +33,25 @@
             }
         }
         setTimeout(keepTheLength2, 4444);
+
+        function downloadContract(params) {
+            var element = document.getElementById("read_tempo");
+            var opt = {
+                margin: [0.50,1],
+                filename: "myfile.pdf",
+                image: {
+                    type: "jpeg",
+                    quality: 1
+                },
+                html2canvas: {
+                    scale: 2
+                },
+                jsPDF: {orientation: 'p',
+                unit: 'cm',format: 'a4',putOnlyUsedFonts:true
+                },pagebreak: { after: ['#after1', '#after2'], avoid: 'b' }
+            };
+            html2pdf().set(opt).from(element).save("myFile0");
+        }
     </script>
 
     <%}%>
