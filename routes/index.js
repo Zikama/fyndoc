@@ -82,18 +82,15 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
         // Save contract to draft
 
         if (message.type === 'save' && message.to === 'contract') {
-            let newcontract = new contract_draft({...message });
-            newcontract.save()
-                .then(ress => {
-                    if (ress) {
-                        ws.send(fy({
-                            type: "save",
-                            to: "contract",
-                            data: "Saved"
-                        }))
-                    }
-                })
-                .catch(err => console.log(err))
+            contract_draft.findOneAndUpdate({ auto: 'false' }, {...message }).then((done) => {
+                if (done) {
+                    ws.send(fy({
+                        type: "save",
+                        to: "contract",
+                        data: "Saved"
+                    }))
+                }
+            }).catch(err => console.log(err))
         }
 
         // Save proposal to draft
@@ -117,19 +114,17 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
         // Save proposal to draft
 
         if (message.type === 'save' && message.to === 'proposal') {
-            let data = message.data;
-            let newproposal = new proposal_draft({...message });
-            newproposal.save()
-                .then(ress => {
-                    if (ress) {
+            proposal_draft.findOneAndUpdate({ auto: 'false' }, {...message })
+                .then((done) => {
+                    if (done) {
                         ws.send(fy({
                             type: "save",
                             to: "proposal",
                             data: "Saved"
                         }))
                     }
-                })
-                .catch(err => console.log(err))
+
+                }).catch(err => console.log(err));
         }
 
         // Send proposal
@@ -141,7 +136,7 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                 if (proposals && proposals.data !== "") {
                     // proposal
 
-                    message.proposal = proposal.data
+                    message.proposal = proposals.data
                     let data = {
                         company: message.data.company,
                         person: message.data.person,
@@ -155,12 +150,11 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                             if (results) {
                                 // create a link
                                 proposal.findOneAndUpdate({ _id: results._id }, {
-                                        link: `${results.ref.replace("#", '')}/${_results.shortCode}/${results.company.split(" ").join("_").toLowerCase()}`,
+                                        link: `${results.ref.replace("#", '')}/${results.shortCode}/${results.company.split(" ").join("_").toLowerCase()}`,
                                         proposal: `${results.from.replace('LTD', '')} - ${results.company} `
                                     })
                                     .then((ress) => {
                                         proposal.findOne({ _id: results._id }).then((done) => {
-                                            // We can send the email
 
                                             //#############done#################
                                             // We can send an email
@@ -250,7 +244,7 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                 console.log(err);
 
             })
-
+            return 0
 
         }
 
@@ -366,7 +360,8 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
 
 
 
-            })
+            });
+            return 0
         }
 
     });

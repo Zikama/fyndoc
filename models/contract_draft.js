@@ -29,13 +29,32 @@ contract_draft_.find({}, (err, results) => {
     if (results.length) {
         return
     } else {
-        let p = new contract_draft_({ auto: "true" });
+        data = [{ auto: "true" }, { auto: "false" }]
+
+        let total = data.length,
+            result = [];
+
+        function saveAll() {
+            let doc;
+            doc = new contract_draft_(data.pop());
+
+            doc.save(function(err, saved) {
+                if (err) throw err; //handle error
+
+                result.push(saved[0]);
+
+                if (--total) saveAll();
+            })
+        }
+
+        saveAll();
+        /* let p = new contract_draft_({ auto: "true" });
         // Finally save new user to DB
         p.save() //Finally save
             .then(user => {
                 console.log("an empty draft");
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log(err)); */
     }
 })
 module.exports = contract_draft_;

@@ -113,6 +113,7 @@
                 keepTheLength();
 
                 let sock;
+                    let connectTmout, submitContract, submitProposal, create_contract_template, create_proposal_template, sendProposalData, sendContractData;
 
                 function connect() {
                     sock = new WebSocket(soc);
@@ -140,15 +141,15 @@
                             );
                         }
                     };
-
+                    
                     sock.onclose = function(e) {
+                        clearTimeout(connectTmout)
                         console.log(
                             "Socket is closed. Reconnect will be attempted in 5 second.",
                             e.reason
                         );
-                        setTimeout(function() {
-                            connect();
-                        }, 5000);
+
+                        connectTmout = setTimeout(/* ()=>{window.location.reload()} */ connect, 5000);            
                     };
 
                     sock.onerror = function(err) {
@@ -163,13 +164,13 @@
                     // Global vars for message to look up
                     let contract_template = document.querySelector("#contract_template");
 
-                    const create_contract_template = document.querySelector(
+                    create_contract_template = document.querySelector(
                         "#create_contract_template"
                     );
                     // _drafter
                     let _draft = create_contract_template.querySelector(".under_draft");
 
-                    const create_proposal_template = document.querySelector(
+                    create_proposal_template = document.querySelector(
                         "#create_proposal_template"
                     );
                     // drafter
@@ -198,22 +199,73 @@
                         contract_template.addEventListener("keyup", _saveToDraft);
 
                         _draft.addEventListener("click", _saveToDraft);
-
-                        create_contract_template.addEventListener("submit", e => {
-                            // Prevent form submission
-                            e.preventDefault();
+// Submit
+submitContract = function (e) {
+    
+    // Prevent form submission
+    e.preventDefault();
+    if (sock.readyState == sock.OPEN) {
+        sock.send(
+            JSON.stringify({
+                type: "save",
+                to: "contract",
+                _date: new Date(),
+                auto: "false",
+                data: `${contract_template.innerHTML}`
+            })
+        );
+    }
+};
+// Submit
+submitProposal = function (e) {
+    
+        e.preventDefault();
+        if (sock.readyState == sock.OPEN) {
+            sock.send(
+                JSON.stringify({
+                    type: "save",
+                    to: "proposal",
+                    _date: new Date(),
+                    auto: "false",
+                    data: `${proposal_template.innerHTML}`
+                })
+            );
+        }
+};sendProposalData = function(e)  {
                             if (sock.readyState == sock.OPEN) {
                                 sock.send(
                                     JSON.stringify({
-                                        type: "save",
-                                        to: "contract",
-                                        _date: new Date(),
-                                        auto: "false",
-                                        data: `${contract_template.innerHTML}`
+                                        type: "send",
+                                        to: "proposal",
+                                        data: {
+                                            person: e.currentTarget.querySelector("[name='person']").value,
+                                            company: e.currentTarget.querySelector("[name='company']").value,
+                                            msg: e.currentTarget.querySelector("[name='msg']").value,
+                                            email: e.currentTarget.querySelector("[name='email']").value
+                                        },
+                                        date: Date.now()
                                     })
                                 );
                             }
-                        });
+                        };
+                         sendContractData = function(e) {
+                            if (sock.readyState == sock.OPEN) {
+                                sock.send(
+                                    JSON.stringify({
+                                        type: "send",
+                                        to: "contract",
+                                        data: {
+                                            person: e.currentTarget.querySelector("[name='person']").value,
+                                            company: e.currentTarget.querySelector("[name='company']").value,
+                                            msg: e.currentTarget.querySelector("[name='msg']").value,
+                                            email: e.currentTarget.querySelector("[name='email']").value,
+                                            proposal_id: e.currentTarget.querySelector("[name='proposal_id']").value,
+                                        },
+                                        date: Date.now()
+                                    })
+                                );
+                            }
+                        };
                     }
 
                     function keepLive2() {
@@ -236,20 +288,6 @@
                         proposal_template.addEventListener("keyup", __saveToDraft);
                         draft.addEventListener("click", __saveToDraft);
 
-                        create_proposal_template.addEventListener("submit", e => {
-                            e.preventDefault();
-                            if (sock.readyState == sock.OPEN) {
-                                sock.send(
-                                    JSON.stringify({
-                                        type: "save",
-                                        to: "proposal",
-                                        _date: new Date(),
-                                        auto: "false",
-                                        data: `${proposal_template.innerHTML}`
-                                    })
-                                );
-                            }
-                        });
                     }
                     keepLive1();
                     keepLive2();
@@ -311,111 +349,112 @@
                                 draft.value = "Save to draft";
                             }, 1000);
                         }
-                    };
-
-                function preview_work(under_preview,templates) {
-                    let under_previews = document.querySelectorAll("."+under_preview);
-
-                    for (let template of templates) {
-                        for (let i = 0; i < under_previews.length; i++) {
-                        const preview = under_previews[i];
-                        preview.addEventListener('click', function(){
-                            let prent = preview.parentElement,
-                            _prent = prent.parentElement,
-                            __prent = _prent.parentElement, template_ ;
-                            let modal_ = document.querySelector(".modal_");
-                            let modal_content_ = document.querySelector(".modal_content_");
-                            // Get the template under the preview's top parent
-                            template_ = __prent.querySelector("#" + template);
-                            // This fights against logging error in the console of innerHTML of null
-                            if(template_&&modal_content_){
-                                modal_content_.innerHTML = template_.innerHTML;
-                            }
-                            
-                            // Display the modal
-                            modal_.classList.remove("hidden")
-                        })
                     } 
-                }  
-                } 
-                preview_work("under_preview",["contract_template","proposal_template"]);
+                }; connect();
 
-                // call modal_ with the content to modal_content_
-                function call_modal_(under_submit,template,saveDoc,cb) {
-                        under_submit.addEventListener('click', function(){
-                            // Save the content
-                            saveDoc.click();
-                            let modal_ = document.querySelector(".modal_");
-                            let modal_content_ = document.querySelector(".modal_content_");
-                            modal_content_.innerHTML = template;
-                            modal_.classList.remove("hidden");
-                            
-                            // call cb function to work/interact with the inserted elements
-                            if (cb) { setTimeout(cb, 500) }
-                        })
-                };
-                function save_and_send(create_dash_template, cb) {
-                    // Get container
-                    create_dash_template = document.querySelector(create_dash_template);
-                    // Display the sending form
-                    let template = `<form class="uls under_submit_form" action="/send/proposal" method="POST" id="sendProposal_" >
-                    <legend class="art-dop_down io_aro  lis " >
-                        Send Proposal
-                    </legend>
-                    <ul class="art-dop_col no-shado w-100 ul art_flex art_flex_wr " style="padding: 0 10px; border-radius: 0pc 0pc 1pc 1pc;">
-                        <li class="li  ma-l-r-5 art_inp_co  no-opa-hover w-46" style="background: #f6f6f6 ;margin-bottom: 1pc;">
-                            <input type="text" class="art_inp" placeholder="Enter receiver's name" name="person" required="">
-                        </li>
-                        <li class="li  ma-l-r-5 art_inp_co  no-opa-hover w-46" style="background: #f6f6f6 ;margin-bottom: 1pc;">
-                            <input type="text" class="art_inp" placeholder="Enter company name" name="company">
-                        </li>
-                        <li class="li  ma-l-r-5 art_inp_co  no-opa-hover w-94" style="background: #f6f6f6 ;margin-bottom: 1pc;">
-                            <textarea type="text" class="art_inp" placeholder="Custom message   (Optional)" name="msg"></textarea>
-                        </li>
-                        <li class="li  ma-l-r-5 art_inp_co  no-opa-hover w-46" style="background: #f6f6f6 ;margin-bottom: 1pc;">
-                            <input type="text" class="art_inp" placeholder="Enter the email address of the receiver" name="email" required="">
-                        </li>
-                        <div class="container">
-                            <button type="submit" class="under_submit">Send</button>
-                        </div>
-                    </ul>
-                </form>`;
-                    let template2 = `<form class="uls under_submit_form" id="sendContract_" action="/send/contract" method="POST">
-                    <legend class="art-dop_down io_aro  lis ">
-                        Send Contract
-                    </legend>
-                    <ul class="art-dop_col no-shado w-100 ul art_flex art_flex_wr " style="padding: 0 10px; border-radius: 0pc 0pc 1pc 1pc;">
-                        <li class="li art_inp_co  no-opa-hover w-46 ma-l-r-5" style="background: #f6f6f6 ;margin-bottom: 1pc;">
-                            <input type="text" class="art_inp" placeholder="Enter receiver's name" name="person" required="">
-                        </li>
-                        <li class="li art_inp_co  no-opa-hover w-46 ma-l-r-5" style="background: #f6f6f6 ;margin-bottom: 1pc;">
-                            <input type="text" class="art_inp" placeholder="Enter company name" name="company">
-                        </li>
-                        <li class="li art_inp_co  no-opa-hover w-94 ma-l-r-5" style="background: #f6f6f6 ;margin-bottom: 1pc;">
-                            <textarea type="text" class="art_inp" placeholder="Custom message   (Optional)" name="msg"></textarea>
-                        </li>
-                        <li class="li art_inp_co  no-opa-hover w-46 ma-l-r-5" style="background: #f6f6f6 ;margin-bottom: 1pc;">
-                            <input type="text" class="art_inp" placeholder="Enter the email address of the receiver" name="email" required="">
-                        </li>
-                        <li class="li art_inp_co  no-opa-hover w-46 ma-l-r-5" style="background: #f6f6f6 ;margin-bottom: 1pc;">
-                            <input type="text" class="art_inp" placeholder="Enter Proposal ID" name="proposal_id">
-                        </li>
-                        <div class="container">
-                            <button type="submit" class="under_submit">Send</button>
-                        </div>
-                    </ul>
-                </form>`;
-                /*Content to show on the modal_content_*/
-                    let under_save_send = create_dash_template.querySelector(".under_save_send");
-                    if(typeof under_save_send!=="undefined" && under_save_send.id === "save_send_proposal")
-                        {
-                            call_modal_(under_save_send,template,create_dash_template.querySelector(".under_submit"),cb);
+            function preview_work(under_preview,templates) {
+                let under_previews = document.querySelectorAll("."+under_preview);
+
+                for (let template of templates) {
+                    for (let i = 0; i < under_previews.length; i++) {
+                    const preview = under_previews[i];
+                    preview.addEventListener('click', function(){
+                        let prent = preview.parentElement,
+                        _prent = prent.parentElement,
+                        __prent = _prent.parentElement, template_ ;
+                        let modal_ = document.querySelector(".modal_");
+                        let modal_content_ = document.querySelector(".modal_content_");
+                        // Get the template under the preview's top parent
+                        template_ = __prent.querySelector("#" + template);
+                        // This fights against logging error in the console of innerHTML of null
+                        if(template_&&modal_content_){
+                            modal_content_.innerHTML = template_.innerHTML;
                         }
-                    if(typeof under_save_send!=="undefined" && under_save_send.id === "save_send_contract")
-                        {
-                            call_modal_(under_save_send,template2,create_dash_template.querySelector(".under_submit"),cb);
-                        }
+                        
+                        // Display the modal
+                        modal_.classList.remove("hidden")
+                    })
                 } 
+            }  
+            } 
+            preview_work("under_preview",["contract_template","proposal_template"]);
+
+            // call modal_ with the content to modal_content_
+            function call_modal_(under_submit,template,saveDoc,cb) {
+                    under_submit.addEventListener('click', function(){
+                        // Save the content
+                        saveDoc.click();
+                        let modal_ = document.querySelector(".modal_");
+                        let modal_content_ = document.querySelector(".modal_content_");
+                        modal_content_.innerHTML = template;
+                        modal_.classList.remove("hidden");
+                        
+                        // call cb function to work/interact with the inserted elements
+                        if (cb) { setTimeout(cb, 500) }
+                    })
+            };
+            function save_and_send(create_dash_template, cb) {
+                // Get container
+                create_dash_template = document.querySelector(create_dash_template);
+                // Display the sending form
+                let template = `<form class="uls under_submit_form" action="/send/proposal" method="POST" id="sendProposal_" >
+                <legend class="art-dop_down io_aro  lis " >
+                    Send Proposal
+                </legend>
+                <ul class="art-dop_col no-shado w-100 ul art_flex art_flex_wr " style="padding: 0 10px; border-radius: 0pc 0pc 1pc 1pc;">
+                    <li class="li  ma-l-r-5 art_inp_co  no-opa-hover w-46" style="background: #f6f6f6 ;margin-bottom: 1pc;">
+                        <input type="text" class="art_inp" placeholder="Enter receiver's name" name="person" required="">
+                    </li>
+                    <li class="li  ma-l-r-5 art_inp_co  no-opa-hover w-46" style="background: #f6f6f6 ;margin-bottom: 1pc;">
+                        <input type="text" class="art_inp" placeholder="Enter company name" name="company">
+                    </li>
+                    <li class="li  ma-l-r-5 art_inp_co  no-opa-hover w-94" style="background: #f6f6f6 ;margin-bottom: 1pc;">
+                        <textarea type="text" class="art_inp" placeholder="Custom message   (Optional)" name="msg"></textarea>
+                    </li>
+                    <li class="li  ma-l-r-5 art_inp_co  no-opa-hover w-46" style="background: #f6f6f6 ;margin-bottom: 1pc;">
+                        <input type="text" class="art_inp" placeholder="Enter the email address of the receiver" name="email" required="">
+                    </li>
+                    <div class="container">
+                        <button type="submit" class="under_submit">Send</button>
+                    </div>
+                </ul>
+            </form>`;
+                let template2 = `<form class="uls under_submit_form" id="sendContract_" action="/send/contract" method="POST">
+                <legend class="art-dop_down io_aro  lis ">
+                    Send Contract
+                </legend>
+                <ul class="art-dop_col no-shado w-100 ul art_flex art_flex_wr " style="padding: 0 10px; border-radius: 0pc 0pc 1pc 1pc;">
+                    <li class="li art_inp_co  no-opa-hover w-46 ma-l-r-5" style="background: #f6f6f6 ;margin-bottom: 1pc;">
+                        <input type="text" class="art_inp" placeholder="Enter receiver's name" name="person" required="">
+                    </li>
+                    <li class="li art_inp_co  no-opa-hover w-46 ma-l-r-5" style="background: #f6f6f6 ;margin-bottom: 1pc;">
+                        <input type="text" class="art_inp" placeholder="Enter company name" name="company">
+                    </li>
+                    <li class="li art_inp_co  no-opa-hover w-94 ma-l-r-5" style="background: #f6f6f6 ;margin-bottom: 1pc;">
+                        <textarea type="text" class="art_inp" placeholder="Custom message   (Optional)" name="msg"></textarea>
+                    </li>
+                    <li class="li art_inp_co  no-opa-hover w-46 ma-l-r-5" style="background: #f6f6f6 ;margin-bottom: 1pc;">
+                        <input type="text" class="art_inp" placeholder="Enter the email address of the receiver" name="email" required="">
+                    </li>
+                    <li class="li art_inp_co  no-opa-hover w-46 ma-l-r-5" style="background: #f6f6f6 ;margin-bottom: 1pc;">
+                        <input type="text" class="art_inp" placeholder="Enter Proposal ID" name="proposal_id">
+                    </li>
+                    <div class="container">
+                        <button type="submit" class="under_submit">Send</button>
+                    </div>
+                </ul>
+            </form>`;
+            /*Content to show on the modal_content_*/
+                let under_save_send = create_dash_template.querySelector(".under_save_send");
+                if(typeof under_save_send!=="undefined" && under_save_send.id === "save_send_proposal")
+                    {
+                        call_modal_(under_save_send,template,create_dash_template.querySelector(".under_submit"),cb);
+                    }
+                if(typeof under_save_send!=="undefined" && under_save_send.id === "save_send_contract")
+                    {
+                        call_modal_(under_save_send,template2,create_dash_template.querySelector(".under_submit"),cb);
+                    }
+                }
                 save_and_send("#create_proposal_template", function(){
                     
                     function send_a_proposal() {
@@ -432,23 +471,7 @@
                                     current.setAttribute("disabled", "");
                                     current.insertAdjacentHTML("beforeEnd", loaderTemplate);
                                 }();
-                                !function sendData() {
-                                    if (sock.readyState == sock.OPEN) {
-                                        sock.send(
-                                            JSON.stringify({
-                                                type: "send",
-                                                to: "contract",
-                                                data: {
-                                                    person: e.currentTarget.querySelector("[name='person']").value,
-                                                    company: e.currentTarget.querySelector("[name='company']").value,
-                                                    msg: e.currentTarget.querySelector("[name='msg']").value,
-                                                    email: e.currentTarget.querySelector("[name='email']").value
-                                                },
-                                                date: Date.now()
-                                            })
-                                        );
-                                    }
-                                }()
+                                sendProposalData(e)
                             })
                         }
 
@@ -469,32 +492,16 @@
                                     current.setAttribute("disabled", "");
                                     current.insertAdjacentHTML("beforeEnd", loaderTemplate);
                                 }();
-                                !function sendData() {
-                                    if (sock.readyState == sock.OPEN) {
-                                        sock.send(
-                                            JSON.stringify({
-                                                type: "send",
-                                                to: "contract",
-                                                data: {
-                                                 person: e.currentTarget.querySelector("[name='person']").value,
-                                                 company: e.currentTarget.querySelector("[name='company']").value,
-                                                 msg: e.currentTarget.querySelector("[name='msg']").value,
-                                                 email: e.currentTarget.querySelector("[name='email']").value,
-                                                 proposal_id: e.currentTarget.querySelector("[name='proposal_id']").value,
-                                                },
-                                                date: Date.now()
-                                            })
-                                        );
-                                    }
-                                }()
+                                sendContractData(e)
                             })
                         }
                         
                     }send_a_contract();
                     
                 });
-                    }
-                    connect();
+                    
+                        create_contract_template.addEventListener("submit", submitContract, false);
+                        create_proposal_template.addEventListener("submit", submitProposal, false);
             </script>
 </body>
 
