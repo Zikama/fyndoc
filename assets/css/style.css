@@ -1335,6 +1335,10 @@ div#contract_template_send a {
     flex-wrap: wrap;
 }
 
+.art_mo {
+    background: linear-gradient(to bottom, #647675a6 2%, rgba(24, 64, 60, 0.45) 15%) !important;
+}
+
 
 /* Mobile */
 
