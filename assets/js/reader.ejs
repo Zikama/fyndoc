@@ -1,3 +1,122 @@
+<script>
+    [g, gA] = [k => document.querySelector(k), k => document.querySelectorAll(k)];
+    let agreed = g("#agreed");
+    if (agreed) {
+        agreed.addEventListener("click", agreedForm);
+    }
+
+    let change = g("#change");
+
+    if (change) {
+        change.addEventListener("click", changesForm);
+    }
+
+    function agreedForm() {
+        displayModal("flex", function() {
+            writeToHeader("write", function(placeHolder) {
+                placeHolder.innerHTML =
+                    "<h1>Agreement - </h1><p>Tell us more about you and your position in your company</p>";
+            });
+            writeToBody("write", function(placeHolder) {
+                placeHolder.innerHTML = `<form method="post" class="art-mo-form" action="<%=typeof pathToTheRoot !=='undefined' ? pathToTheRoot:'../../../'%>agree">
+                    <input type="hidden" name="ref" value='<%=data.ref%>'><input type="hidden" name="more_details" value='<%=data.more_details.contract%>'>
+                    <input type="hidden" name="link" value='<%=data.link%>'><input type="hidden" name="company" value='<%=data.company%>'>
+
+            
+
+                          <div class="art_inps">
+                              <label for="full_name"> Names</label>
+                              <div class="art_inp_co">
+                                  <input type="text" class="art_inp" placeholder="Your full name as shown on your ID/\\/Passport" id="full_name" name="full_name" required>
+                              </div>
+                          </div>
+
+                          <div class="art_inps">
+                              <label for="passport"> National ID/Passport Number</label>
+                              <div class="art_inp_co">
+                                  <input type="text" class="art_inp" placeholder="Enter your national ID/Passport number" id="passport" name="passport" required>
+                              </div>
+                          </div>
+
+                          <div class="art_inps">
+                              <label for="date_of_birth"> Date Of Birth </label>
+                              <div class="art_inp_co">
+                                  <input type="date" class="art_inp" placeholder="Date Of birth" id="date_of_birth" value="1099-02-01" name="date_of_birth" required>
+                              </div>
+                          </div>
+
+                          <div class="art_inps">
+                              <label for="email"> Email</label>
+                              <div class="art_inp_co">
+                                  <input type="text" class="art_inp" placeholder="Your business Email address" id="email" name="email" required>
+                              </div>
+                          </div>
+
+                              <div class="art_inps">
+                                  <label for="position"> Position</label>
+                                  <div class="art_inp_co">
+                                      <input type="text" class="art_inp" placeholder="What is your position in your company ?" id="position" name="position" required>
+                                  </div>
+                              </div>
+                              <button type="submit" class="opacity-0" id="submit1" hidden>Send</button>
+                          </form>`;
+                callButton("0", ok => {
+                    ok.innerText = "Accept";
+                    let getFooter = placeHolder.nextElementSibling;
+                    let getForm = placeHolder.querySelector("form");
+                    ok.addEventListener("click", () => {
+                        getForm.querySelector("#submit1").click();
+                    });
+                });
+            });
+        });
+    }
+
+    function changesForm() {
+        displayModal("flex", function() {
+            writeToHeader("write", function(placeHolder) {
+                placeHolder.innerHTML = "<h1>Tell us about the changes you need</h1>";
+            });
+            writeToBody("write", function(placeHolder) {
+                placeHolder.innerHTML = `<form method="post" class="art-mo-form"  action="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../../../'%>request_change">
+                    <input type="hidden" name="ref" value='<%=data.ref%>'><input type="hidden" name="more_details" value='<%=data.more_details.contract%>'>
+                    <input type="hidden" name="link" value='<%=data.link%>'><input type="hidden" name="company" value='<%=data.company%>'>
+
+                          <div class="art_inps">
+                              <label for="full_name"> Names</label>
+                              <div class="art_inp_co">
+                                  <input type="text" class="art_inp" placeholder="Your full name as shown on your ID/Passport" id="full_name" name="full_name" required>
+                              </div>
+                          </div>
+
+                          <div class="art_inps">
+                              <label for="email"> Email</label>
+                              <div class="art_inp_co">
+                                  <input type="text" class="art_inp" placeholder="Your business Email address" id="email" name="email" required>
+                              </div>
+                          </div>
+
+                              <div class="art_inps">
+                                  <label for="changes"> Changes </label>
+                                  <div class="art_inp_co">
+                                      <textarea class="art_inp_area" placeholder="What are the changes would you like to be made ?" id="changes" name="changes" required></textarea>
+                                  </div>
+                              </div>
+                              <button type="submit" class="opacity-0" id="submit" hidden>Send</button>
+                          </form>`;
+                callButton("0", ok => {
+                    ok.innerText = "Send";
+                    let getFooter = placeHolder.nextElementSibling;
+                    let getForm = placeHolder.querySelector("form");
+                    ok.addEventListener("click", () => {
+                        getForm.querySelector("#submit").click();
+                    });
+                });
+            });
+        });
+    }
+</script>
+
 <% if( typeof contract !='undefined') {%>
 
     <script>
@@ -37,7 +156,7 @@
         function downloadContract(params) {
             var element = document.getElementById("read_tempo");
             var opt = {
-                margin: [0.50,1],
+                margin: [0.5, 1],
                 filename: "myfile.pdf",
                 image: {
                     type: "jpeg",
@@ -46,11 +165,21 @@
                 html2canvas: {
                     scale: 2
                 },
-                jsPDF: {orientation: 'p',
-                unit: 'cm',format: 'a4',putOnlyUsedFonts:true
-                },pagebreak: { after: ['#after1', '#after2'], avoid: 'b' }
+                jsPDF: {
+                    orientation: "p",
+                    unit: "cm",
+                    format: "a4",
+                    putOnlyUsedFonts: true
+                },
+                pagebreak: {
+                    after: ["#after1", "#after2"],
+                    avoid: "b"
+                }
             };
-            html2pdf().set(opt).from(element).save("myFile0");
+            html2pdf()
+                .set(opt)
+                .from(element)
+                .save("myFile0");
         }
     </script>
 

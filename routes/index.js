@@ -4,6 +4,11 @@ const express = require("express"),
     {
         ensureAuthenticated
     } = require("../config/auth"),
+    // Get the converted clients model
+    converted_client = require("../models/converted_clients"),
+    // Get request for change
+    request_change = require("../models/request_changes"),
+
     // Get the proposal model
     proposal = require("../models/proposal"),
     // proposal_draft for saving auto drafts
@@ -40,17 +45,22 @@ function pars(e) {
 function fy(e) {
     return JSON.stringify(e)
 }
-let times = 0;
+let times = 0,
+    _ws, request, websocket, norm_size, history, clients, clientsize;
 // Test WS
 web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => {
+    _ws = ws;
+    request = req;
+    websocket = Websocket;
+    norm_size = normSize;
+    history = HISTORY;
+    clients = CLIENS;
+    clientsize = clienSize;
 
-
-    ws.on('message', function incoming(message) {
+    _ws.on('message', function incoming(message) {
         message = pars(message);
-
-
         if (message.type === 'keepAlive') {
-            ws.send(fy({
+            _ws.send(fy({
                 type: "keepAlive",
                 data: Date.now()
             }))
@@ -70,7 +80,7 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                 })
                 .then(ress => {
                     if (ress) {
-                        ws.send(fy({
+                        _ws.send(fy({
                             type: "draft",
                             to: "contract",
                             data: "Saved to draft"
@@ -84,7 +94,7 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
         if (message.type === 'save' && message.to === 'contract') {
             contract_draft.findOneAndUpdate({ auto: 'false' }, {...message }).then((done) => {
                 if (done) {
-                    ws.send(fy({
+                    _ws.send(fy({
                         type: "save",
                         to: "contract",
                         data: "Saved"
@@ -102,7 +112,7 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                 })
                 .then(ress => {
                     if (ress) {
-                        ws.send(fy({
+                        _ws.send(fy({
                             type: "draft",
                             to: "proposal",
                             data: "Saved to draft"
@@ -117,7 +127,7 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
             proposal_draft.findOneAndUpdate({ auto: 'false' }, {...message })
                 .then((done) => {
                     if (done) {
-                        ws.send(fy({
+                        _ws.send(fy({
                             type: "save",
                             to: "proposal",
                             data: "Saved"
@@ -172,7 +182,12 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                                                 .then(sent => {
                                                     if (sent && sent.match(/accepted/)) {
                                                         // We can now send an email 
-                                                        // Store Notification
+                                                        _ws.send(fy({
+                                                                type: 'sent',
+                                                                to: 'proposal',
+                                                                status: "successful"
+                                                            }))
+                                                            // Store Notification
                                                         let newNotify = new Notify({
                                                             title: 'New Proposal',
                                                             message: `You've successfully sent an new Proposal to ${done.email} with a proposal ID: #${done.ref}`,
@@ -183,12 +198,18 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                                                             // Notify the admin
                                                             // if() socket is open
                                                             _done.status = "successful";
-                                                            ws.send(fy(_done))
+                                                            _ws.send(fy(_done))
 
                                                         })
                                                     } else {
 
                                                         // An error occured
+                                                        _ws.send(fy({
+                                                            type: 'sent',
+                                                            to: 'proposal',
+                                                            status: "failed",
+                                                            title: `There was a problem sending a Proposal to ${done.email} with a proposal ID: #${done.ref}`
+                                                        }));
                                                         // Store Notification
                                                         let newNotify = new Notify({
                                                             title: 'Failed Sending Proposal',
@@ -200,7 +221,7 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                                                             // Notify the admin
                                                             // if() socket is open
                                                             _done.status = "failure";
-                                                            ws.send(fy(_done))
+                                                            _ws.send(fy(_done))
 
                                                         }).catch((err) => {
                                                             console.log(err);
@@ -211,7 +232,13 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                                                     console.log(err);
 
                                                     // An error occured
-                                                    // Store Notification
+                                                    _ws.send(fy({
+                                                            type: 'sent',
+                                                            to: 'proposal',
+                                                            title: 'There was a problem sending a Proposal to ${done.email} with a proposal ID: #${done.ref}',
+                                                            status: "failed"
+                                                        }))
+                                                        // Store Notification
                                                     let newNotify = new Notify({
                                                         title: 'Failed Sending Proposal',
                                                         message: `There was a problem sending a Proposal to ${done.email} with a proposal ID: #${done.ref}, error : ${err}`,
@@ -222,7 +249,7 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                                                         // Notify the admin
                                                         // if() socket is open
                                                         _done.status = "failure";
-                                                        ws.send(fy(_done))
+                                                        _ws.send(fy(_done))
 
                                                     }).catch((err) => console.log(err))
                                                 });
@@ -292,6 +319,12 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                                                 .then(sent => {
                                                     if (sent && sent.match(/accepted/)) {
                                                         // We can now send an email 
+                                                        _ws.send(fy({
+                                                            type: 'sent',
+                                                            to: 'contract',
+                                                            status: "successful",
+                                                            title: `You've successfully sent an new Contract to ${done.email} with a proposal ID: #${done.ref}`
+                                                        }));
                                                         // Store Notification
                                                         let newNotify = new Notify({
                                                             title: 'New Contract',
@@ -303,13 +336,19 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                                                             // Notify the admin
                                                             // if() socket is open
                                                             _done.status = "successful";
-                                                            ws.send(fy(_done))
+                                                            _ws.send(fy(_done))
 
                                                         })
                                                     } else {
 
                                                         // An error occured
-                                                        // Store Notification
+                                                        _ws.send(fy({
+                                                                type: 'sent',
+                                                                to: 'contract',
+                                                                status: "failed",
+                                                                title: `There was a problem sending a Contract to ${done.email} with a proposal ID: #${done.ref}`
+                                                            }))
+                                                            // Store Notification
                                                         let newNotify = new Notify({
                                                             title: 'Failed Sending Contract',
                                                             message: `There was a problem sending a Contract to ${done.email} with a proposal ID: #${done.ref}, error : ${err}`,
@@ -320,7 +359,7 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                                                             // Notify the admin
                                                             // if() socket is open
                                                             _done.status = "failure";
-                                                            ws.send(fy(_done))
+                                                            _ws.send(fy(_done));
 
                                                         }).catch((err) => {
                                                             console.log(err);
@@ -331,7 +370,13 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                                                     console.log(err);
 
                                                     // An error occured
-                                                    // Store Notification
+                                                    _ws.send(fy({
+                                                            type: 'sent',
+                                                            to: 'contract',
+                                                            status: "failed",
+                                                            title: `There was a problem sending a Contract to ${done.email} with a proposal ID: #${done.ref}`
+                                                        }))
+                                                        // Store Notification
                                                     let newNotify = new Notify({
                                                         title: 'Failed Sending Contract',
                                                         message: `There was a problem sending a Contract to ${done.email} with a proposal ID: #${done.ref}, error : ${err}`,
@@ -342,7 +387,7 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                                                         // Notify the admin
                                                         // if() socket is open
                                                         _done.status = "failure";
-                                                        ws.send(fy(_done))
+                                                        _ws.send(fy(_done))
 
                                                     }).catch((err) => console.log(err))
                                                 });
@@ -450,6 +495,149 @@ router.get("/", ensureAuthenticated, async(req, res) => res.render("index", {
     ...IndexPR
 }));
 
+// Agree on the contract
+router.post("/agree", (req, res) => {
+    let data = { names: req.body.full_name, id: req.body.passport, date_of_birth: req.body.date_of_birth, email: req.body.email, position: req.body.position, ref: req.body.ref, more_details: { contract: req.body.more_details, link: req.body.link, company: req.body.company } };
+
+    let newConvertedClent = new converted_client(data);
+    newConvertedClent.save()
+        .then((saved) => {
+            if (saved) {
+
+                var visibleDate = new Date().setDate(saved.date.getDate() + 4);
+                console.log(new Date(visibleDate));
+
+                contract.findOneAndUpdate({ ref: saved.ref }, {
+                        status: 'signed',
+                        contract_status: "signed",
+                        signed_date: saved.date,
+                        'more_details.visible_until': new Date(visibleDate)
+                    })
+                    .then((done) => {
+                        // We can send an email to the client
+                        sendNotificationViaEmail('index', "Contract successfully Signed", saved.email, 'saphira@sadjawebtools.com', [{
+                                filename: 'contract-agreement.png',
+                                path: './views/templates/output.png',
+                                cid: 'output.png',
+                                contentType: 'image/png'
+                            }], {
+                                name: `You can follow the button bellow to download your copy, Please Note that the bellow link/button is available for 4 days from the signed date.
+                                Your Proposal ID is : ${saved.ref}`,
+                                title: `Hello ${saved.names.split(" ")[0]}, Sadja WebSolutions thank you for successfully signing the Contract`,
+                                regards: `Kind regards: Sadja WebSolutions`,
+                                url: `${req['header']('origin') + '/' + saved.more_details.link}`
+                            })
+                            .then(sent => {
+                                // Mail sent
+                            }).catch((err) => console.log(err))
+                    }).catch((err) => console.log(err));
+
+                // Notify the main sadja web solutions' email
+                sendNotificationViaEmail('index', "Contract successfully Signed", 'zikama.sadja@gmail.com', saved.email, [{
+                        filename: 'contract-agreement.png',
+                        path: './views/templates/output.png',
+                        cid: 'output.png',
+                        contentType: 'image/png'
+                    }], {
+                        name: `The Proposal ID is : ${saved.ref}`,
+                        title: `${saved.names}, has successfully signed the Contract`,
+                        regards: `Sadja WebSolutions LTD`,
+                        url: `${req['header']('origin') + '/' + saved.more_details.link}`
+                    })
+                    .then(sent => {
+                        // Mail sent
+                    }).catch((err) => console.log(err))
+
+
+                let newNotify = new Notify({
+                    title: 'New Contract Signed',
+                    message: `${saved.names} from ${saved.more_details.company} Company with the position of the ${saved.position}, has successfully signed the contract of the proposal ID : ${saved.ref}`,
+                    ref: `${saved.ref}`,
+                    link: "/converted/" + saved.ref
+                })
+                newNotify.save((err, resu) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    resu.status = "signed"; //___
+                    // Send live notification
+                    _ws.send(fy(resu))
+                })
+            }
+        }).catch((err) => console.log(err))
+
+    // Or update if issue rises
+    // converted_client.update({}, {})
+
+    res.send()
+});
+
+
+// Request changes
+router.post("/request_change", (req, res) => {
+
+    let data = { names: req.body.full_name, changes: req.body.changes, email: req.body.email, ref: req.body.ref, more_details: { contract: req.body.more_details, link: req.body.link, company: req.body.company } };
+
+    let newRequest_change = new request_change(data);
+    newRequest_change.save()
+        .then((saved) => {
+            if (saved) {
+                // We can send an email to the client
+                sendNotificationViaEmail('index', "Request sent", saved.email, 'saphira@sadjawebtools.com', [{
+                        /* filename: 'contract-agreement.png',
+                        path: './views/templates/output.png',
+                        cid: 'output.png',
+                        contentType: 'image/png' */
+                    }], {
+                        name: `You've successfully sent a request for change on the contract with Reference Number : ${saved.ref}`,
+                        title: `Hello ${saved.names.split(" ")[0]}, Sadja WebSolutions support team will review your request and get back to you`,
+                        regards: `Thank you.`,
+                        _no: 'no display',
+                        url: `#` /* ${req['header']('origin') + '/' + saved.more_details.link} */
+                    })
+                    .then(sent => {
+                        // Mail sent
+                    }).catch((err) => console.log(err))
+                    // Notify the main sadja web solutions' email
+                sendNotificationViaEmail('index', "New Change request by " + saved.names.split(" ")[0], 'zikama.sadja@gmail.com', saved.email, [{
+                        /* filename: 'contract-agreement.png',
+                        path: './views/templates/output.png',
+                        cid: 'output.png',
+                        contentType: 'image/png' */
+                    }], {
+                        name: `${saved.changes}`,
+                        title: `${saved.names}, has successfully signed the Contract`,
+                        regards: `Sadja WebSolutions LTD`,
+                        url: `${req['header']('origin') + '/' + saved.more_details.link}`
+                    })
+                    .then(sent => {
+                        // Mail sent
+                    }).catch((err) => console.log(err))
+
+
+                let newNotify = new Notify({
+                    title: 'New Change request',
+                    message: `${saved.changes}`,
+                    ref: `${saved.ref}`,
+                    link: "/changes/" + saved.ref
+                })
+                newNotify.save((err, resu) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    resu.status = "request"; //___
+                    // Send live notification
+                    _ws.send(fy(resu))
+                })
+            }
+        }).catch((err) => console.log(err))
+
+    // Or update if issue rises
+    // converted_client.update({}, {})
+
+    res.send()
+});
+
 router.get("/login", (req, res) => res.render("login", {
     pathToTheRoot: (() => {
         loginPR.pathToTheRoot = pathToTheRoot(req._parsedOriginalUrl.path);
@@ -500,6 +688,7 @@ router.get("/:shortUrl/:documentId/:name", (req, res) => {
                     readerPR.pathToTheRoot = pathToTheRoot(req._parsedOriginalUrl.path);
                     readerPR.header = `CONTRACT AGREEMENT BETWEEN: ${results.from} - ${results.company}`;
                     readerPR.contract = results.more_details.contract;
+                    readerPR.data = results;
                     res.render("reader", {
                         pathToTheRoot: (() => {
                             readerPR.pathToTheRoot = pathToTheRoot(req._parsedOriginalUrl.path);

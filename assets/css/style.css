@@ -850,7 +850,7 @@
         align-content: center;
         border-radius: 5em;
         cursor: pointer;
-        padding: 13px 0 0;
+        padding: 18px 11px 7px;
     }
     
     .sign {
@@ -888,12 +888,12 @@
     .checkbox+.label:before,
     .radio+label:before,
     .radio+.label:before {
-        border: 2px solid #FF9800 !important;
+        border: 2px solid rgb(255, 255, 255) !important;
     }
     
     .radio:checked+label:after,
     .radio:checked+.label:after {
-        background: #ff9800 !important;
+        background: #ffffff !important;
         transform: scale(1);
     }
     
@@ -1370,6 +1370,12 @@
     .art_mo {
         background: linear-gradient(to bottom, #647675a6 2%, rgba(24, 64, 60, 0.45) 15%) !important;
     }
+    
+    .under_submit_form .art_inp_co.li {
+        border-bottom: 1px solid #a4c3ce;
+        background: white;
+        border-radius: 5px;
+    }
     /* Mobile */
     
     @media screen and (min-width: 320px) {
@@ -1442,14 +1448,15 @@
         .checkbox+.label,
         .radio+label,
         .radio+.label {
-            font-size: xx-small;
+            font-size: small;
             margin: 0;
         }
         .split.checkboxes {
             width: 49%;
             margin: auto;
             align-items: center;
-            background: #ef6b1f;
+            background: #5ccf6e;
+            color: whitesmoke;
         }
         .under_submit_form {
             width: 100%;
@@ -1485,8 +1492,9 @@
         .modal_content_ h2,
         .editable h2,
         #read_tempo h2 {
-            font-size: 12pt;
+            font-size: 15pt;
             line-height: 1.5em;
+            margin: 0.5pc;
         }
         .editable,
         #read_tempo {
@@ -1495,7 +1503,7 @@
             word-spacing: 4px;
             letter-spacing: 0px;
             font-family: inherit;
-            line-height: 1.2em;
+            line-height: 1.6em;
         }
     }
     /* Mid smart-phones */
@@ -1582,10 +1590,9 @@
             margin: inherit;
         }
         .split.checkboxes {
-            width: 49%;
+            width: auto;
             margin: auto;
             align-items: center;
-            background: inherit;
             cursor: initial;
         }
         .header {
@@ -1630,6 +1637,10 @@
         #read_tempo h2 {
             font-size: 22pt;
             line-height: 1.5em;
+            margin-block-start: 0.83em;
+            margin-block-end: 0.83em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
         }
     }
     /* Min desktop */
