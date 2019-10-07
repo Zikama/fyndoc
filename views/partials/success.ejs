@@ -76,18 +76,18 @@
                     <% } %>
 
                         <script>
-                            let _art_close_ = document.querySelector(".art_close");
+                            __art_close_ = document.querySelector(".art_close");
 
-                            if (_art_close_) {
-                                _art_close_.addEventListener("click", e => {
+                            if (__art_close_) {
+                                __art_close_.addEventListener("click", e => {
                                     if (
-                                        _art_close_.parentElement.parentElement.classList.contains(
+                                        __art_close_.parentElement.parentElement.classList.contains(
                                             "hide-art_alert"
                                         )
                                     ) {
-                                        _art_close_.parentElement.remove();
+                                        __art_close_.parentElement.remove();
                                     } else {
-                                        let hideArt_alert = _art_close_.parentElement.parentElement.querySelector(
+                                        let hideArt_alert = __art_close_.parentElement.parentElement.querySelector(
                                             ".hide-art_alert"
                                         );
                                         hideArt_alert.remove();
