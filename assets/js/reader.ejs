@@ -130,7 +130,9 @@
         //     "https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"
         // );
         let read_tempo = document.querySelector("#read_tempo");
+        let read_tempo2 = document.querySelector("#read_tempo_proposal");
         read_tempo.insertAdjacentHTML("beforeEnd", `<%-contract%>`);
+        read_tempo2.insertAdjacentHTML("beforeEnd", `<%-ARTroposal%>`);
         // keep The Input Length Size While Typing
         function keepTheLength2() {
             // Get all the elements in the DOM that requires this functionality.
@@ -153,8 +155,8 @@
         }
         setTimeout(keepTheLength2, 4444);
 
-        function downloadContract(params) {
-            var element = document.getElementById("read_tempo");
+        function downloadPDF(params, name) {
+            var element = params || document.getElementById("read_tempo");
             var opt = {
                 margin: [0.5, 1],
                 filename: "myfile.pdf",
@@ -179,9 +181,51 @@
             html2pdf()
                 .set(opt)
                 .from(element)
-                .save("myFile0");
+                .save(name);
             return element
         }
+
+        // Download the propsal
+        ! function download_proposal() {
+            let _download_proposal = document.querySelector("#download_proposal");
+            if (_download_proposal) {
+                _download_proposal.addEventListener('click', _ => {
+                    let read_tempo_proposal = document.querySelector("#read_tempo_proposal");
+                    downloadPDF(read_tempo_proposal, "Sadja-proposal-<%=typeof data !=='undefined'?data.ref:'7566545'%>")
+                })
+            }
+        }();
+
+        function _preview_work_(under_preview, templates) {
+            let under_previews = document.querySelectorAll(under_preview);
+
+            for (let template of templates) {
+                for (let i = 0; i < under_previews.length; i++) {
+                    const preview = under_previews[i];
+                    if (preview) {
+                        preview.addEventListener('click', function() {
+
+                            let modal_ = document.querySelector(".modal_");
+                            let modal_content_ = document.querySelector(".modal_content_");
+                            // Get the template under the preview's top parent
+                            template_ = document.querySelector(template);
+                            // This fights against logging error in the console of innerHTML of null
+                            if (template_ && modal_content_) {
+                                modal_content_.innerHTML = template_.innerHTML;
+                            }
+
+                            // Display the modal
+                            modal_.classList.remove("hidden")
+
+                        })
+                    }
+                }
+            }
+        }! function preview_proposal(params) {
+            let preview_proposal_ = document.querySelector("#preview_proposal");
+
+            _preview_work_("#preview_proposal", ["#read_tempo_proposal"]);
+        }();
     </script>
 
     <%}%>

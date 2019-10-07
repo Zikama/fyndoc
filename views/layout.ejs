@@ -370,7 +370,7 @@
 
                         if (json.type === "sent" && json.to === "proposal") {
                             let current = proposalSent;
-                            current.innerText = "Sent successful";
+                            current.innerText = "Successfully sent";
                             current.classList.remove("disabled");
                             current.removeAttribute("disabled");
                             // We can now display the notifier
@@ -383,7 +383,7 @@
                         if (json.type === "sent" && json.to === "contract") {
                             let current = contractSent;
 
-                            current.innerText = "Sent successful";
+                            current.innerText = "Successful sent";
                             current.classList.remove("disabled");
                             current.removeAttribute("disabled");
                             setTimeout(() => {

@@ -16,8 +16,8 @@
                     <button class="art-dop_down io_aro  lis " id="proposal_doc"> Proposal document </button>
                     <!-- PSDOC Tab container  -->
                     <ul class="art-dop_col ul " id="pa-proposal_doc">
-                        <li class="li"><a href="#downloading">Download</a></li>
-                        <li class="li"><a href="#proposal_id">#7566545</a></li>
+                        <li class="li" id="download_proposal"><a href="#downloading">Download</a></li>
+                        <li class="li" id="preview_proposal"><a href="#proposal_id">#<%=typeof data !=='undefined'?data.ref:'7566545'%></a></li>
                     </ul>
                 </div>
             </div>
@@ -27,40 +27,46 @@
                     <div class="post" <% if(status==='signed' ){%> style="margin:23% auto"
                         <%}%>>
                             <div class="p_body">
-                                <% if(status==='signed' ){%>
-                                    <div class="pull <%= status === 'signed' ? 'allow_download':''%>">
-                                        <%}%>
-                                            <div class="p_body_content" id="read_tempo">
-                                            </div>
-                                            <% if(status==='signed' ){%>
+                                <% if( typeof proposal_data !== 'undefined'){%>
+                                    <div class="pull allow_download">
+                                        <div class="p_body_content" id="read_tempo_proposal">
+                                        </div>
                                     </div>
                                     <%}%>
+                                        <% if(status==='signed'){%>
+                                            <div class="pull <%= status === 'signed' ? 'allow_download':''%>">
+                                                <%}%>
+                                                    <div class="p_body_content" id="read_tempo">
+                                                    </div>
+                                                    <% if(status==='signed' ){%>
+                                            </div>
+                                            <%}%>
 
-                                        <div class="p_body_content_wrapper <%= status === 'not-signed' ? 'hidden':''%>" <%=status==='not-signed' ? 'hidden': ''%>>
-                                            <span class="split checkboxes disabled" style="background-color: #a2d7c7;">
+                                                <div class="p_body_content_wrapper <%= status === 'not-signed' ? 'hidden':''%>" <%=status==='not-signed' ? 'hidden': ''%>>
+                                                    <span class="split checkboxes disabled" style="background-color: #a2d7c7;">
                                                 <input type="checkbox" role="checkbox" id="signed" name="signed" value="download" checked disabled>
                                                 <label for="signed" style="cursor: none">successfully signed</label>
                                             </span>
-                                            <span class="submin">
+                                                    <span class="submin">
                                             <p class="terminal">
                                                 You've successfully signed this contract.
                                                 <br> You can now download the pdf version of the contract down.
                                             </p>
                                             </span>
 
-                                            <span class="split checkboxes">
+                                                    <span class="split checkboxes">
                                 <input type="checkbox" role="checkbox" id="_download" name="download" value="download" >
                                 <label for="_download">Download PDF</label>
                             </span>
 
-                                            <span class="split checkboxes">
+                                                    <span class="split checkboxes">
                                 <input type="checkbox" role="checkbox" id="_preview" name="_preview" value="preview">
                                 <label for="_preview">Preview</label>
                             </span>
-                                            <span class="submin">
-                                <p class="terminal"><b>Note: </b>This page we'll be available to you for 4 days from date of signed.</p>
+                                                    <span class="submin">
+                                <p class="terminal"><b>Note: </b>This page we'll be available to you for 30 days from date of signed.</p>
                             </span>
-                                        </div>
+                                                </div>
                             </div>
                     </div>
                     <%if (status ==='not-signed'){%>

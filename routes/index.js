@@ -507,7 +507,7 @@ router.post("/agree", (req, res) => {
         .then((saved) => {
             if (saved) {
                 // Visible date
-                var visibleDate = new Date().setDate(saved.date.getDate() + 4);
+                var visibleDate = new Date().setDate(saved.date.getDate() + 30);
 
                 contract.findOneAndUpdate({ ref: saved.ref }, {
                         status: 'signed',
@@ -695,13 +695,19 @@ router.get("/:shortUrl/:documentId/:name", (req, res) => {
                     readerPR.contract = results.more_details.contract;
                     readerPR.status = "not-signed";
                     readerPR.data = results;
-                    res.render("reader", {
-                        pathToTheRoot: (() => {
-                            readerPR.pathToTheRoot = pathToTheRoot(req._parsedOriginalUrl.path);
-                            return readerPR.pathToTheRoot;
-                        })(),
-                        ...readerPR
-                    });
+                    // Get the proposal
+                    proposal.findOne({ ref: ref }).then((propos) => {
+                        readerPR.ARTroposal = propos.more_details.proposal;
+                        readerPR.proposal_data = propos;
+                        res.render("reader", {
+                            pathToTheRoot: (() => {
+                                readerPR.pathToTheRoot = pathToTheRoot(req._parsedOriginalUrl.path);
+                                return readerPR.pathToTheRoot;
+                            })(),
+                            ...readerPR
+                        });
+
+                    }).catch((err) => console.log(err))
                 } else {
                     // For already signed contract
                     if (results.contract_status == 'signed' && results.more_details.visible_until !== new Date()) {
@@ -818,7 +824,7 @@ router.post("/proposal/approve", (req, res) => {
         .then((saved) => {
             if (saved) {
                 // Visible date
-                var visibleDate = new Date().setDate(saved.date.getDate() + 4);
+                var visibleDate = new Date().setDate(saved.date.getDate() + 30);
 
                 proposal.findOneAndUpdate({ ref: saved.ref }, {
                         status: 'approved',
