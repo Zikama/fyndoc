@@ -171,7 +171,7 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                                         proposal.findOne({ _id: results._id }).then((done) => {
                                             //#############done#################
                                             // We can send an email
-                                            sendNotificationViaEmail('index', "test1", done.email, 'saphira@sadjawebtools.com', [{
+                                            sendNotificationViaEmail('index', "New Proposal for Sadja WebSolutions", done.email, 'saphira@sadjawebtools.com', [{
                                                     filename: 'contract-agreement.png',
                                                     path: './views/templates/output.png',
                                                     cid: 'output.png',
@@ -308,7 +308,7 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                                         contract.findOne({ _id: results._id }).then((done) => {
                                             //#############done#################
                                             // We can send an email
-                                            sendNotificationViaEmail('index', "test1", done.email, 'saphira@sadjawebtools.com', [{
+                                            sendNotificationViaEmail('index', "New Contract for proposal ID: " + done.ref, done.email, 'saphira@sadjawebtools.com', [{
                                                     filename: 'contract-agreement.png',
                                                     path: './views/templates/output.png',
                                                     cid: 'output.png',
