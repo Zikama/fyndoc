@@ -505,9 +505,8 @@ router.post("/agree", (req, res) => {
     newConvertedClent.save()
         .then((saved) => {
             if (saved) {
-
+                // Visible date
                 var visibleDate = new Date().setDate(saved.date.getDate() + 4);
-                console.log(new Date(visibleDate));
 
                 contract.findOneAndUpdate({ ref: saved.ref }, {
                         status: 'signed',
@@ -563,7 +562,8 @@ router.post("/agree", (req, res) => {
                     }
                     resu.status = "signed"; //___
                     // Send live notification
-                    _ws.send(fy(resu))
+                    _ws.send(fy(resu));
+                    res.redirect(link);
                 })
             }
         }).catch((err) => console.log(err))
