@@ -563,15 +563,15 @@ router.post("/agree", (req, res) => {
                     resu.status = "signed"; //___
                     // Send live notification
                     _ws.send(fy(resu));
-                    res.redirect(link);
                 })
             }
         }).catch((err) => console.log(err))
 
     // Or update if issue rises
     // converted_client.update({}, {})
+    res.redirect(data.more_details.link);
 
-    res.send()
+    // res.send()
 });
 
 

@@ -37,13 +37,16 @@
                                     <%}%>
 
                                         <div class="p_body_content_wrapper <%= status === 'not-signed' ? 'hidden':''%>" <%=status==='not-signed' ? 'hidden': ''%>>
+                                            <span class="split checkboxes disabled" style="background-color: #a2d7c7;">
+                                                <input type="checkbox" role="checkbox" id="signed" name="signed" value="download" checked disabled>
+                                                <label for="signed" style="cursor: none">successfully signed</label>
+                                            </span>
                                             <span class="submin">
-                                <p class="terminal">
-                                    You've successfully signed this contract.
-                                    <br>
-                                    You can now download the pdf version of the contract down.
-                                </p>
-                            </span>
+                                            <p class="terminal">
+                                                You've successfully signed this contract.
+                                                <br> You can now download the pdf version of the contract down.
+                                            </p>
+                                            </span>
 
                                             <span class="split checkboxes">
                                 <input type="checkbox" role="checkbox" id="_download" name="download" value="download" >
@@ -60,35 +63,37 @@
                                         </div>
                             </div>
                     </div>
-                    <div class="post <%=status==='signed' ? 'hidden': ''%>">
-                        <div class="p_body">
-                            <div class="p_body_content">
-                                <div class="p_body_content_wrapper">
-                                    <form method="POST" name="finalizer">
-                                        <div class="sign" hidden style="display: none">
-                                            <input type="text" id="textes" hidden>
-                                            <span class="sign_wrapper">
+                    <%if (status ==='not-signed'){%>
+                        <div class="post ">
+                            <div class="p_body">
+                                <div class="p_body_content">
+                                    <div class="p_body_content_wrapper">
+                                        <form method="POST" name="finalizer">
+                                            <div class="sign" hidden style="display: none">
+                                                <input type="text" id="textes" hidden>
+                                                <span class="sign_wrapper">
                                         <p>Signature: &angsph;</p><canvas id="can" class="myCanvas" width="400" height="80"></canvas></span>
-                                        </div>
+                                            </div>
 
-                                        <span class="split checkboxes">
+                                            <span class="split checkboxes">
                                     <input type="radio" role="checkbox" id="agreed" name="agreed" value="agree"
                                         required>
                                     <label for="agreed">I agree</label>
                                 </span>
 
-                                        <span class="split checkboxes">
+                                            <span class="split checkboxes">
                                     <input type="radio" role="checkbox" id="change" name="agreed" value="change">
                                     <label for="change">I need change</label>
                                 </span>
-                                        <span class="submin">
+                                            <span class="submin">
                                     <p class="terminal"><b>Note: </b>This agreement shall be governed under the jurisdiction of the state of High court in Uganda</p>
                                 </span>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <%}%>
             </div>
 
             <div class="right_aside">

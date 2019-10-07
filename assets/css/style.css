@@ -1386,7 +1386,7 @@
     
     .allow_download {
         position: fixed;
-        left: -500vw;
+        left: -50000vw;
         /*   -webkit-transform: translate(-500%, 0);
         -moz-transform: translate(-500%, 0);
         -ms-transform: translate(-500%, 0);
