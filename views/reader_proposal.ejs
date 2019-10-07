@@ -1,0 +1,268 @@
+<div class="Rectangle-1">
+    <% include ./header/index%>
+
+        <div class="art_board">
+
+            <div class="left_aside hidden" hidden>
+                <div class="uls">
+                    <!-- Dashboard -->
+                    <button class="art-dop_down io_aro  lis hidden" hidden id="dashboard">Dashboard</button>
+                    <!-- Sale Tab container  -->
+                    <ul class="art-dop_col ul hidden " id="pa-dashboard">
+                        <li class="li"><a href="#sign_in">Sign in</a></li>
+                        <li class="li"><a href="#sign_up">Create an account</a></li>
+                    </ul>
+                    <!-- PSDOC Tab -->
+                    <button class="art-dop_down io_aro  lis " id="proposal_doc"> Proposal document </button>
+                    <!-- PSDOC Tab container  -->
+                    <ul class="art-dop_col ul " id="pa-proposal_doc">
+                        <li class="li"><a href="#downloading">Download</a></li>
+                        <li class="li"><a href="#proposal_id">#7566545</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="posts_con" id="viewport" <% if(status==='approved' ){%> style="min-height:auto"
+                <%}%>>
+                    <div class="post" <% if(status==='approved' ){%> style="margin:10% auto"
+                        <%}%>>
+                            <div class="p_body">
+                                <% if(status==='approved' ){%>
+                                    <div class="pull <%= status === 'approved' ? 'allow_download':''%>">
+                                        <%}%>
+                                            <div class="p_body_content" id="read_tempo">
+                                            </div>
+                                            <% if(status==='approved' ){%>
+                                    </div>
+                                    <%}%>
+
+                                        <div class="p_body_content_wrapper <%= status === 'not-approved' ? 'hidden':''%>" <%=status==='not-approved' ? 'hidden': ''%>>
+                                            <span class="split checkboxes disabled" style="background-color: #a2d7c7;">
+                                                <input type="checkbox" role="checkbox" id="approved" name="approved" value="download" checked disabled>
+                                                <label for="approved" style="cursor: none">successfully approved</label>
+                                            </span>
+                                            <span class="submin">
+                                            <p class="terminal">
+                                                You've successfully approved this proposal.
+                                                <br> You can now download the pdf version of the proposal down.
+                                            </p>
+                                            </span>
+
+                                            <span class="split checkboxes">
+                                <input type="checkbox" role="checkbox" id="_download" name="download" value="download" >
+                                <label for="_download">Download PDF</label>
+                            </span>
+
+                                            <span class="split checkboxes">
+                                <input type="checkbox" role="checkbox" id="_preview" name="_preview" value="preview">
+                                <label for="_preview">Preview</label>
+                            </span>
+                                            <span class="submin">
+                                <p class="terminal"><b>Note: </b>This page we'll be available to you for 4 days from date of approved.</p>
+                            </span>
+                                        </div>
+                            </div>
+                    </div>
+                    <%if (status ==='not-approved'){%>
+                        <div class="post ">
+                            <div class="p_body">
+                                <div class="p_body_content">
+                                    <div class="p_body_content_wrapper">
+                                        <form method="POST" name="finalizer">
+
+                                            <style>
+                                                .split.checkboxes.dec {
+                                                    background: #c0c3b7;
+                                                }
+                                                
+                                                .checkbox+label:before,
+                                                .checkbox+.label:before,
+                                                .radio+label:before,
+                                                .radio+.label:before {
+                                                    background: transparent;
+                                                }
+                                            </style>
+                                            <span class="split checkboxes dec">
+                                    <input type="radio" role="checkbox" id="decline" name="proposal" value="decline">
+                                    <label for="decline">Decline</label>
+                                </span>
+
+                                            <span class="split checkboxes">
+                                    <input type="radio" role="checkbox" id="approve" name="proposal" value="approve"
+                                        required>
+                                    <label for="approve">I approve</label>
+                                </span>
+                                            <span class="submin">
+                                    <p class="terminal"><b>Note: </b>Whaterever we want ?</p>
+                                </span>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <%}%>
+            </div>
+
+            <div class="right_aside">
+                <div class="simpo_barn">
+                    <div class="uls">
+                        <!-- LB Tab -->
+                        <button class="art-dop_down io_aro  lis " id="related_work"> Latest Books </button>
+                        <!-- LB Tab container  -->
+                        <ul class="art-dop_col ul " id="pa-related_work">
+                            <li class="li bord_bottom_5_lightgrey">
+                                <a href="https://sadjawebsolutions.com/an-ultimate-plan-for-any-business-to-grow-online/" target="_blank" class="tex_no_deco"> An ultimate plan for any business to grow online 
+                                    
+                                </a>
+                            </li>
+                            <li class="li">
+                                <a href="https://sadjawebsolutions.com/15-silly-mistakes-youre-making-business-card/" target="_blank" class="tex_no_deco">
+                                    business card 15 mistakes revealed.
+                                
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <a target="_blank" href="https://sadjawebsolutions.com/whitepapers/" class="tex_no_deco" onClick="event.preventDefault();window.open(this.href,'targetWindow',
+                                   'toolbar=no',
+                                    'location=no',
+                                    'status=no',
+                                    'menubar=no',
+                                    'scrollbars=yes',
+                                   ' resizable=yes',
+                                   ' width=550px',
+                                    'height=545px');">
+                        <button class="see_more cursor_pointer">See more...</button> </a>
+                </div>
+
+                <div class="simpo_barn2">
+                    <div class="uls">
+                        <!-- LB Tab -->
+                        <button class="art-dop_down io_aro  lis " id="related_work"> Latest News </button>
+                        <!-- LB Tab container  -->
+                        <ul class="art-dop_col ul " id="pa-related_work">
+                            <li class="li bord_bottom_5_lightgrey">
+                                <a href="https://sadjawebsolutions.com/an-ultimate-plan-for-any-business-to-grow-online/" target="_blank" class="tex_no_deco"> An ultimate plan for any business to grow online 
+                                    
+                                </a>
+                            </li>
+                            <li class="li">
+                                <a href="https://sadjawebsolutions.com/15-silly-mistakes-youre-making-business-card/" target="_blank" class="tex_no_deco">
+                                    business card 15 mistakes revealed.
+                                
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <a target="_blank" href="https://sadjawebsolutions.com/whitepapers/" class="tex_no_deco" onClick="event.preventDefault();window.open(this.href,'targetWindow',
+                                   'toolbar=no',
+                                    'location=no',
+                                    'status=no',
+                                    'menubar=no',
+                                    'scrollbars=yes',
+                                   ' resizable=yes',
+                                   ' width=550px',
+                                    'height=545px');">
+                        <button class="see_more cursor_pointer">See more...</button> </a>
+
+                </div>
+            </div>
+
+
+        </div>
+</div>
+
+<% include ./modals/custom%>
+    <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets/js/custom.js"></script>
+    <% include ../assets/js/reader_proposal%>
+        <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets/js/index.js"></script>
+
+        <script>
+            function _preview_work(under_preview, templates) {
+                let under_previews = document.querySelectorAll(under_preview);
+
+                for (let template of templates) {
+                    for (let i = 0; i < under_previews.length; i++) {
+                        const preview = under_previews[i];
+                        if (preview) {
+                            preview.addEventListener('change', function() {
+                                if (preview.checked) {
+                                    let modal_ = document.querySelector(".modal_");
+                                    let modal_content_ = document.querySelector(".modal_content_");
+                                    // Get the template under the preview's top parent
+                                    template_ = document.querySelector(template);
+                                    // This fights against logging error in the console of innerHTML of null
+                                    if (template_ && modal_content_) {
+                                        modal_content_.innerHTML = template_.innerHTML;
+                                    }
+
+                                    // Display the modal
+                                    modal_.classList.remove("hidden")
+                                }
+                            })
+                        }
+                    }
+                }
+            }
+            _preview_work("#_preview", ["#read_tempo"]);
+
+            // Add script for pdf conversion
+            function addScript(url) {
+                var script = document.createElement("script");
+                script.type = "application/javascript";
+                script.src = url;
+                document.head.appendChild(script);
+            }
+
+            // Download pdf version of the proposal
+            function downloadproposal(element) {
+                var opt = {
+                    margin: [0.5, 1],
+                    filename: "Sadja-proposal-" + new Date().toDateString().split(" ").join("-") + ".pdf",
+                    image: {
+                        type: "jpeg",
+                        quality: 1
+                    },
+                    html2canvas: {
+                        scale: 2
+                    },
+                    jsPDF: {
+                        orientation: "p",
+                        unit: "cm",
+                        format: "a4",
+                        putOnlyUsedFonts: true
+                    },
+                    pagebreak: {
+                        after: ["#after1", "#after2"],
+                        avoid: "b"
+                    }
+                };
+                html2pdf()
+                    .set(opt)
+                    .from(element)
+                    .save();
+                return element
+            };
+
+            let _download = document.querySelector("#_download");
+            if (_download) {
+                _download.addEventListener("change", (e) => {
+                    if (_download.checked) {
+                        var element = document.getElementById("read_tempo");
+                        downloadproposal(element);
+                    }
+                    // We can notify about the downloading
+                });
+            }
+            domtoimage.toSvg(document.getElementById("read_tempo"))
+                .then(function(dataUrl) {
+                    // var img = new Image();
+                    // img.src = dataUrl;
+                    // document.body.appendChild(img);
+                })
+                .catch(function(error) {
+                    console.error('oops, something went wrong!', error);
+                });
+        </script>

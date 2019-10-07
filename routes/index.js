@@ -95,6 +95,7 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
         // Save contract to draft
 
         if (message.type === 'save' && message.to === 'contract') {
+
             contract_draft.findOneAndUpdate({ auto: 'false' }, {...message }).then((done) => {
                 if (done) {
                     _ws.send(fy({
@@ -574,7 +575,6 @@ router.post("/agree", (req, res) => {
     // res.send()
 });
 
-
 // Request changes
 router.post("/request_change", (req, res) => {
 
@@ -608,7 +608,7 @@ router.post("/request_change", (req, res) => {
                         contentType: 'image/png' */
                     }], {
                         name: `${saved.changes}`,
-                        title: `${saved.names}, has successfully signed the Contract`,
+                        title: `${saved.names} has requested for change on contract with Proposal ID : ${saved.ref}`,
                         regards: `Sadja WebSolutions LTD`,
                         url: `${req['header']('origin') + '/' + saved.more_details.link}`
                     })
@@ -636,8 +636,10 @@ router.post("/request_change", (req, res) => {
 
     // Or update if issue rises
     // converted_client.update({}, {})
+    req.flash("art_p_success_msg", `You've successfully sent a request, our team will shortly contact you`)
+    res.redirect(data.more_details.link);
 
-    res.send()
+    // res.send()
 });
 
 router.get("/login", (req, res) => res.render("login", {
@@ -656,6 +658,8 @@ const readerPR = {
     header: `CONTRACT AGREEMENT BETWEEN: SADJA WEB SOLUTIONS - ANOTHER COMPANY`
 };
 let viewTimes = 0;
+
+// Contract Reading link route
 router.get("/:shortUrl/:documentId/:name", (req, res) => {
     let shortCode = req.params.shortUrl,
         ref = req.params.documentId,
@@ -724,6 +728,160 @@ router.get("/:shortUrl/:documentId/:name", (req, res) => {
         })
         .catch(err => console.log(err))
 });
+
+// Proposal Reading link route
+
+// Reader parameters
+const proposalReaderPR = {
+    who: "client",
+    title: { true: true, name: "Sadja - Proposal Manager" },
+    original_css: true,
+    header: `PROPOSAL: SADJA WEB SOLUTIONS - ANOTHER COMPANY`
+};
+
+let _viewTimes = 0;
+router.get("/proposal/:documentId/:shortUrl/:name", (req, res) => {
+    let shortCode = req.params.shortUrl,
+        ref = req.params.documentId,
+        company = Capitalize(req.params.name, "_");
+
+    // Double check the url params exists in our database
+    proposal.find({ shortCode, ref, company })
+        .then((results) => {
+            if (results && results.length) {
+
+                results = results[0];
+                // Update viewTimes from db
+                if (results.more_details.viewTimes) {
+                    _viewTimes = results.more_details.viewTimes + 1;
+                } else {
+                    _viewTimes = _viewTimes + 1;
+                }
+
+                if (results.proposal_status === 'not-approved') {
+                    proposal.findByIdAndUpdate({ _id: results._id }, {
+                            view_date: Date.now(),
+                            status: 'viewed',
+                            "more_details.viewTimes": _viewTimes
+                        })
+                        .then((rwa) => {
+                            // Doc updated
+                        })
+                        .catch(err => console.log(err));
+
+                    let user_agent = req["headers"]["user-agent"];
+                    proposalReaderPR.pathToTheRoot = pathToTheRoot(req._parsedOriginalUrl.path);
+                    proposalReaderPR.header = `PROPOSAL: ${results.from} - ${results.company}`;
+                    proposalReaderPR.proposal = results.more_details.proposal;
+                    proposalReaderPR.status = "not-approved";
+                    proposalReaderPR.data = results;
+                    res.render("reader_proposal", {
+                        pathToTheRoot: (() => {
+                            proposalReaderPR.pathToTheRoot = pathToTheRoot(req._parsedOriginalUrl.path);
+                            return proposalReaderPR.pathToTheRoot;
+                        })(),
+                        ...proposalReaderPR
+                    });
+                } else {
+                    // For already signed contract
+                    if (results.proposal_status === 'approved' && results.more_details.visible_until !== new Date()) {
+                        // res.redirect(`${pathToTheRoot(req._parsedOriginalUrl.path)}contract/signed/${shortCode}`)
+
+                        let user_agent = req["headers"]["user-agent"];
+                        proposalReaderPR.pathToTheRoot = pathToTheRoot(req._parsedOriginalUrl.path);
+                        proposalReaderPR.header = `PROPOSAL: ${results.from} - ${results.company}`;
+                        proposalReaderPR.proposal = results.more_details.proposal;
+                        proposalReaderPR.status = "approved";
+                        proposalReaderPR.data = results;
+                        res.render("reader_proposal", {
+                            pathToTheRoot: (() => {
+                                proposalReaderPR.pathToTheRoot = pathToTheRoot(req._parsedOriginalUrl.path);
+                                return proposalReaderPR.pathToTheRoot;
+                            })(),
+                            ...proposalReaderPR
+                        });
+                    } else {
+                        res.redirect(`${pathToTheRoot(req._parsedOriginalUrl.path)}notfound`)
+                    }
+                }
+            }
+        })
+        .catch(err => console.log(err))
+});
+
+// approve on the proposal _ 
+router.post("/proposal/approve", (req, res) => {
+    let data = { names: req.body.full_name, id: '00000', date_of_birth: req.body.date_of_birth, email: req.body.email, position: req.body.position, ref: req.body.ref, more_details: { contract: req.body.more_details, link: req.body.link, company: req.body.company } };
+
+    let newConvertedClent = new converted_client(data);
+    newConvertedClent.save()
+        .then((saved) => {
+            if (saved) {
+                // Visible date
+                var visibleDate = new Date().setDate(saved.date.getDate() + 4);
+
+                proposal.findOneAndUpdate({ ref: saved.ref }, {
+                        status: 'approved',
+                        proposal_status: "approved",
+                        approved_date: saved.date,
+                        'more_details.visible_until': new Date(visibleDate)
+                    })
+                    .then((done) => {
+                        // We can send an email to the client
+                        sendNotificationViaEmail('index', "Proposal approved ", saved.email, 'saphira@sadjawebtools.com', [{
+                                /* filename: 'contract-agreement.png',
+                                path: './views/templates/output.png',
+                                cid: 'output.png',
+                                contentType: 'image/png' */
+                            }], {
+                                name: `We look forward on contacting you further on the same.`,
+                                title: `Hello ${saved.names.split(" ")[0]}, thank you for approving the Proposal`,
+                                regards: `Kind regards: Sadja WebSolutions support team`,
+                                url: `${req['header']('origin') + '/' + saved.more_details.link}`
+                            })
+                            .then(sent => {
+                                // Mail sent
+                            }).catch((err) => console.log(err))
+                    }).catch((err) => console.log(err));
+
+                // Notify the main sadja web solutions' email
+                sendNotificationViaEmail('index', "New Proposal Approved by: " + saved.names.split(" ")[0], 'zikama.sadja@gmail.com', saved.email, [{
+                        /*  filename: 'contract-agreement.png',
+                         path: './views/templates/output.png',
+                         cid: 'output.png',
+                         contentType: 'image/png' */
+                    }], {
+                        name: `The Proposal ID is : ${saved.ref}`,
+                        title: `${saved.names}, has successfully Approved the Proposal`,
+                        regards: `Sadja WebSolutions LTD`,
+                        url: `${req['header']('origin') + '/' + saved.more_details.link}`
+                    })
+                    .then(sent => {
+                        // Mail sent
+                    }).catch((err) => console.log(err))
+
+                let newNotify = new Notify({
+                    title: 'New Proposal Approved',
+                    message: `${saved.names} from ${saved.more_details.company} Company with the position of the ${saved.position}, has successfully approved the proposal of the ID : ${saved.ref}`,
+                    ref: `${saved.ref}`,
+                    link: "/converted/" + saved.ref
+                })
+                newNotify.save((err, resu) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    resu.status = "approved"; //___
+                    // Send live notification
+                    _ws.send(fy(resu));
+                })
+            }
+        }).catch((err) => console.log(err))
+
+    // Or update if issue rises
+    // converted_client.update({}, {})
+    res.redirect("../" + data.more_details.link);
+});
+
 
 router.get("/keeplive", (req, res) => {
     res.json({ res: Date.now() + 200000000 });

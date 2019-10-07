@@ -1,0 +1,170 @@
+<script>
+    [g, gA] = [k => document.querySelector(k), k => document.querySelectorAll(k)];
+    let approved = g("#approve");
+    if (approved) {
+        approved.addEventListener("click", approvedForm);
+    }
+
+    let decline = g("#decline");
+
+    if (decline) {
+        decline.addEventListener("click", declineForm);
+    }
+
+    function approvedForm() {
+        displayModal("flex", function() {
+            writeToHeader("write", function(placeHolder) {
+                placeHolder.innerHTML =
+                    "<h1>Agreement - </h1><p>Tell us more about you and your position in your company</p>";
+            });
+            writeToBody("write", function(placeHolder) {
+                placeHolder.innerHTML = `<form method="post" class="art-mo-form" action="<%=typeof pathToTheRoot !=='undefined' ? pathToTheRoot:'../../../'%>proposal/approve">
+                    <input type="hidden" name="ref" value='<%=data.ref%>'><input type="hidden" name="more_details" value='<%=data.more_details.proposal%>'>
+                    <input type="hidden" name="link" value='<%=data.link%>'><input type="hidden" name="company" value='<%=data.company%>'>
+                          <div class="art_inps">
+                              <label for="full_name"> Names</label>
+                              <div class="art_inp_co">
+                                  <input type="text" class="art_inp" placeholder="Your full name as shown on your ID/Passport" id="full_name" name="full_name" required>
+                              </div>
+                          </div>
+
+                          <div class="art_inps">
+                              <label for="email"> Email</label>
+                              <div class="art_inp_co">
+                                  <input type="text" class="art_inp" placeholder="Your business Email address" id="email" name="email" required>
+                              </div>
+                          </div>
+
+                              <div class="art_inps">
+                                  <label for="position"> Position</label>
+                                  <div class="art_inp_co">
+                                      <input type="text" class="art_inp" placeholder="What is your position in your company ?" id="position" name="position" required>
+                                  </div>
+                              </div>
+                              <button type="submit" class="opacity-0" id="submit1" hidden>Send</button>
+                          </form>`;
+                callButton("0", ok => {
+                    ok.innerText = "Approve";
+                    let getFooter = placeHolder.nextElementSibling;
+                    let getForm = placeHolder.querySelector("form");
+                    ok.addEventListener("click", () => {
+                        getForm.querySelector("#submit1").click();
+                    });
+                });
+            });
+        });
+    }
+
+    function declineForm() {
+        displayModal("flex", function() {
+            writeToHeader("write", function(placeHolder) {
+                placeHolder.innerHTML = "<h1>Tell us about the changes you need</h1>";
+            });
+            writeToBody("write", function(placeHolder) {
+                placeHolder.innerHTML = `<form method="post" class="art-mo-form"  action="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../../../'%>proposal/decline">
+                    <input type="hidden" name="ref" value='<%=data.ref%>'><input type="hidden" name="more_details" value='<%=data.more_details.proposal%>'>
+                    <input type="hidden" name="link" value='<%=data.link%>'><input type="hidden" name="company" value='<%=data.company%>'>
+
+                          <div class="art_inps">
+                              <label for="full_name"> Names</label>
+                              <div class="art_inp_co">
+                                  <input type="text" class="art_inp" placeholder="Your full name as shown on your ID/Passport" id="full_name" name="full_name" required>
+                              </div>
+                          </div>
+
+                          <div class="art_inps">
+                              <label for="email"> Email</label>
+                              <div class="art_inp_co">
+                                  <input type="text" class="art_inp" placeholder="Your business Email address" id="email" name="email" required>
+                              </div>
+                          </div>
+
+                              <div class="art_inps">
+                                  <label for="comment"> Comment </label>
+                                  <div class="art_inp_co">
+                                      <textarea class="art_inp_area" placeholder="Have any comment about this proposal ?      (Optional)" id="comment" name="comment" ></textarea>
+                                  </div>
+                              </div>
+                              <button type="submit" class="opacity-0" id="submit" hidden>Send</button>
+                          </form>`;
+                callButton("0", ok => {
+                    ok.innerText = "Send";
+                    let getFooter = placeHolder.nextElementSibling;
+                    let getForm = placeHolder.querySelector("form");
+                    ok.addEventListener("click", () => {
+                        getForm.querySelector("#submit").click();
+                    });
+                });
+            });
+        });
+    }
+</script>
+
+<% if( typeof proposal !='undefined') {%>
+
+    <script>
+        function addScript(url) {
+            var script = document.createElement("script");
+            script.type = "application/javascript";
+            script.src = url;
+            document.head.appendChild(script);
+        }
+        // addScript(
+        //     "https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"
+        // );
+        let read_tempo = document.querySelector("#read_tempo");
+        read_tempo.insertAdjacentHTML("beforeEnd", `<%-proposal%>`);
+        // keep The Input Length Size While Typing
+        function keepTheLength2() {
+            // Get all the elements in the DOM that requires this functionality.
+            // NOTE: Every element of type input with the class editor_input this functionality will
+            // take action to it
+            let inp = document.querySelectorAll(".editor_input");
+            if (typeof inp != "undefined" && inp.length) {
+                for (let i = 0; i < inp.length; i++) {
+                    let _in = inp[i];
+                    if (_in) {
+                        _in.addEventListener("keyup", e_ => {
+                            let lwgth = _in.value.length - 2 <= 0 ? 1 : _in.value.length - 2;
+                            lwgth = _in.value.length - 3 <= 3 ? 3 : _in.value.length - 3;
+                            lwgth = _in.value.length - 4 <= 5 ? 6 : _in.value.length - 5;
+                            _in.setAttribute("size", lwgth + 10);
+                        });
+                    }
+                }
+            }
+        }
+        setTimeout(keepTheLength2, 4444);
+
+        function downloadproposal(params) {
+            var element = document.getElementById("read_tempo");
+            var opt = {
+                margin: [0.5, 1],
+                filename: "myfile.pdf",
+                image: {
+                    type: "jpeg",
+                    quality: 1
+                },
+                html2canvas: {
+                    scale: 2
+                },
+                jsPDF: {
+                    orientation: "p",
+                    unit: "cm",
+                    format: "a4",
+                    putOnlyUsedFonts: true
+                },
+                pagebreak: {
+                    after: ["#after1", "#after2"],
+                    avoid: "b"
+                }
+            };
+            html2pdf()
+                .set(opt)
+                .from(element)
+                .save("myFile0");
+            return element
+        }
+    </script>
+
+    <%}%>
