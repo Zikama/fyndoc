@@ -37,15 +37,18 @@ const sendNotificationViaEmail = (messageTemp, Subject, to, from, attach, contex
 
     })
 };
-
+// JSON parse
 function pars(e) {
     return JSON.parse(e)
 }
-
+// JSON stringify
 function fy(e) {
     return JSON.stringify(e)
 }
+
+// The initials times the contract been visisted, default is 0
 let times = 0,
+    // Global vars for WS
     _ws, request, websocket, norm_size, history, clients, clientsize;
 // Test WS
 web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => {
@@ -160,12 +163,11 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                             if (results) {
                                 // create a link
                                 proposal.findOneAndUpdate({ _id: results._id }, {
-                                        link: `${results.ref.replace("#", '')}/${results.shortCode}/${results.company.split(" ").join("_").toLowerCase()}`,
+                                        link: `proposal/${results.ref.replace("#", '')}/${results.shortCode}/${results.company.split(" ").join("_").toLowerCase()}`,
                                         proposal: `${results.from.replace('LTD', '')} - ${results.company} `
                                     })
                                     .then((ress) => {
                                         proposal.findOne({ _id: results._id }).then((done) => {
-
                                             //#############done#################
                                             // We can send an email
                                             sendNotificationViaEmail('index', "test1", done.email, 'saphira@sadjawebtools.com', [{
@@ -208,12 +210,12 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                                                             type: 'sent',
                                                             to: 'proposal',
                                                             status: "failed",
-                                                            title: `There was a problem sending a Proposal to ${done.email} with a proposal ID: #${done.ref}`
+                                                            title: `There was a problem sending a Proposal to ${done.email} with a proposal ID: #${done.ref}, please try again`
                                                         }));
                                                         // Store Notification
                                                         let newNotify = new Notify({
                                                             title: 'Failed Sending Proposal',
-                                                            message: `There was a problem sending a Proposal to ${done.email} with a proposal ID: #${done.ref}, error : ${err}`,
+                                                            message: `There was a problem sending a Proposal to ${done.email} with a proposal ID: #${done.ref}, error : ${err}, please try again`,
                                                             ref: `${done._id}`,
                                                             link: "/proposals/failure" + done.ref
                                                         });
@@ -235,13 +237,13 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                                                     _ws.send(fy({
                                                             type: 'sent',
                                                             to: 'proposal',
-                                                            title: 'There was a problem sending a Proposal to ${done.email} with a proposal ID: #${done.ref}',
+                                                            title: 'There was a problem sending a Proposal to ${done.email} with a proposal ID: #${done.ref}, please try again',
                                                             status: "failed"
                                                         }))
                                                         // Store Notification
                                                     let newNotify = new Notify({
                                                         title: 'Failed Sending Proposal',
-                                                        message: `There was a problem sending a Proposal to ${done.email} with a proposal ID: #${done.ref}, error : ${err}`,
+                                                        message: `There was a problem sending a Proposal to ${done.email} with a proposal ID: #${done.ref}, error : ${err}, please try again`,
                                                         ref: `${done._id}`,
                                                         link: "/proposals/failure" + done.ref
                                                     });
@@ -323,7 +325,7 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                                                             type: 'sent',
                                                             to: 'contract',
                                                             status: "successful",
-                                                            title: `You've successfully sent an new Contract to ${done.email} with a proposal ID: #${done.ref}`
+                                                            title: `You've successfully sent a new Contract to ${done.email} with a proposal ID: #${done.ref}`
                                                         }));
                                                         // Store Notification
                                                         let newNotify = new Notify({
@@ -346,12 +348,12 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                                                                 type: 'sent',
                                                                 to: 'contract',
                                                                 status: "failed",
-                                                                title: `There was a problem sending a Contract to ${done.email} with a proposal ID: #${done.ref}`
+                                                                title: `There was a problem sending a Contract to ${done.email} with a proposal ID: #${done.ref}, please try again`
                                                             }))
                                                             // Store Notification
                                                         let newNotify = new Notify({
                                                             title: 'Failed Sending Contract',
-                                                            message: `There was a problem sending a Contract to ${done.email} with a proposal ID: #${done.ref}, error : ${err}`,
+                                                            message: `There was a problem sending a Contract to ${done.email} with a proposal ID: #${done.ref}, error : ${err}, please try again`,
                                                             ref: `${done._id}`,
                                                             link: "/contracts/failure" + done.ref
                                                         });
@@ -374,12 +376,12 @@ web_socket.Server((ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize) => 
                                                             type: 'sent',
                                                             to: 'contract',
                                                             status: "failed",
-                                                            title: `There was a problem sending a Contract to ${done.email} with a proposal ID: #${done.ref}`
+                                                            title: `There was a problem sending a Contract to ${done.email} with a proposal ID: #${done.ref}, please try again`
                                                         }))
                                                         // Store Notification
                                                     let newNotify = new Notify({
                                                         title: 'Failed Sending Contract',
-                                                        message: `There was a problem sending a Contract to ${done.email} with a proposal ID: #${done.ref}, error : ${err}`,
+                                                        message: `There was a problem sending a Contract to ${done.email} with a proposal ID: #${done.ref}, error : ${err}, please try again`,
                                                         ref: `${done._id}`,
                                                         link: "/contracts/failure" + done.ref
                                                     });
@@ -673,7 +675,6 @@ router.get("/:shortUrl/:documentId/:name", (req, res) => {
                 }
 
                 if (results.contract_status == 'not-signed') {
-
                     contract.findByIdAndUpdate({ _id: results._id }, {
                             view_date: Date.now(),
                             status: 'viewed',
@@ -682,12 +683,13 @@ router.get("/:shortUrl/:documentId/:name", (req, res) => {
                         .then((rwa) => {
                             // Doc updated
                         })
-                        .catch(err => console.log(err))
+                        .catch(err => console.log(err));
 
                     let user_agent = req["headers"]["user-agent"];
                     readerPR.pathToTheRoot = pathToTheRoot(req._parsedOriginalUrl.path);
                     readerPR.header = `CONTRACT AGREEMENT BETWEEN: ${results.from} - ${results.company}`;
                     readerPR.contract = results.more_details.contract;
+                    readerPR.status = "not-signed";
                     readerPR.data = results;
                     res.render("reader", {
                         pathToTheRoot: (() => {
@@ -696,13 +698,28 @@ router.get("/:shortUrl/:documentId/:name", (req, res) => {
                         })(),
                         ...readerPR
                     });
+                } else {
+                    // For already signed contract
+                    if (results.contract_status == 'signed' && results.more_details.visible_until !== new Date()) {
+                        // res.redirect(`${pathToTheRoot(req._parsedOriginalUrl.path)}contract/signed/${shortCode}`)
+
+                        let user_agent = req["headers"]["user-agent"];
+                        readerPR.pathToTheRoot = pathToTheRoot(req._parsedOriginalUrl.path);
+                        readerPR.header = `CONTRACT AGREEMENT BETWEEN: ${results.from} - ${results.company}`;
+                        readerPR.contract = results.more_details.contract;
+                        readerPR.status = "signed";
+                        readerPR.data = results;
+                        res.render("reader", {
+                            pathToTheRoot: (() => {
+                                readerPR.pathToTheRoot = pathToTheRoot(req._parsedOriginalUrl.path);
+                                return readerPR.pathToTheRoot;
+                            })(),
+                            ...readerPR
+                        });
+                    } else {
+                        res.redirect(`${pathToTheRoot(req._parsedOriginalUrl.path)}notfound`)
+                    }
                 }
-                // For already signed contract
-                else {
-                    res.redirect(`${pathToTheRoot(req._parsedOriginalUrl.path)}contract/signed/${shortCode}`)
-                }
-            } else {
-                res.redirect(`${pathToTheRoot(req._parsedOriginalUrl.path)}notfound`)
             }
         })
         .catch(err => console.log(err))

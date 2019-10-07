@@ -21,7 +21,9 @@
     <link rel="stylesheet" href="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'./'%>assets_/medium-editor/dist/css/medium-editor.css" />
     <link href="https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" href="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'./'%>assets_/medium-editor/dist/css/themes/beagle.css" />
-
+    <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'./'%>assets/js//html2pdf/index.js"></script>
+    <link rel="stylesheet" href="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'./'%>assets_/medium-editor/dist/css/themes/beagle.css" />
+    <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../../'%>assets_/dom-to-image-more/dist/dom-to-image-more.min.js"></script>
     <% if (typeof no_manifest!= "undefined" &&!no_manifest) {%>
         <link rel="manifest" href="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>manifest.json" />
         <% } %>
@@ -47,381 +49,399 @@
 </head>
 
 <body>
-        <!-- The Modal for Preview -->
-        <div class="modal_ hidden">
-            <span class="modal_layer_"></span>
-            <div class="modal_content_"> </div>
-        </div>
+    <!-- The Modal for Preview -->
+    <div class="modal_ hidden">
+        <span class="modal_layer_"></span>
+        <div class="modal_content_"> </div>
+    </div>
     <%-body %>
-                <!-- AXIOS -->
-            <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-            <script>
-                // Hide the preview modal
-                function hidePreviewModal() {
-                    let prev_modal_ = document.querySelector(".modal_");
-                    let prev_modal_layer_ = document.querySelector(".modal_layer_");
-                    prev_modal_layer_.addEventListener('click', () => {
-                        prev_modal_.classList.add("hidden")
-                    })
+        <!-- AXIOS -->
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script>
+            // Hide the preview modal
+            function hidePreviewModal() {
+                let prev_modal_ = document.querySelector(".modal_");
+                let prev_modal_layer_ = document.querySelector(".modal_layer_");
+                prev_modal_layer_.addEventListener('click', () => {
+                    prev_modal_.classList.add("hidden")
+                })
+            }
+            hidePreviewModal();
+
+            // Keep Live connection
+            /* 
+            /* This helps in hijacking the heroku timeout of every 30s
+            /* Heroku's free servers are being shout-down every 30s of inactivity.
+            /* So to overcome that, we keep the connection with the application live by keep sending the request to the server
+            /* Why ?, in thid application we're using websocket feature for real-time communication with the 
+            /* sever and as well as the client's browser for those which support the websocket feature.
+             */
+            function keepLive() {
+                function keepITUP(params) {
+
+                    axios({
+                            method: "post", //This can be POST or GET for Request Method
+                            url: "<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'/'%>keeplive" //Url the server is listening to, is like base/keeplive [https://domain/keeplive]
+                        })
+                        .then(value => {
+                            // The server is active now
+                            // console.log("i'am active");
+                        })
+                        .catch(err => {
+                            console.log(err); // There was an error
+                        });
                 }
-                hidePreviewModal();
+                // For that case we keep sending the request every 2s
+                setInterval(keepITUP, 2000);
+            }
 
-                // Keep Live connection
-                /* 
-                /* This helps in hijacking the heroku timeout of every 30s
-                /* Heroku's free servers are being shout-down every 30s of inactivity.
-                /* So to overcome that, we keep the connection with the application live by keep sending the request to the server
-                /* */
-                function keepLive() {
-                    function keepITUP(params) {
-
-                        axios({
-                                method: "post", //This can be POST or GET for Request Method
-                                url: "<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'/'%>keeplive" //Url the server is listening to, is like base/keeplive [https://domain/keeplive]
-                            })
-                            .then(value => {
-                                // The server is active now
-                                // console.log("i'am active");
-                            })
-                            .catch(err => {
-                                console.log(err); // There was an error
+            // keep The Input Length Size While Typing
+            function keepTheLength() {
+                // Get all the elements in the DOM that requires this functionality.
+                // NOTE: Every element of type input with the class editor_input this functionality will 
+                // take action to it
+                let inp = document.querySelectorAll(".editor_input");
+                if (typeof inp != "undefined" && inp.length) {
+                    for (_in of inp) {
+                        if (_in) {
+                            _in.addEventListener("keyup", e_ => {
+                                let lwgth = _in.value.length - 2 <= 0 ? 1 : _in.value.length - 2;
+                                lwgth = _in.value.length - 3 <= 3 ? 3 : _in.value.length - 3;
+                                lwgth = _in.value.length - 5 <= 5 ? 6 : _in.value.length - 5;
+                                _in.setAttribute("size", lwgth);
                             });
-                    }
-                    // For that case we keep sending the request every 2s
-                    setInterval(keepITUP, 2000);
-                }
-                
-                // keep The Input Length Size While Typing
-                function keepTheLength() {
-                    // Get all the elements in the DOM that requires this functionality.
-                    // NOTE: Every element of type input with the class editor_input this functionality will 
-                    // take action to it
-                    let inp = document.querySelectorAll(".editor_input");
-                    if (typeof inp != "undefined" && inp.length) {
-                        for (_in of inp) {
-                            if (_in) {
-                                _in.addEventListener("keyup", e_ => {
-                                    let lwgth = _in.value.length - 2 <= 0 ? 1 : _in.value.length - 2;
-                                    lwgth = _in.value.length - 3 <= 3 ? 3 : _in.value.length - 3;
-                                    lwgth = _in.value.length - 5 <= 5 ? 6 : _in.value.length - 5;
-                                    _in.setAttribute("size", lwgth);
-                                });
-                            }
                         }
                     }
                 }
+            }
 
-                let sock;
-                    let connectTmout, submitContract, submitProposal, create_contract_template, create_proposal_template, sendProposalData, sendContractData, contractSent,proposalSent;
+            let sock;
+            let connectTmout, submitContract, submitProposal, create_contract_template, create_proposal_template, sendProposalData, sendContractData, contractSent, proposalSent;
 
-                function connect() {
-                    sock = new WebSocket(soc);
+            function connect() {
+                sock = new WebSocket(soc);
 
-                    sock.onopen = function() {
-                        function _keepLive() {
-                            if (sock.readyState == sock.OPEN) {
-                                sock.send(
-                                    JSON.stringify({
-                                        type: "keepAlive",
-                                        to: "keepAlive",
-                                        date: Date.now()
-                                    })
-                                );
-                            }
-                        }
-                        setInterval(_keepLive, 2000);
+                sock.onopen = function() {
+                    function _keepLive() {
                         if (sock.readyState == sock.OPEN) {
                             sock.send(
                                 JSON.stringify({
-                                    type: "visits",
-                                    date: Date.now(),
-                                    times: 0
+                                    type: "keepAlive",
+                                    to: "keepAlive",
+                                    date: Date.now()
                                 })
                             );
                         }
-                    };
-                    
-                    sock.onclose = function(e) {
-                        clearTimeout(connectTmout)
-                        console.log(
-                            "Socket is closed. Reconnect will be attempted in 5 second.",
-                            e.reason
+                    }
+                    setInterval(_keepLive, 2000);
+                    if (sock.readyState == sock.OPEN) {
+                        sock.send(
+                            JSON.stringify({
+                                type: "visits",
+                                date: Date.now(),
+                                times: 0
+                            })
                         );
+                    }
+                };
 
-                        connectTmout = setTimeout(/* ()=>{window.location.reload()} */ connect, 5000);            
-                    };
-
-                    sock.onerror = function(err) {
-                        console.error(
-                            "Socket encountered error: ",
-                            err.message,
-                            "Closing socket"
-                        );
-                        sock.close();
-                    };
-
-                    // Global vars for message to look up
-                    let contract_template = document.querySelector("#contract_template");
-
-                    create_contract_template = document.querySelector(
-                        "#create_contract_template"
+                sock.onclose = function(e) {
+                    clearTimeout(connectTmout)
+                    console.log(
+                        "Socket is closed. Reconnect will be attempted in 5 second.",
+                        e.reason
                     );
-                    // _drafter
-                    let _draft = create_contract_template.querySelector(".under_draft");
+
+                    connectTmout = setTimeout( /* ()=>{window.location.reload()} */ connect, 5000);
+                };
+
+                sock.onerror = function(err) {
+                    console.error(
+                        "Socket encountered error: ",
+                        err.message,
+                        "Closing socket"
+                    );
+                    sock.close();
+                };
+
+                // Global vars for message to look up
+                let contract_template = document.querySelector("#contract_template");
+
+                create_contract_template = document.querySelector(
+                    "#create_contract_template"
+                );
+                // _drafter
+                let _draft, draft;
+                if (create_contract_template) {
+                    _draft = create_contract_template.querySelector(".under_draft");
 
                     create_proposal_template = document.querySelector(
                         "#create_proposal_template"
                     );
                     // drafter
-                    let draft = create_proposal_template.querySelector(".under_draft");
+                    draft = create_proposal_template.querySelector(".under_draft");
+                }
+                let proposal_template = document.querySelector("#proposal_template");
 
-                    let proposal_template = document.querySelector("#proposal_template");
+                function keepLive1() {
+                    let timeouter_;
 
-                    function keepLive1() {
-                        let timeouter_;
-
-                        function _saveToDraft(e) {
-                            clearTimeout(timeouter_);
-                            timeouter_ = setTimeout(() => {
-                                if (sock.readyState == sock.OPEN) {
-                                    sock.send(
-                                        JSON.stringify({
-                                            type: "draft",
-                                            to: "contract",
-                                            data: `${contract_template.innerHTML}`
-                                        })
-                                    );
-                                }
-                            }, 1000);
-                        }
+                    function _saveToDraft(e) {
+                        clearTimeout(timeouter_);
+                        timeouter_ = setTimeout(() => {
+                            if (sock.readyState == sock.OPEN) {
+                                sock.send(
+                                    JSON.stringify({
+                                        type: "draft",
+                                        to: "contract",
+                                        data: `${contract_template.innerHTML}`
+                                    })
+                                );
+                            }
+                        }, 1000);
+                    }
+                    if (contract_template) {
 
                         contract_template.addEventListener("keyup", _saveToDraft);
-
+                    }
+                    if (_draft) {
                         _draft.addEventListener("click", _saveToDraft);
-// Submit
-submitContract = function (e) {
-    
-    // Prevent form submission
-    e.preventDefault();
-    if (sock.readyState == sock.OPEN) {
-        sock.send(
-            JSON.stringify({
-                type: "save",
-                to: "contract",
-                _date: new Date(),
-                auto: "false",
-                data: `${contract_template.innerHTML}`
-            })
-        );
-    }
-};
-// Submit
-submitProposal = function (e) {
-    
-        e.preventDefault();
-        if (sock.readyState == sock.OPEN) {
-            sock.send(
-                JSON.stringify({
-                    type: "save",
-                    to: "proposal",
-                    _date: new Date(),
-                    auto: "false",
-                    data: `${proposal_template.innerHTML}`
-                })
-            );
-        }
-}; 
-                        sendProposalData = function(e)  {
-                            proposalSent = e.currentTarget.querySelector(".under_submit");
+                    }
+                    // Submit
+                    submitContract = function(e) {
+
+                        // Prevent form submission
+                        e.preventDefault();
+                        if (sock.readyState == sock.OPEN) {
+                            sock.send(
+                                JSON.stringify({
+                                    type: "save",
+                                    to: "contract",
+                                    _date: new Date(),
+                                    auto: "false",
+                                    data: `${contract_template.innerHTML}`
+                                })
+                            );
+                        }
+                    };
+                    // Submit
+                    submitProposal = function(e) {
+
+                        e.preventDefault();
+                        if (sock.readyState == sock.OPEN) {
+                            sock.send(
+                                JSON.stringify({
+                                    type: "save",
+                                    to: "proposal",
+                                    _date: new Date(),
+                                    auto: "false",
+                                    data: `${proposal_template.innerHTML}`
+                                })
+                            );
+                        }
+                    };
+                    sendProposalData = function(e) {
+                        proposalSent = e.currentTarget.querySelector(".under_submit");
+                        if (sock.readyState == sock.OPEN) {
+                            sock.send(
+                                JSON.stringify({
+                                    type: "send",
+                                    to: "proposal",
+                                    data: {
+                                        person: e.currentTarget.querySelector("[name='person']").value,
+                                        company: e.currentTarget.querySelector("[name='company']").value,
+                                        msg: e.currentTarget.querySelector("[name='msg']").value,
+                                        email: e.currentTarget.querySelector("[name='email']").value
+                                    },
+                                    date: Date.now()
+                                })
+                            );
+                        }
+                    };
+
+                    sendContractData = function(e) {
+                        // Detects if the contract was sent
+                        contractSent = e.currentTarget.querySelector(".under_submit");
+                        if (sock.readyState == sock.OPEN) {
+                            sock.send(
+                                JSON.stringify({
+                                    type: "send",
+                                    to: "contract",
+                                    data: {
+                                        person: e.currentTarget.querySelector("[name='person']").value,
+                                        company: e.currentTarget.querySelector("[name='company']").value,
+                                        msg: e.currentTarget.querySelector("[name='msg']").value,
+                                        email: e.currentTarget.querySelector("[name='email']").value,
+                                        proposal_id: e.currentTarget.querySelector("[name='proposal_id']").value,
+                                    },
+                                    date: Date.now()
+                                })
+                            );
+                        }
+                    };
+                }
+
+                function keepLive2() {
+                    let timeouter;
+
+                    function __saveToDraft() {
+                        clearTimeout(timeouter);
+                        timeouter = setTimeout(() => {
                             if (sock.readyState == sock.OPEN) {
                                 sock.send(
                                     JSON.stringify({
-                                        type: "send",
+                                        type: "draft",
                                         to: "proposal",
-                                        data: {
-                                            person: e.currentTarget.querySelector("[name='person']").value,
-                                            company: e.currentTarget.querySelector("[name='company']").value,
-                                            msg: e.currentTarget.querySelector("[name='msg']").value,
-                                            email: e.currentTarget.querySelector("[name='email']").value
-                                        },
-                                        date: Date.now()
+                                        data: `${proposal_template.innerHTML}`
                                     })
                                 );
                             }
-                        };
-                        
-                         sendContractData = function(e) {
-                             // Detects if the contract was sent
-                             contractSent = e.currentTarget.querySelector(".under_submit");
-                            if (sock.readyState == sock.OPEN) {
-                                sock.send(
-                                    JSON.stringify({
-                                        type: "send",
-                                        to: "contract",
-                                        data: {
-                                            person: e.currentTarget.querySelector("[name='person']").value,
-                                            company: e.currentTarget.querySelector("[name='company']").value,
-                                            msg: e.currentTarget.querySelector("[name='msg']").value,
-                                            email: e.currentTarget.querySelector("[name='email']").value,
-                                            proposal_id: e.currentTarget.querySelector("[name='proposal_id']").value,
-                                        },
-                                        date: Date.now()
-                                    })
-                                );
-                            }
-                        };
+                        }, 1000);
                     }
-
-                    function keepLive2() {
-                        let timeouter;
-
-                        function __saveToDraft() {
-                            clearTimeout(timeouter);
-                            timeouter = setTimeout(() => {
-                                if (sock.readyState == sock.OPEN) {
-                                    sock.send(
-                                        JSON.stringify({
-                                            type: "draft",
-                                            to: "proposal",
-                                            data: `${proposal_template.innerHTML}`
-                                        })
-                                    );
-                                }
-                            }, 1000);
-                        }
-                        proposal_template.addEventListener("keyup", __saveToDraft);
+                    if (proposal_template) {
+                        proposal_template.addEventListener("keyup", __saveToDraft)
+                    };
+                    if (draft) {
                         draft.addEventListener("click", __saveToDraft);
+                    }
+
+                }
+                keepLive1();
+                keepLive2();
+                sock.onmessage = function(json) {
+                    json = JSON.parse(json.data);
+
+                    if (json.type === "draft" && json.to === "contract") {
+                        _draft.classList.remove("hidden");
+                        _draft.style.background =
+                            "linear-gradient(45deg, #bb4343, #f0f4f5)";
+                        _draft.value = json.data;
+
+                        setTimeout(() => {
+                            _draft.classList.add("hidden");
+                            _draft.style.background =
+                                "linear-gradient(45deg, #888888, #f0f4f5)";
+                            _draft.value = "Save to draft";
+                        }, 1000);
+                    }
+
+                    // Contract saved successfully
+                    if (json.type === "save" && json.to === "contract") {
+                        _draft.classList.remove("hidden");
+                        _draft.style.background =
+                            "linear-gradient(45deg, #bb4343, #f0f4f5)";
+                        _draft.value = json.data;
+
+                        setTimeout(() => {
+                            _draft.classList.add("hidden");
+                            _draft.style.background =
+                                "linear-gradient(45deg, #888888, #f0f4f5)";
+                            _draft.value = "Save to draft";
+                        }, 1000);
+                    }
+                    if (json.type === "draft" && json.to === "proposal") {
+                        draft.classList.remove("hidden");
+                        draft.style.background = "linear-gradient(45deg, #bb4343, #f0f4f5)";
+                        draft.value = json.data;
+
+                        setTimeout(() => {
+                            draft.classList.add("hidden");
+                            draft.style.background =
+                                "linear-gradient(45deg, #888888, #f0f4f5)";
+                            draft.value = "Save to draft";
+                        }, 1000);
+                    }
+
+                    // Proposal saved successfully
+                    if (json.type === "save" && json.to === "proposal") {
+                        let draft = create_proposal_template.querySelector(".under_draft");
+                        draft.classList.remove("hidden");
+                        draft.style.background = "linear-gradient(45deg, #bb4343, #f0f4f5)";
+                        draft.value = json.data;
+
+                        setTimeout(() => {
+                            draft.classList.add("hidden");
+                            draft.style.background =
+                                "linear-gradient(45deg, #888888, #f0f4f5)";
+                            draft.value = "Save to draft";
+                        }, 1000);
+                    }
+
+                    if (json.type === "sent" && json.to === "proposal") {
+                        let current = proposalSent;
+                        current.innerText = "Sent successful";
+                        current.classList.remove("disabled");
+                        current.removeAttribute("disabled");
+                        // We can now display the notifier
+                        setTimeout(() => {
+                            current.innerText = "Send"
+                        }, 5000);
 
                     }
-                    keepLive1();
-                    keepLive2();
-                    sock.onmessage = function(json) {
-                        json = JSON.parse(json.data);
 
-                        if (json.type === "draft" && json.to === "contract") {
-                            _draft.classList.remove("hidden");
-                            _draft.style.background =
-                                "linear-gradient(45deg, #bb4343, #f0f4f5)";
-                            _draft.value = json.data;
+                    if (json.type === "sent" && json.to === "contract") {
+                        let current = contractSent;
+                        console.log(current.parentElement);
 
-                            setTimeout(() => {
-                                _draft.classList.add("hidden");
-                                _draft.style.background =
-                                    "linear-gradient(45deg, #888888, #f0f4f5)";
-                                _draft.value = "Save to draft";
-                            }, 1000);
-                        }
+                        current.innerText = "Sent successful";
+                        current.classList.remove("disabled");
+                        current.removeAttribute("disabled");
+                        setTimeout(() => {
+                            current.innerText = "Send"
+                        }, 5000);
 
-                        // Contract saved successfully
-                        if (json.type === "save" && json.to === "contract") {
-                            _draft.classList.remove("hidden");
-                            _draft.style.background =
-                                "linear-gradient(45deg, #bb4343, #f0f4f5)";
-                            _draft.value = json.data;
+                    }
+                }
+            };
+            connect();
 
-                            setTimeout(() => {
-                                _draft.classList.add("hidden");
-                                _draft.style.background =
-                                    "linear-gradient(45deg, #888888, #f0f4f5)";
-                                _draft.value = "Save to draft";
-                            }, 1000);
-                        }
-                        if (json.type === "draft" && json.to === "proposal") {
-                            draft.classList.remove("hidden");
-                            draft.style.background = "linear-gradient(45deg, #bb4343, #f0f4f5)";
-                            draft.value = json.data;
-
-                            setTimeout(() => {
-                                draft.classList.add("hidden");
-                                draft.style.background =
-                                    "linear-gradient(45deg, #888888, #f0f4f5)";
-                                draft.value = "Save to draft";
-                            }, 1000);
-                        }
-
-                        // Proposal saved successfully
-                        if (json.type === "save" && json.to === "proposal") {
-                            let draft = create_proposal_template.querySelector(".under_draft");
-                            draft.classList.remove("hidden");
-                            draft.style.background = "linear-gradient(45deg, #bb4343, #f0f4f5)";
-                            draft.value = json.data;
-
-                            setTimeout(() => {
-                                draft.classList.add("hidden");
-                                draft.style.background =
-                                    "linear-gradient(45deg, #888888, #f0f4f5)";
-                                draft.value = "Save to draft";
-                            }, 1000);
-                        }
-
-                        if(json.type === "sent" && json.to === "proposal"){ 
-                                let current = proposalSent;
-                                current.innerText = "Sent successful";
-                                current.classList.remove("disabled");
-                                current.removeAttribute("disabled");
-                                // We can now display the notifier
-                                setTimeout(() => {
-                                    current.innerText = "Send"
-                                }, 5000);
-                            
-                        } 
-
-                        if(json.type === "sent" && json.to === "contract"){
-                                let current = contractSent;
-                                console.log(current.parentElement);
-                                
-                                current.innerText = "Sent successful";
-                                current.classList.remove("disabled");
-                                current.removeAttribute("disabled");
-                                setTimeout(() => {
-                                    current.innerText = "Send"
-                                }, 5000);
-                            
-                        }
-                    } 
-                }; connect();
-
-            function preview_work(under_preview,templates) {
-                let under_previews = document.querySelectorAll("."+under_preview);
+            function preview_work(under_preview, templates) {
+                let under_previews = document.querySelectorAll("." + under_preview);
 
                 for (let template of templates) {
                     for (let i = 0; i < under_previews.length; i++) {
-                    const preview = under_previews[i];
-                    preview.addEventListener('click', function(){
-                        let prent = preview.parentElement,
-                        _prent = prent.parentElement,
-                        __prent = _prent.parentElement, template_ ;
-                        let modal_ = document.querySelector(".modal_");
-                        let modal_content_ = document.querySelector(".modal_content_");
-                        // Get the template under the preview's top parent
-                        template_ = __prent.querySelector("#" + template);
-                        // This fights against logging error in the console of innerHTML of null
-                        if(template_&&modal_content_){
-                            modal_content_.innerHTML = template_.innerHTML;
+                        const preview = under_previews[i];
+                        if (preview) {
+                            preview.addEventListener('click', function() {
+                                let prent = preview.parentElement,
+                                    _prent = prent.parentElement,
+                                    __prent = _prent.parentElement,
+                                    template_;
+                                let modal_ = document.querySelector(".modal_");
+                                let modal_content_ = document.querySelector(".modal_content_");
+                                // Get the template under the preview's top parent
+                                template_ = __prent.querySelector("#" + template);
+                                // This fights against logging error in the console of innerHTML of null
+                                if (template_ && modal_content_) {
+                                    modal_content_.innerHTML = template_.innerHTML;
+                                }
+
+                                // Display the modal
+                                modal_.classList.remove("hidden")
+                            })
                         }
-                        
-                        // Display the modal
-                        modal_.classList.remove("hidden")
-                    })
-                } 
-            }  
-            } 
-            preview_work("under_preview",["contract_template","proposal_template"]);
+                    }
+                }
+            }
+            preview_work("under_preview", ["contract_template", "proposal_template"]);
 
             // call modal_ with the content to modal_content_
-            function call_modal_(under_submit,template,saveDoc,cb) {
-                    under_submit.addEventListener('click', function(){
-                        // Save the content
-                        saveDoc.click();
-                        let modal_ = document.querySelector(".modal_");
-                        let modal_content_ = document.querySelector(".modal_content_");
-                        modal_content_.innerHTML = template;
-                        modal_.classList.remove("hidden");
-                        
-                        // call cb function to work/interact with the inserted elements
-                        if (cb) { setTimeout(cb, 500) }
-                    })
+            function call_modal_(under_submit, template, saveDoc, cb) {
+                under_submit.addEventListener('click', function() {
+                    // Save the content
+                    saveDoc.click();
+                    let modal_ = document.querySelector(".modal_");
+                    let modal_content_ = document.querySelector(".modal_content_");
+                    modal_content_.innerHTML = template;
+                    modal_.classList.remove("hidden");
+
+                    // call cb function to work/interact with the inserted elements
+                    if (cb) {
+                        setTimeout(cb, 500)
+                    }
+                })
             };
+
             function save_and_send(create_dash_template, cb) {
                 // Get container
                 create_dash_template = document.querySelector(create_dash_template);
@@ -473,67 +493,73 @@ submitProposal = function (e) {
                     </div>
                 </ul>
             </form>`;
-            /*Content to show on the modal_content_*/
-                let under_save_send = create_dash_template.querySelector(".under_save_send");
-                if(typeof under_save_send!=="undefined" && under_save_send.id === "save_send_proposal")
-                    {
-                        call_modal_(under_save_send,template,create_dash_template.querySelector(".under_submit"),cb);
-                    }
-                if(typeof under_save_send!=="undefined" && under_save_send.id === "save_send_contract")
-                    {
-                        call_modal_(under_save_send,template2,create_dash_template.querySelector(".under_submit"),cb);
-                    }
+                /*Content to show on the modal_content_*/
+                let under_save_send;
+                if (create_dash_template) {
+                    under_save_send = create_dash_template.querySelector(".under_save_send");
                 }
-                save_and_send("#create_proposal_template", function(){
-                    
-                    function send_a_proposal() {
-                        let sendProposal_ = document.querySelector("#sendProposal_");
-                        // fight against error [addEventListener on undefined element]
-                        if (sendProposal_) {
-                            sendProposal_.addEventListener('submit', e => {
-                                e.preventDefault();
+                if (typeof under_save_send !== "undefined" && under_save_send.id === "save_send_proposal") {
+                    call_modal_(under_save_send, template, create_dash_template.querySelector(".under_submit"), cb);
+                }
+                if (typeof under_save_send !== "undefined" && under_save_send.id === "save_send_contract") {
+                    call_modal_(under_save_send, template2, create_dash_template.querySelector(".under_submit"), cb);
+                }
+            }
+            save_and_send("#create_proposal_template", function() {
 
-                                let current = e.currentTarget.querySelector(".under_submit");
-                                !function serveTheLoader() {
-                                    let loaderTemplate = `<img src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../../'%>assets/img/loading.gif" class="click_load hiden" />`;
-                                    current.classList.add("disabled");
-                                    current.setAttribute("disabled", "");
-                                    current.insertAdjacentHTML("beforeEnd", loaderTemplate);
-                                }();
-                                sendProposalData(e)
-                            })
-                        }
+                function send_a_proposal() {
+                    let sendProposal_ = document.querySelector("#sendProposal_");
+                    // fight against error [addEventListener on undefined element]
+                    if (sendProposal_) {
+                        sendProposal_.addEventListener('submit', e => {
+                            e.preventDefault();
 
-                    } send_a_proposal();
-                });
-                save_and_send("#create_contract_template", function(){
-                    function send_a_contract() {
-                        let sendContract_ = document.querySelector("#sendContract_");
-                        // fight against error [addEventListener on undefined element]
-                        if(sendContract_){
-                            sendContract_.addEventListener('submit', e=>{
-                                e.preventDefault();
-                                
-                                let current = e.currentTarget.querySelector(".under_submit"); 
-                                    
-                                !function serveTheLoader() {
-                                    let loaderTemplate = `<img src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../../'%>assets/img/loading.gif" class="click_load hiden" />`;
-                                    current.classList.add("disabled");
-                                    current.setAttribute("disabled", "");
-                                    current.insertAdjacentHTML("beforeEnd", loaderTemplate); 
-                                    
-                                }();
-                                sendContractData(e)
-                            })
-                        }
-                        
-                    }send_a_contract();
-                    
-                });
-                    
-                        create_contract_template.addEventListener("submit", submitContract, false);
-                        create_proposal_template.addEventListener("submit", submitProposal, false);
-            </script>
+                            let current = e.currentTarget.querySelector(".under_submit");
+                            ! function serveTheLoader() {
+                                let loaderTemplate = `<img src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../../'%>assets/img/loading.gif" class="click_load hiden" />`;
+                                current.classList.add("disabled");
+                                current.setAttribute("disabled", "");
+                                current.insertAdjacentHTML("beforeEnd", loaderTemplate);
+                            }();
+                            sendProposalData(e)
+                        })
+                    }
+
+                }
+                send_a_proposal();
+            });
+            save_and_send("#create_contract_template", function() {
+                function send_a_contract() {
+                    let sendContract_ = document.querySelector("#sendContract_");
+                    // fight against error [addEventListener on undefined element]
+                    if (sendContract_) {
+                        sendContract_.addEventListener('submit', e => {
+                            e.preventDefault();
+
+                            let current = e.currentTarget.querySelector(".under_submit");
+
+                            ! function serveTheLoader() {
+                                let loaderTemplate = `<img src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../../'%>assets/img/loading.gif" class="click_load hiden" />`;
+                                current.classList.add("disabled");
+                                current.setAttribute("disabled", "");
+                                current.insertAdjacentHTML("beforeEnd", loaderTemplate);
+
+                            }();
+                            sendContractData(e)
+                        })
+                    }
+
+                }
+                send_a_contract();
+
+            });
+            if (create_contract_template) {
+                create_contract_template.addEventListener("submit", submitContract, false);
+            }
+            if (create_proposal_template) {
+                create_proposal_template.addEventListener("submit", submitProposal, false);
+            }
+        </script>
 </body>
 
 </html>

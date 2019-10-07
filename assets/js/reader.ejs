@@ -126,9 +126,9 @@
             script.src = url;
             document.head.appendChild(script);
         }
-        addScript(
-            "https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"
-        );
+        // addScript(
+        //     "https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"
+        // );
         let read_tempo = document.querySelector("#read_tempo");
         read_tempo.insertAdjacentHTML("beforeEnd", `<%-contract%>`);
         // keep The Input Length Size While Typing
@@ -180,6 +180,7 @@
                 .set(opt)
                 .from(element)
                 .save("myFile0");
+            return element
         }
     </script>
 
