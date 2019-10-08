@@ -1,4 +1,4 @@
-            *,
+                *,
             *::after,
             *::before {
                 box-sizing: border-box;
@@ -1418,7 +1418,7 @@
                     height: 45px;
                 }
                 .company-logo {
-                    width: 80%;
+                    width: auto;
                 }
                 .Rounded-Rectangle-3 {
                     width: 60%;
@@ -1527,209 +1527,208 @@
                     font-family: inherit;
                     line-height: 1.6em;
                 }
-            }
-            /* Mid smart-phones */
-            
-            @media screen and (min-width: 425px) {
-                form {
-                    width: 100%;
-                    display: flex;
-                    flex-wrap: wrap;
+                .post {
+                    width: 100%;}
                 }
-                .checkbox+label,
-                .checkbox+.label,
-                .radio+label,
-                .radio+.label {
-                    font-size: initial;
-                    margin: initial;
+                /* Mid smart-phones */
+                @media screen and (min-width: 425px) {
+                    form {
+                        width: 100%;
+                        display: flex;
+                        flex-wrap: wrap;
+                    }
+                    .checkbox+label,
+                    .checkbox+.label,
+                    .radio+label,
+                    .radio+.label {
+                        font-size: initial;
+                        margin: initial;
+                    }
                 }
-            }
-            /* Tablet */
-            
-            @media screen and (min-width: 768px) {
-                .Rectangle-1 {
-                    padding-top: 7pc;
-                }
-                .Rectangle-2 {
-                    width: 98%;
-                    height: 56px;
-                    padding-right: 2pc;
-                    border-radius: 5em;
-                    -webkit-border-radius: 5em;
-                    -moz-border-radius: 5em;
-                    -ms-border-radius: 5em;
-                    -o-border-radius: 5em;
-                    box-shadow: 0px 2px 0px 1px rgb(220, 225, 229), 5px -28px #ebebeb;
-                }
-                .company-logo {
-                    width: auto;
-                }
-                .Rounded-Rectangle-3 {
-                    width: 47%;
-                    height: 75%;
-                    padding: 0.4pc 1pc;
-                }
-                .posts_con {
-                    width: 70%;
-                    margin-right: 13pc;
-                }
-                .right_aside {
-                    width: 20%;
-                    transform: translate(0%, 0);
-                    -webkit-transform: translate(0%, 0);
-                    -moz-transform: translate(0%, 0);
-                    -ms-transform: translate(0%, 0);
-                    -o-transform: translate(0%, 0);
-                }
-                .simpo_barn,
-                .simpo_barn2 {
-                    width: 100%;
-                }
-                .barn_line2 {
-                    width: 100%;
-                }
-                .barn_line2:hover {
-                    border-color: #d1d5da;
-                    box-shadow: 0 1px 15px rgba(27, 31, 35, .15);
-                }
-                #submit {
-                    padding: 10px 8pc;
-                }
-                .Rounded-Rectangle- {
-                    width: 84%;
-                    font-size: 9pt;
-                }
-                .Rounded-.bell_container {
-                    width: auto;
-                    height: auto;
-                    overflow: inherit;
-                }
-                .checkbox+label,
-                .checkbox+.label,
-                .radio+label,
-                .radio+.label {
-                    font-size: inherit;
-                    margin: inherit;
-                }
-                .split.checkboxes {
-                    width: auto;
-                    margin: auto;
-                    align-items: center;
-                    cursor: initial;
-                }
-                .header {
-                    top: 2%;
-                    box-shadow: none;
-                }
-                /*.menu_btn {
+                /* Tablet */
+                @media screen and (min-width: 768px) {
+                    .Rectangle-1 {
+                        padding-top: 7pc;
+                    }
+                    .Rectangle-2 {
+                        width: 98%;
+                        height: 56px;
+                        padding-right: 2pc;
+                        border-radius: 5em;
+                        -webkit-border-radius: 5em;
+                        -moz-border-radius: 5em;
+                        -ms-border-radius: 5em;
+                        -o-border-radius: 5em;
+                        box-shadow: 0px 2px 0px 1px rgb(220, 225, 229), 5px -28px #ebebeb;
+                    }
+                    .company-logo {
+                        width: auto;
+                    }
+                    .Rounded-Rectangle-3 {
+                        width: 47%;
+                        height: 75%;
+                        padding: 0.4pc 1pc;
+                    }
+                    .posts_con {
+                        width: 70%;
+                        margin-right: 13pc;
+                    }
+                    .right_aside {
+                        width: 20%;
+                        transform: translate(0%, 0);
+                        -webkit-transform: translate(0%, 0);
+                        -moz-transform: translate(0%, 0);
+                        -ms-transform: translate(0%, 0);
+                        -o-transform: translate(0%, 0);
+                    }
+                    .simpo_barn,
+                    .simpo_barn2 {
+                        width: 100%;
+                    }
+                    .barn_line2 {
+                        width: 100%;
+                    }
+                    .barn_line2:hover {
+                        border-color: #d1d5da;
+                        box-shadow: 0 1px 15px rgba(27, 31, 35, .15);
+                    }
+                    #submit {
+                        padding: 10px 8pc;
+                    }
+                    .Rounded-Rectangle- {
+                        width: 84%;
+                        font-size: 9pt;
+                    }
+                    .Rounded-.bell_container {
+                        width: auto;
+                        height: auto;
+                        overflow: inherit;
+                    }
+                    .checkbox+label,
+                    .checkbox+.label,
+                    .radio+label,
+                    .radio+.label {
+                        font-size: inherit;
+                        margin: inherit;
+                    }
+                    .split.checkboxes {
+                        width: auto;
+                        margin: auto;
+                        align-items: center;
+                        cursor: initial;
+                    }
+                    .header {
+                        top: 2%;
+                        box-shadow: none;
+                    }
+                    /*.menu_btn {
         width: auto;
     } */
-                .footer .Rounded-Rectangle-3 {
-                    width: 80%;
-                    border-radius: 5em;
-                    -webkit-border-radius: 5em;
-                    -moz-border-radius: 5em;
-                    -ms-border-radius: 5em;
-                    -o-border-radius: 5em;
-                }
-                .tab {
-                    padding: 0 11px;
-                    font-size: 8pt;
-                    margin: auto 6px;
-                }
-                #viewport .post {
+                    .footer .Rounded-Rectangle-3 {
+                        width: 80%;
+                        border-radius: 5em;
+                        -webkit-border-radius: 5em;
+                        -moz-border-radius: 5em;
+                        -ms-border-radius: 5em;
+                        -o-border-radius: 5em;
+                    }
+                    .tab {
+                        padding: 0 11px;
+                        font-size: 8pt;
+                        margin: auto 6px;
+                    }
+                    #viewport .post {
+                        width: 90%;
+                        border-radius: 25px;
+                        -webkit-border-radius: 25px;
+                        -moz-border-radius: 25px;
+                        -ms-border-radius: 25px;
+                        -o-border-radius: 25px;
+                    }
+                    #read_tempo_proposal,
+                    .editable,
+                    #read_tempo {
+                        padding: 2pc;
+                        font-size: inherit;
+                        word-spacing: 3px;
+                        letter-spacing: 0px;
+                        font-family: sans-serif;
+                        line-height: 1.52em;
+                    }
+                    #read_tempo_proposal h2,
+                    .modal_content_ h2,
+                    .editable h2,
+                    #read_tempo h2 {
+                        font-size: 22pt;
+                        line-height: 1.5em;
+                        margin-block-start: 0.83em;
+                        margin-block-end: 0.83em;
+                        margin-inline-start: 0px;
+                        margin-inline-end: 0px;
+                    }.post {
                     width: 90%;
-                    border-radius: 25px;
-                    -webkit-border-radius: 25px;
-                    -moz-border-radius: 25px;
-                    -ms-border-radius: 25px;
-                    -o-border-radius: 25px;
                 }
-                #read_tempo_proposal,
-                .editable,
-                #read_tempo {
-                    padding: 2pc;
-                    font-size: inherit;
-                    word-spacing: 3px;
-                    letter-spacing: 0px;
-                    font-family: sans-serif;
-                    line-height: 1.52em;
                 }
-                #read_tempo_proposal h2,
-                .modal_content_ h2,
-                .editable h2,
-                #read_tempo h2 {
-                    font-size: 22pt;
-                    line-height: 1.5em;
-                    margin-block-start: 0.83em;
-                    margin-block-end: 0.83em;
-                    margin-inline-start: 0px;
-                    margin-inline-end: 0px;
+                /* Min desktop */
+                @media screen and (min-width: 1024px) {
+                    .Rectangle-2 {
+                        width: 87%;
+                        height: 56px;
+                    }
+                    .left_aside {
+                        width: 22%;
+                        transform: translate(0%, 0);
+                        -webkit-transform: translate(0%, 0);
+                        -moz-transform: translate(0%, 0);
+                        -ms-transform: translate(0%, 0);
+                        -o-transform: translate(0%, 0);
+                    }
+                    .posts_con {
+                        width: 60%;
+                        margin-right: 10.5pc;
+                    }
+                    .Rounded-Rectangle-3 {
+                        height: 80%;
+                    }
+                    .right_aside {
+                        width: 15%;
+                    }
+                    .simpo_barn,
+                    .simpo_barn2 {
+                        width: 100%;
+                    }
+                    .barn_line2 {
+                        width: 100%;
+                    }
+                    .Rounded-Rectangle- {
+                        width: 84%;
+                        font-size: 13pt;
+                    }
+                    .under_submit_form {
+                        width: 100%;
+                        max-height: initial;
+                    }
+                    .w-46 {
+                        width: 46%;
+                    }
+                    .header {
+                        top: 3%;
+                    }
+                    .tab {
+                        padding: 0 11px;
+                        font-size: 11pt;
+                        margin: auto 6px;
+                    }
                 }
-            }
-            /* Min desktop */
-            
-            @media screen and (min-width: 1024px) {
-                .Rectangle-2 {
-                    width: 87%;
-                    height: 56px;
+                @media screen and (min-width: 1025px) {
+                    .posts_con {
+                        width: 60%;
+                        margin-right: 16.3%;
+                    }
                 }
-                .left_aside {
-                    width: 22%;
-                    transform: translate(0%, 0);
-                    -webkit-transform: translate(0%, 0);
-                    -moz-transform: translate(0%, 0);
-                    -ms-transform: translate(0%, 0);
-                    -o-transform: translate(0%, 0);
+                @media screen and (min-width: 1440px) {
+                    .posts_con {
+                        width: 60%;
+                        margin-right: 16%;
+                    }
                 }
-                .posts_con {
-                    width: 60%;
-                    margin-right: 10.5pc;
-                }
-                .Rounded-Rectangle-3 {
-                    height: 80%;
-                }
-                .right_aside {
-                    width: 15%;
-                }
-                .simpo_barn,
-                .simpo_barn2 {
-                    width: 100%;
-                }
-                .barn_line2 {
-                    width: 100%;
-                }
-                .Rounded-Rectangle- {
-                    width: 84%;
-                    font-size: 13pt;
-                }
-                .under_submit_form {
-                    width: 100%;
-                    max-height: initial;
-                }
-                .w-46 {
-                    width: 46%;
-                }
-                .header {
-                    top: 3%;
-                }
-                .tab {
-                    padding: 0 11px;
-                    font-size: 11pt;
-                    margin: auto 6px;
-                }
-            }
-            
-            @media screen and (min-width: 1025px) {
-                .posts_con {
-                    width: 60%;
-                    margin-right: 16.3%;
-                }
-            }
-            
-            @media screen and (min-width: 1440px) {
-                .posts_con {
-                    width: 60%;
-                    margin-right: 16%;
-                }
-            }
