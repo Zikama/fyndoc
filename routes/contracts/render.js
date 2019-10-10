@@ -1,5 +1,5 @@
 class render {
-    constructor(router, contract, Capitalize, pathToTheRoot) {
+    constructor(_ws, router, contract, Capitalize, pathToTheRoot) {
 
         // Reader parameters
         const readerPR = {

@@ -241,15 +241,15 @@ router.get("/", ensureAuthenticated, (req, res) => res.render("index", {
 
 // Agree or acceptance on the contract
 let AgreeContract = require('./contracts/agree');
-new AgreeContract(router, contract, Notify, converted_client, sendNotificationViaEmail)
+new AgreeContract(_ws, router, contract, Notify, converted_client, sendNotificationViaEmail)
 
 // Request changes
 let requestForChange = require('./contracts/change');
-new requestForChange(router, Notify, sendNotificationViaEmail);
+new requestForChange(_ws, router, Notify, sendNotificationViaEmail);
 
 // Render the dynamic contract link or route
 let readNewContract = require('./contracts/render');
-new readNewContract(router, contract, Capitalize, pathToTheRoot);
+new readNewContract(_ws, router, contract, Capitalize, pathToTheRoot);
 
 // Render the dynamic proposal link or route
 let readNewProposal = require('./proposals/render');

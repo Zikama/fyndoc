@@ -1,5 +1,5 @@
 class Agree {
-    constructor(router, contract, Notify, converted_client, sendNotificationViaEmail) {
+    constructor(_ws, router, contract, Notify, converted_client, sendNotificationViaEmail) {
 
         // Agree on the contract
         router.post("/agree", (req, res) => {

@@ -313,4 +313,52 @@
                 .catch(function(error) {
                     console.error('oops, something went wrong!', error);
                 });
+
+            function Edito() {
+                let editos = document.querySelectorAll('.edito'),
+                    editTemp = `<button type='button' class='edito-edit hidden'>Edit</button>`;
+                for (let edito of editos) {
+                    // edito.insertAdjacentHTML('beforeEnd', editTemp);
+                    if (edito) {
+                        edito.addEventListener('blur', _ => {
+                            if (_.currentTarget.innerText !== '') {
+                                // _.currentTarget.style.minWidth = 'unset';
+                                _.currentTarget.removeAttribute('contenteditable');
+                                edito.insertAdjacentHTML('beforeEnd', editTemp);
+                                edit_edito(_.currentTarget);
+                                _.currentTarget.addEventListener('mouseover', t => {
+                                    let edito_edit = t.currentTarget.querySelector('.edito-edit');
+                                    if (edito_edit) {
+                                        edito_edit.classList.remove('hidden')
+                                    }
+                                })
+
+                                _.currentTarget.addEventListener('mouseleave', t => {
+                                    let edito_edit = t.currentTarget.querySelector('.edito-edit');
+                                    if (edito_edit) {
+                                        edito_edit.classList.add('hidden')
+                                    }
+                                })
+
+                            }
+                        });
+                    }
+
+                    function edit_edito(parent) {
+                        let edit_editos = document.querySelectorAll('.edito-edit');
+                        for (let edit_edito of edit_editos) {
+                            if (edit_edito) {
+                                edit_edito.addEventListener('click', _ => {
+                                    parent = parent || _.currentTarget.parentElement;
+                                    parent.setAttribute('contenteditable', 'true');
+                                    parent.focus();
+                                    _.currentTarget.remove();
+                                })
+                            }
+                        }
+
+                    }
+                }
+            }
+            Edito();
         </script>

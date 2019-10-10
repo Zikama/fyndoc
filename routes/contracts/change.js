@@ -1,5 +1,5 @@
 class Changes {
-    constructor(router, Notify, sendNotificationViaEmail) {
+    constructor(_ws, router, Notify, sendNotificationViaEmail) {
 
         router.post("/request_change", (req, res) => {
 

@@ -70,11 +70,54 @@
 
             }
         });
+
+        var InputContent = MediumEditor.extensions.button.extend({
+            name: 'inputcontent',
+            tagNames: ['b'],
+            contentDefault: '<b>Insert content</b>',
+            contentFA: '<i title="Insert content" class="fas fa-user-edit"></i>',
+            aria: 'contenteditable',
+            action: 'insert_content',
+            title: 'Insert content',
+            placeHolder: 'Insert',
+
+            init: function() {
+                MediumEditor.extensions.button.prototype.init.call(this);
+
+                this.classApplier = rangy.createClassApplier('insert_content', {
+                    elementTagName: 'b',
+                    normalize: true
+                });
+                this.button.title = 'insert_content';
+            },
+
+            handleClick: function(event) {
+                this.classApplier.toggleSelection();
+
+                var range = MediumEditor.selection.getSelectionRange(this.document);
+                let inserted = range.endContainer.parentElement;
+                // let insertedUneder = range.endContainer.wholeText;
+                // inserted.setAttribute("placeholder", insertedUneder);
+                inserted.parentElement.style.display = 'flex';
+                inserted.parentElement.style.flexWrap = 'wrap';
+                inserted.setAttribute("class", "edito");
+                inserted.setAttribute("contenteditable", "true");
+
+                // inserted.setAttribute("size", "1");
+                // inserted.setAttribute("name", insertedUneder);
+
+
+                // Ensure the editor knows about an html change so watchers are notified
+                // ie: <textarea> elements depend on the editableInput event to stay synchronized
+                this.base.checkContentChanged();
+
+            }
+        });
         var editor = new MediumEditor('.editable', {
             toolbar: {
                 buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3',
                     'unorderedlist',
-                    'orderedlist', 'quote', 'highlighter',
+                    'orderedlist', 'quote', 'highlighter', 'inputcontent',
                     'embedButton'
                 ]
             },
@@ -85,6 +128,7 @@
             },
             extensions: {
                 'highlighter': new HighlighterButton(),
+                'inputcontent': new InputContent(),
                 embedButton: new EmbedButtonExtension({
                     embedOpts: {
                         /* 3bef8c4238179ff9306315 Don not use this API, is a third part key, only use it for development/testing not for production */
