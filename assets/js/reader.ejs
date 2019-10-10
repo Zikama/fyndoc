@@ -132,7 +132,7 @@
         let read_tempo = document.querySelector("#read_tempo");
         let read_tempo2 = document.querySelector("#read_tempo_proposal");
         read_tempo.insertAdjacentHTML("beforeEnd", `<%-contract%>`);
-        read_tempo2.insertAdjacentHTML("beforeEnd", `<%-ARTroposal%>`);
+        read_tempo2.insertAdjacentHTML("beforeEnd", `<%-typeof ARTroposal !=='undefined' ? ARTroposal : ''%>`);
         // keep The Input Length Size While Typing
         function keepTheLength2() {
             // Get all the elements in the DOM that requires this functionality.

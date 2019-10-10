@@ -2,7 +2,7 @@ const mongoose = require("mongoose"),
     shortCode = require("shortid"),
     RandExp = require('randexp');
 randexp = new RandExp(/\d\d\d\d\d/);
-randexp.defaultRange.add(32, new Date()), Schema = mongoose.Schema;
+randexp.defaultRange.add(32, Date.now()), Schema = mongoose.Schema;
 const proposalSchema = new Schema({
     from: {
         type: String,
@@ -14,7 +14,7 @@ const proposalSchema = new Schema({
     },
     documentID: {
         type: String,
-        default: randexp.gen(new Date())
+        default: randexp.gen()
     },
     company: {
         type: String,
@@ -34,7 +34,7 @@ const proposalSchema = new Schema({
     },
     ref: {
         type: String,
-        default: randexp.gen(new Date())
+        default: randexp.gen()
     },
     proposal: {
         type: String,
@@ -70,9 +70,12 @@ const proposalSchema = new Schema({
         type: Date,
         default: Date.now
     }
-});
+}, { strict: false });
+
 mongoose.set('useFindAndModify', false);
 
 let _proposal = mongoose.model("proposal", proposalSchema);
+
+// console.log(_proposal.schema.paths.refg);
 
 module.exports = _proposal;

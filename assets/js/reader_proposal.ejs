@@ -113,7 +113,9 @@
         //     "https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"
         // );
         let read_tempo = document.querySelector("#read_tempo");
-        read_tempo.insertAdjacentHTML("beforeEnd", `<%-proposal%>`);
+        if (read_tempo) {
+            read_tempo.insertAdjacentHTML("beforeEnd", `<%-proposal%>`);
+        }
         // keep The Input Length Size While Typing
         function keepTheLength2() {
             // Get all the elements in the DOM that requires this functionality.
