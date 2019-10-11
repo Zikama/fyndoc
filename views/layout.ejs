@@ -213,6 +213,23 @@
 
                             // Prevent form submission
                             e.preventDefault();
+                            // Check if there's a filled edito field
+                            function checkIfEditoExist() {
+                                let editos = document.querySelectorAll('.edito');
+                                for (let edito of editos) {
+                                    if (edito) {
+                                        if (edito.innerText != '' && edito.innerHTML != '<br>') {
+                                            edito.removeAttribute('contenteditable');
+                                            edito.classList.add('filled_')
+                                        } else {
+                                            edito.innerHTML = '';
+                                            edito.setAttribute('contenteditable', 'true');
+                                            edito.classList.remove('filled_');
+                                        }
+                                    }
+                                }
+                            }
+                            checkIfEditoExist();
                             if (sock.readyState == sock.OPEN) {
                                 sock.send(
                                     JSON.stringify({
@@ -560,6 +577,100 @@
                 }
                 if (create_proposal_template) {
                     create_proposal_template.addEventListener("submit", submitProposal, false);
+                }
+
+                // Remove the place holder on edito once focused
+                function removePlaceHolderOnEdito() {
+                    let editos = document.querySelectorAll('.edito');
+                    for (let edito of editos) {
+                        if (edito) {
+                            edito.addEventListener("click", _ => {
+                                let placeholder = _.currentTarget.querySelector(".art-placeholder");
+                                if (placeholder) {
+                                    placeholder.remove();
+                                    _.currentTarget.innerHTML = ' <br> ';
+                                    _.currentTarget.focus();
+                                }
+                                /* if (edito.innerText != '' && edito.innerHTML != '<br>') {
+                                    edito.removeAttribute('contenteditable');
+                                    edito.classList.add('filled_')
+                                } else {
+                                    edito.innerHTML = '';
+                                    edito.setAttribute('contenteditable', 'true');
+                                    edito.classList.remove('filled_');
+                                } */
+
+                            })
+                        } else {
+                            alert("t")
+                        }
+                    }
+                }
+                removePlaceHolderOnEdito();
+
+                function doneEdit() {
+                    let editorInputs = document.querySelectorAll('.editor_input');
+                    for (let editorInput of editorInputs) {
+                        let editTemp = `<button type='button' class='edito-done-edit hidden'>Edit</button>`;
+                        if (editorInput) {
+                            editorInput.addEventListener('blur', _ => {
+                                if (_.currentTarget.value !== '') {
+                                    let parent = _.currentTarget.parentElement;
+                                    let currentVal = _.currentTarget.value;
+                                    let b = document.createElement('b');
+                                    b.className = _.currentTarget.classList;
+                                    b.innerText = currentVal;
+                                    b.insertAdjacentHTML('beforeEnd', editTemp);
+
+                                    if (parent) {
+                                        parent.insertBefore(b, _.currentTarget);
+                                        parent.removeChild(_.currentTarget);
+                                        edit_done_edito(parent);
+                                    }
+                                    b.addEventListener('mouseover', t => {
+                                        let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
+                                        if (edito_edit) {
+                                            edito_edit.classList.remove('hidden')
+                                        }
+                                    })
+
+                                    b.addEventListener('mouseleave', t => {
+                                        let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
+                                        if (edito_edit) {
+                                            edito_edit.classList.add('hidden')
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    }
+                }
+                doneEdit();
+
+                function edit_done_edito(parent) {
+                    let edit_editos = document.querySelectorAll('.edito-done-edit');
+                    for (let edit_edito of edit_editos) {
+                        if (edit_edito) {
+                            edit_edito.addEventListener('click', _ => {
+                                parent = parent || _.currentTarget.parentElement.parentElement;
+
+                                let input = document.createElement('input');
+                                _.currentTarget.innerText = '';
+                                let currentVal = _.currentTarget.parentElement.innerText;
+                                input.type = 'text';
+                                input.className = _.currentTarget.parentElement.classList;
+                                input.value = currentVal;
+
+                                if (parent) {
+                                    parent.insertBefore(input, _.currentTarget.parentElement);
+                                    input.focus();
+                                    parent.removeChild(_.currentTarget.parentElement);
+                                }
+                                doneEdit();
+                            })
+                        }
+                    }
+
                 }
             </script>
 </body>

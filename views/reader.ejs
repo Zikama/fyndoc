@@ -326,6 +326,7 @@
                                 _.currentTarget.removeAttribute('contenteditable');
                                 edito.insertAdjacentHTML('beforeEnd', editTemp);
                                 edit_edito(_.currentTarget);
+
                                 _.currentTarget.addEventListener('mouseover', t => {
                                     let edito_edit = t.currentTarget.querySelector('.edito-edit');
                                     if (edito_edit) {
