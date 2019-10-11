@@ -1888,7 +1888,7 @@ width: auto;
             font-size: 9pt;
         }
         .container_ {
-            width: 40%;
+            width: 50%;
             display: flex;
             justify-content: space-between;
             padding: 2px;

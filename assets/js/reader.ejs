@@ -11,15 +11,17 @@
         change.addEventListener("click", changesForm);
     }
 
-    function agreedForm() {
-        displayModal("flex", function() {
-            writeToHeader("write", function(placeHolder) {
-                placeHolder.innerHTML =
-                    "<h1>Agreement - </h1><p>Tell us more about you and your position in your company</p>";
-            });
-            writeToBody("write", function(placeHolder) {
-                placeHolder.innerHTML = `<form method="post" class="art-mo-form" action="<%=typeof pathToTheRoot !=='undefined' ? pathToTheRoot:'../../../'%>agree">
-                    <input type="hidden" name="ref" value='<%=data.ref%>'><input type="hidden" name="more_details" value='<%=data.more_details.contract%>'>
+    function agreedForm(e) {
+        function showForm() {
+
+            displayModal("flex", function() {
+                writeToHeader("write", function(placeHolder) {
+                    placeHolder.innerHTML =
+                        "<h1>Agreement - </h1><p>Tell us more about you and your position in your company</p>";
+                });
+                writeToBody("write", function(placeHolder) {
+                    placeHolder.innerHTML = `<form method="post" class="art-mo-form" action="<%=typeof pathToTheRoot !=='undefined' ? pathToTheRoot:'../../../'%>agree">
+                    <input type="hidden" name="ref" value='<%=data.ref%>'><input type="hidden" name="more_details" id="more_details" value='<%=data.more_details.contract%>'>
                     <input type="hidden" name="link" value='<%=data.link%>'><input type="hidden" name="company" value='<%=data.company%>'>
 
             
@@ -27,7 +29,7 @@
                           <div class="art_inps">
                               <label for="full_name"> Names</label>
                               <div class="art_inp_co">
-                                  <input type="text" class="art_inp" placeholder="Your full name as shown on your ID/\\/Passport" id="full_name" name="full_name" required>
+                                  <input type="text" class="art_inp" placeholder="Your full name as shown on your ID/Passport" id="full_name" name="full_name" required>
                               </div>
                           </div>
 
@@ -60,19 +62,41 @@
                               </div>
                               <button type="submit" class="opacity-0" id="submit1" hidden>Send</button>
                           </form>`;
-                callButton("0", ok => {
-                    ok.innerText = "Accept";
-                    let getFooter = placeHolder.nextElementSibling;
-                    let getForm = placeHolder.querySelector("form");
-                    ok.addEventListener("click", () => {
-                        getForm.querySelector("#submit1").click();
+                    callButton("0", ok => {
+                        ok.innerText = "Accept";
+                        let getFooter = placeHolder.nextElementSibling;
+                        let getForm = placeHolder.querySelector("form");
+                        ok.addEventListener("click", () => {
+                            getForm.querySelector("#submit1").click();
+                        });
                     });
                 });
             });
-        });
+        }
+        let contractTempo = document.querySelector("#read_tempo");
+        if (contractTempo) {
+            let editableInputs = contractTempo.querySelectorAll('.editor_input');
+            if (editableInputs) {
+                for (let editableInput of editableInputs) {
+                    if (editableInput.value !== '') {
+                        showForm();
+                        let more_details = document.querySelector('#more_details');
+                        more_details.value = contractTempo.innerHTML;
+                    } else {
+                        alert("Please fill all the fields first");
+                        // unchek the i agree 
+                        e.currentTarget.checked = false;
+                    }
+                }
+            } else {
+                showForm();
+                let more_details = document.querySelector('#more_details');
+                more_details.value = contractTempo.innerHTML;
+            }
+        }
     }
 
-    function changesForm() {
+    function changesForm(e) {
         displayModal("flex", function() {
             writeToHeader("write", function(placeHolder) {
                 placeHolder.innerHTML = "<h1>Tell us about the changes you need</h1>";
@@ -131,8 +155,12 @@
         // );
         let read_tempo = document.querySelector("#read_tempo");
         let read_tempo2 = document.querySelector("#read_tempo_proposal");
-        read_tempo.insertAdjacentHTML("beforeEnd", `<%-contract%>`);
-        read_tempo2.insertAdjacentHTML("beforeEnd", `<%-typeof ARTroposal !=='undefined' ? ARTroposal : ''%>`);
+        if (read_tempo) {
+            read_tempo.insertAdjacentHTML("beforeEnd", `<%-contract%>`);
+        }
+        if (read_tempo2) {
+            read_tempo2.insertAdjacentHTML("beforeEnd", `<%-typeof ARTroposal !=='undefined' ? ARTroposal : ''%>`);
+        }
         // keep The Input Length Size While Typing
         function keepTheLength2() {
             // Get all the elements in the DOM that requires this functionality.
