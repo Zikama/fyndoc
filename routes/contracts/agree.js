@@ -10,8 +10,8 @@ class Agree {
             // Agree template with signature 
             let signTemp = `<p><h3><span style="font-size:larger;">US</span></h3><p><span style="font-size: 19.2px;">Signature</span><span style="font-size: larger;">: <b class="_sign">BarakaKalumba</b></i</span></p><p>Signed By: <b>Baraka Samuel</b><span style="font-size: larger;"><b class="_sign"><br></b></span></p> <p><span style="font-size: larger;" class="">Date: <b class='custom_in'>${new Date().toLocaleDateString()} </b></span></p><h3><span style="font-size: larger;">YOU</span></h3><p>Signature: <b class="custom_in _sign">${data.names}</b><br></p> <p>Signed By: <span><b class='custom_in'>${data.names}</b></span></p> <p>Position: <span><b class='custom_in'>${data.position}</b></span></p> <p>Date: <span><b class='custom_in'>${new Date().toLocaleDateString()} </b></span></p></p>`;
 
-            /*  data.more_details.contract = data.more_details.contract + signTemp;
-             let newConvertedClent = new converted_client(data); */
+            //  data.more_details.contract = data.more_details.contract;
+            let newConvertedClent = new converted_client(data);
             newConvertedClent.save()
                 .then((saved) => {
                     if (saved) {
