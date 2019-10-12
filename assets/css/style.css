@@ -1345,6 +1345,8 @@ color: #a2e617; */
         border-radius: 9px;
         padding: 1pc 5pc;
         /* font-size: 10pt; */
+        line-height: 1.8em;
+        font-family: 'Roboto', sans-serif;
     }
     
     div#contract_template_send a {
