@@ -73,7 +73,9 @@ class Agree {
                             }
                             resu.status = "signed"; //___
                             // Send live notification
-                            _ws.send(fy(resu));
+                            if (typeof _ws !== 'undefined') {
+                                _ws.send(fy(resu));
+                            }
                         })
                     }
                 }).catch((err) => console.log(err))

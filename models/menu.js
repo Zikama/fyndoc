@@ -26,34 +26,36 @@ Menu.find({}, (err, results) => {
         return 0;
     } else {
         let data = [{
-            menu: { title: "Proposal document", classes: ['art-dop_down', ' io_aro', ' caret-up', 'lis'], id: "proposal_document" },
-            container: [{
-                title: "Send a proposal",
-                classes: ['li', 'tex_no_deco'],
-                classesB: ['art-btn-a', 'art-tablink']
-            }, {
-                title: "Create a proposal",
-                classes: ['li', 'tex_no_deco'],
-                classesB: ['art-btn-a', 'art-tablink']
-            }]
-        }, {
-            menu: {
-                title: "Contract Document",
-                classes: ['art-dop_down', ' io_aro', ' caret-up', 'lis', '_active'],
-                id: "contract_document"
-            },
-            container: [{
-                    title: "Send a contract",
-                    classes: ['li', 'tex_no_deco'],
-                    classesB: ['art-btn-a', 'art-tablink', 'active']
+                menu: {
+                    title: "Contract Document",
+                    classes: ['art-dop_down', ' io_aro', ' caret-up', 'lis', '_active'],
+                    id: "contract_document"
                 },
-                {
-                    title: "Create a contract",
+                container: [{
+                        title: "Create a contract",
+                        classes: ['li', 'tex_no_deco'],
+                        classesB: ['art-btn-a', 'art-tablink', 'active']
+                    },
+                    {
+                        title: "Send a contract",
+                        classes: ['li', 'tex_no_deco'],
+                        classesB: ['art-btn-a', 'art-tablink']
+                    }
+                ]
+            },
+            {
+                menu: { title: "Proposal document", classes: ['art-dop_down', ' io_aro', ' caret-up', 'lis'], id: "proposal_document" },
+                container: [{
+                    title: "Send a proposal",
                     classes: ['li', 'tex_no_deco'],
                     classesB: ['art-btn-a', 'art-tablink']
-                }
-            ]
-        }];
+                }, {
+                    title: "Create a proposal",
+                    classes: ['li', 'tex_no_deco'],
+                    classesB: ['art-btn-a', 'art-tablink']
+                }]
+            }
+        ];
 
         let total = data.length,
             result = [];

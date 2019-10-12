@@ -67,12 +67,14 @@ class send {
                                         .then(sent => {
                                             if (sent && sent.match(/accepted/)) {
                                                 // We can now send an email 
-                                                _ws.send(fy({
+                                                if (typeof _ws !== 'undefined') {
+                                                    _ws.send(fy({
                                                         type: 'sent',
                                                         to: 'proposal',
                                                         status: "successful"
                                                     }))
-                                                    // Store Notification
+                                                }
+                                                // Store Notification
                                                 let newNotify = new Notify({
                                                     title: 'New Proposal',
                                                     message: `You've successfully sent an new Proposal to ${done.email} with a proposal ID: #${done.ref}`,
@@ -83,18 +85,22 @@ class send {
                                                     // Notify the admin
                                                     // if() socket is open
                                                     _done.status = "successful";
-                                                    _ws.send(fy(_done))
+                                                    if (typeof _ws !== 'undefined') {
+                                                        _ws.send(fy(_done))
+                                                    }
 
                                                 })
                                             } else {
 
                                                 // An error occured
-                                                _ws.send(fy({
-                                                    type: 'sent',
-                                                    to: 'proposal',
-                                                    status: "failed",
-                                                    title: `There was a problem sending a Proposal to ${done.email} with a proposal ID: #${done.ref}, please try again`
-                                                }));
+                                                if (typeof _ws !== 'undefined') {
+                                                    _ws.send(fy({
+                                                        type: 'sent',
+                                                        to: 'proposal',
+                                                        status: "failed",
+                                                        title: `There was a problem sending a Proposal to ${done.email} with a proposal ID: #${done.ref}, please try again`
+                                                    }));
+                                                }
                                                 // Store Notification
                                                 let newNotify = new Notify({
                                                     title: 'Failed Sending Proposal',
@@ -106,7 +112,9 @@ class send {
                                                     // Notify the admin
                                                     // if() socket is open
                                                     _done.status = "failure";
-                                                    _ws.send(fy(_done))
+                                                    if (typeof _ws !== 'undefined') {
+                                                        _ws.send(fy(_done))
+                                                    }
 
                                                 }).catch((err) => {
                                                     console.log(err);
@@ -117,13 +125,15 @@ class send {
                                             console.log(err);
 
                                             // An error occured
-                                            _ws.send(fy({
+                                            if (typeof _ws !== 'undefined') {
+                                                _ws.send(fy({
                                                     type: 'sent',
                                                     to: 'proposal',
                                                     title: 'There was a problem sending a Proposal to ${done.email} with a proposal ID: #${done.ref}, please try again',
                                                     status: "failed"
                                                 }))
-                                                // Store Notification
+                                            }
+                                            // Store Notification
                                             let newNotify = new Notify({
                                                 title: 'Failed Sending Proposal',
                                                 message: `There was a problem sending a Proposal to ${done.email} with a proposal ID: #${done.ref}, error : ${err}, please try again`,
@@ -134,7 +144,9 @@ class send {
                                                 // Notify the admin
                                                 // if socket is open
                                                 _done.status = "failure";
-                                                _ws.send(fy(_done))
+                                                if (typeof _ws !== 'undefined') {
+                                                    _ws.send(fy(_done))
+                                                }
 
                                             }).catch((err) => console.log(err))
                                         });

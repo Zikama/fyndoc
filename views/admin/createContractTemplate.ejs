@@ -107,7 +107,28 @@
                     let edit_editos = document.querySelectorAll('.edito-done-edit');
                     for (let edit_edito of edit_editos) {
                         if (edit_edito) {
-                            edit_edito.addEventListener('click', _ => {
+
+                            edit_edito.parentElement.addEventListener('click', _ => {
+                                parent = parent || _.currentTarget.parentElement;
+                                let input = document.createElement('input');
+                                _.currentTarget.querySelector('.edito-done-edit').innerText = '';
+                                let currentVal = _.currentTarget.innerText;
+                                input.type = 'text';
+                                input.className = _.currentTarget.classList;
+                                input.value = currentVal;
+
+                                input.setAttribute('placeholder', _.currentTarget.getAttribute('art-placeholder'));
+                                input.setAttribute('name', _.currentTarget.getAttribute('art-name'));
+
+                                if (parent) {
+                                    parent.insertBefore(input, _.currentTarget);
+                                    input.focus();
+                                    parent.removeChild(_.currentTarget);
+                                }
+                                doneEdit();
+                            });
+
+                            function editAction(_) {
                                 parent = parent || _.currentTarget.parentElement.parentElement;
 
                                 let input = document.createElement('input');
@@ -124,7 +145,9 @@
                                 input.focus();
                                 parent.removeChild(_.currentTarget.parentElement);
                                 doneEdit();
-                            })
+                            }
+                            parent.addEventListener('click', editAction)
+                            edit_edito.addEventListener('click', editAction)
                         }
                     }
 

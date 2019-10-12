@@ -58,7 +58,7 @@ var options = {
 };
 
 // The initials times the contract been visisted, default is 0
-let times = 0,
+var times = 0,
     // Global vars for WS
     _ws, request, websocket, norm_size, history, clients, clientsize;
 // Test WS
@@ -245,7 +245,7 @@ new AgreeContract(_ws, router, contract, Notify, converted_client, sendNotificat
 
 // Request changes
 let requestForChange = require('./contracts/change');
-new requestForChange(_ws, router, Notify, sendNotificationViaEmail);
+new requestForChange(_ws, router, request_change, Notify, sendNotificationViaEmail);
 
 // Render the dynamic contract link or route
 let readNewContract = require('./contracts/render');

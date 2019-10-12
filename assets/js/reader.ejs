@@ -70,12 +70,24 @@
                             getForm.querySelector("#submit1").click();
                         });
                     });
+                    callButton("1", ok => {
+                        let getFooter = placeHolder.nextElementSibling;
+                        let getForm = placeHolder.querySelector("form");
+                        ok.addEventListener("click", () => {
+                            if (document.querySelector("#agreed")) {
+                                document.querySelector("#agreed").checked = false;
+                            }
+                            if (document.querySelector("#change")) {
+                                document.querySelector("#change").checked = false;
+                            }
+                        });
+                    });
                 });
             });
         }
         let contractTempo = document.querySelector("#read_tempo");
         if (contractTempo) {
-            let editableInputs = contractTempo.querySelectorAll('.editor_input');
+            let editableInputs = contractTempo.querySelectorAll('input.editor_input');
             if (editableInputs) {
                 for (let editableInput of editableInputs) {
                     if (editableInput.value !== '') {
@@ -86,13 +98,16 @@
                         alert("Please fill all the fields first");
                         // unchek the i agree 
                         e.currentTarget.checked = false;
+                        editableInputs[0].focus();
+                        return
                     }
                 }
-            } else {
-                showForm();
-                let more_details = document.querySelector('#more_details');
-                more_details.value = contractTempo.innerHTML;
             }
+            showForm();
+            let more_details = document.querySelector('#more_details');
+            more_details.value = contractTempo.innerHTML;
+
+
         }
     }
 
@@ -134,6 +149,18 @@
                     let getForm = placeHolder.querySelector("form");
                     ok.addEventListener("click", () => {
                         getForm.querySelector("#submit").click();
+                    });
+                });
+                callButton("1", ok => {
+                    let getFooter = placeHolder.nextElementSibling;
+                    let getForm = placeHolder.querySelector("form");
+                    ok.addEventListener("click", () => {
+                        if (document.querySelector("#agreed")) {
+                            document.querySelector("#agreed").checked = false;
+                        }
+                        if (document.querySelector("#change")) {
+                            document.querySelector("#change").checked = false;
+                        }
                     });
                 });
             });
@@ -219,7 +246,7 @@
             if (_download_proposal) {
                 _download_proposal.addEventListener('click', _ => {
                     let read_tempo_proposal = document.querySelector("#read_tempo_proposal");
-                    downloadPDF(read_tempo_proposal, "Sadja-proposal-<%=typeof data !=='undefined'?data.ref:'7566545'%>")
+                    // downloadPDF(read_tempo_proposal, "Sadja-proposal-<%=typeof data !=='undefined'?data.ref:'7566545'%>")
                 })
             }
         }();
