@@ -30,6 +30,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/rangy/1.3.0/rangy-classapplier.min.js"></script>
 
     <script>
+        /* var doc = new jsPDF();
+                        doc.text('Jspdf text!', 10, 10);
+                        doc.save('test.pdf'); */
         rangy.init();
 
         var HighlighterButton = MediumEditor.extensions.button.extend({
@@ -130,7 +133,6 @@
 
                             function editAction(_) {
                                 parent = parent || _.currentTarget.parentElement.parentElement;
-
                                 let input = document.createElement('input');
                                 _.currentTarget.innerText = '';
                                 let currentVal = _.currentTarget.parentElement.innerText;
