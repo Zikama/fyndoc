@@ -56,34 +56,36 @@ module.exports = (passport) => {
 
     passport.deserializeUser((id, done) => {
         User.findById(id, (err, user) => {
-
-            Menu.find({})
-                .then(async(menu) => {
-                    ContractDraft.findOne({})
-                        .then((co_draft) => {
-                            ProposalDraft.findOne({})
-                                .then((pro_draft) => {
-                                    ContractDraft.find({}).sort([
-                                        ['date', -1]
-                                    ]).then(contracts => {
-                                        ProposalDraft.find({}).sort([
+            if (typeof user !== 'undefined' && user.username === 'Sadja') {
+                Menu.find({})
+                    .then(async(menu) => {
+                        ContractDraft.findOne({})
+                            .then((co_draft) => {
+                                ProposalDraft.findOne({})
+                                    .then((pro_draft) => {
+                                        ContractDraft.find({}).sort([
                                             ['date', -1]
-                                        ]).then(proposals => {
-                                            done(err, [user, menu, co_draft, pro_draft, contracts, proposals]);
+                                        ]).then(contracts => {
+                                            ProposalDraft.find({}).sort([
+                                                ['date', -1]
+                                            ]).then(proposals => {
+                                                done(err, [user, menu, co_draft, pro_draft, contracts, proposals]);
+
+                                            }).catch((err) => console.log(err));
 
                                         }).catch((err) => console.log(err));
 
+
                                     }).catch((err) => console.log(err));
 
-
-                                }).catch((err) => console.log(err));
-
-                        }).catch((err) => console.log(err));
+                            }).catch((err) => console.log(err));
 
 
 
-                }).catch((err) => console.log(err));
-
+                    }).catch((err) => console.log(err));
+            } else {
+                done(err, user)
+            }
         });
     });
 
