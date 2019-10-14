@@ -31,8 +31,8 @@
 
     <script>
         /* var doc = new jsPDF();
-                                                                                                                doc.text('Jspdf text!', 10, 10);
-                                                                                                                doc.save('test.pdf'); */
+                                                                                                                                                                        doc.text('Jspdf text!', 10, 10);
+                                                                                                                                                                        doc.save('test.pdf'); */
         rangy.init();
 
         var HighlighterButton = MediumEditor.extensions.button.extend({
@@ -64,7 +64,14 @@
                 inserted.setAttribute("placeholder", insertedUneder);
                 inserted.setAttribute("class", "editor_input");
                 inserted.setAttribute("size", "1");
+                inserted.setAttribute("type", "tex");
                 inserted.setAttribute("name", insertedUneder);
+                if (insertedUneder.toLowerCase() == 'date') {
+                    inserted.setAttribute("type", "date");
+                }
+                if (insertedUneder.toLowerCase() == '0' || insertedUneder.toLowerCase() == '0000' || insertedUneder.toLowerCase() == '123' || insertedUneder.toLowerCase() == 'number') {
+                    inserted.setAttribute("type", "number");
+                }
 
                 function doneEdit() {
                     let editorInputs = document.querySelectorAll('.editor_input');
@@ -80,6 +87,8 @@
                                     b.innerText = currentVal;
                                     b.setAttribute('art-placeholder', _.currentTarget.getAttribute('placeholder'));
                                     b.setAttribute('art-name', _.currentTarget.getAttribute('name'));
+                                    b.setAttribute('art-type', _.currentTarget.getAttribute('type'));
+
                                     b.insertAdjacentHTML('beforeEnd', editTemp);
                                     if (parent) {
                                         parent.insertBefore(b, _.currentTarget);
@@ -116,7 +125,7 @@
                                 let input = document.createElement('input');
                                 _.currentTarget.querySelector('.edito-done-edit').innerText = '';
                                 let currentVal = _.currentTarget.innerText;
-                                input.type = 'text';
+                                input.type = _.currentTarget.getAttribute('art-type');
                                 input.className = _.currentTarget.classList;
                                 input.value = currentVal;
 
@@ -149,8 +158,8 @@
                                 }
                                 doneEdit();
                             }
-                            parent.addEventListener('click', editAction)
-                            edit_edito.addEventListener('click', editAction)
+                            // parent.addEventListener('click', editAction)
+                            // edit_edito.addEventListener('click', editAction)
                         }
                     }
 
@@ -218,6 +227,7 @@
                                     b.addEventListener('mouseover', t => {
                                         let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
                                         if (edito_edit) {
+                                            edito_edit.setAttribute('contenteditable', 'false');
                                             edito_edit.classList.remove('hidden')
                                         }
                                     })
@@ -225,6 +235,7 @@
                                     b.addEventListener('mouseleave', t => {
                                         let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
                                         if (edito_edit) {
+                                            edito_edit.setAttribute('contenteditable', 'false');
                                             edito_edit.classList.add('hidden')
                                         }
                                     })
@@ -251,7 +262,6 @@
 
                                 input.setAttribute('placeholder', _.currentTarget.parentElement.getAttribute('art-placeholder'));
                                 input.setAttribute('name', _.currentTarget.parentElement.getAttribute('art-name'));
-
                                 if (parent) {
                                     parent.insertBefore(input, _.currentTarget.parentElement);
                                     input.focus();
@@ -333,6 +343,7 @@
                             let b = document.createElement('b');
                             b.className = _.currentTarget.classList;
                             b.innerText = currentVal;
+                            b.setAttribute('art-type', _.currentTarget.getAttribute('type'));
                             b.setAttribute('art-placeholder', _.currentTarget.getAttribute('placeholder'));
                             b.setAttribute('art-name', _.currentTarget.getAttribute('name'));
                             b.insertAdjacentHTML('beforeEnd', editTemp);
@@ -371,7 +382,8 @@
                         let input = document.createElement('input');
                         _.currentTarget.querySelector('.edito-done-edit').innerText = '';
                         let currentVal = _.currentTarget.innerText;
-                        input.type = 'text';
+
+                        input.type = _.currentTarget.getAttribute('art-type');
                         input.className = _.currentTarget.classList;
                         input.value = currentVal;
 
