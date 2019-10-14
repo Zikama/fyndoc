@@ -33,6 +33,8 @@ class Agree {
                                 // Visible date
                                 var visibleDate = new Date().setDate(saved.date.getDate() + 30);
                                 let shortCodeFromLink = saved.more_details.link.split("/")[0];
+                                console.log(shortCodeFromLink);
+
                                 contract.findOneAndUpdate({ shortCode: shortCodeFromLink }, {
                                         status: 'signed',
                                         contract_status: "signed",
