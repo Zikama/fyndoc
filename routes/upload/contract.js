@@ -1,8 +1,7 @@
-
 uploadContract = (router, ensureAuthenticated, upload, ) => router.post("/contract", ensureAuthenticated, (req, res) => {
 
     upload(req, res, err => {
-        let  // The cobtract Model
+        let // The contract Model
             contract = require("../../models/contract_template");
 
         if (err) throw err;
@@ -26,7 +25,7 @@ uploadContract = (router, ensureAuthenticated, upload, ) => router.post("/contra
                         res.redirect("../..");
                     }
                 }).catch((err) => {
-                    console.log(err);// Error updating 
+                    console.log(err); // Error updating 
                 })
         }
 

@@ -90,7 +90,7 @@ global.web_socket = ws;
 // routes
 app.use("/", require("./routes/index"));
 app.use("/send", require("./routes/send"));
-app.use("/upload", require("./routes/upload"));
+app.use("/upload", require("./routes/upload").router);
 // handle 404
 app.use(function(req, res, next) {
 

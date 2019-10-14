@@ -1,6 +1,6 @@
-
 const express = require("express"),
-    router = express.Router(), storage = require("../config/multer-storage"),
+    router = express.Router(),
+    storage = require("../config/multer-storage"),
     {
         ensureAuthenticated
     } = require("../config/auth"),
@@ -8,6 +8,7 @@ const express = require("express"),
     path = require("path"),
     _upload = multer({ storage: storage("./assets/uploads/proposals", null, multer, path) }).single("proposal_template"),
     upload = multer({ storage: storage("./assets/uploads/contracts", null, multer, path) }).single("contract_template");
+agreement = multer({ storage: storage("./assets/uploads/passports", null, multer, path) }).single("passport");
 
 // let __makeDir = require("../config/__makeDir");
 // __makeDir("Directory", "/Which-doesnt-exists")
@@ -15,11 +16,16 @@ const express = require("express"),
 //     .catch((err) => console.log(err))
 
 // Send A Contract
-let uploadContract = require("./upload/contract");
-uploadContract(router, ensureAuthenticated, upload);
+// let uploadContract = require("./upload/contract");
+// uploadContract(router, ensureAuthenticated, upload);
 
 // Send A proposal
-let uploadProposal = require("./upload/proposal");
-uploadProposal(router, ensureAuthenticated, _upload);
+// let uploadProposal = require("./upload/proposal");
+// uploadProposal(router, ensureAuthenticated, _upload);
 
-module.exports = router;
+module.exports = {
+    router,
+    upload,
+    _upload,
+    agreement
+};

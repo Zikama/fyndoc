@@ -17,36 +17,12 @@
             displayModal("flex", function() {
                 writeToHeader("write", function(placeHolder) {
                     placeHolder.innerHTML =
-                        "<h1>Agreement - </h1><p>Tell us more about you and your position in your company</p>";
+                        "<h1>Agreement - </h1><p>Fill the agreement form bellow</p>";
                 });
                 writeToBody("write", function(placeHolder) {
-                    placeHolder.innerHTML = `<form method="post" class="art-mo-form" action="<%=typeof pathToTheRoot !=='undefined' ? pathToTheRoot:'../../../'%>agree">
+                    placeHolder.innerHTML = `<form method="post" class="art-mo-form" action="<%=typeof pathToTheRoot !=='undefined' ? pathToTheRoot:'../../../'%>agree" enctype="multipart/form-data">
                     <input type="hidden" name="ref" value='<%=data.ref%>'><input type="hidden" name="more_details" id="more_details" value='<%=data.more_details.contract%>'>
                     <input type="hidden" name="link" value='<%=data.link%>'><input type="hidden" name="company" value='<%=data.company%>'>
-
-            
-
-                          <div class="art_inps">
-                              <label for="full_name"> Names</label>
-                              <div class="art_inp_co">
-                                  <input type="text" class="art_inp" placeholder="Your full name as shown on your ID/Passport" id="full_name" name="full_name" required>
-                              </div>
-                          </div>
-
-                          <div class="art_inps">
-                              <label for="passport"> National ID/Passport Number</label>
-                              <div class="art_inp_co">
-                                  <input type="text" class="art_inp" placeholder="Enter your national ID/Passport number" id="passport" name="passport" required>
-                              </div>
-                          </div>
-
-                          <div class="art_inps">
-                              <label for="date_of_birth"> Date Of Birth </label>
-                              <div class="art_inp_co">
-                                  <input type="date" class="art_inp" placeholder="Date Of birth" id="date_of_birth" value="1099-02-01" name="date_of_birth" required>
-                              </div>
-                          </div>
-
                           <div class="art_inps">
                               <label for="email"> Email</label>
                               <div class="art_inp_co">
@@ -54,16 +30,16 @@
                               </div>
                           </div>
 
-                              <div class="art_inps">
-                                  <label for="position"> Position</label>
-                                  <div class="art_inp_co">
-                                      <input type="text" class="art_inp" placeholder="What is your position in your company ?" id="position" name="position" required>
-                                  </div>
+                          <div class="art_inps">
+                              <label for="passport"> National ID/Passport         (Must be in clear resolution)</label>
+                              <div class="art_inp_co">
+                                  <input type="file" class="art_inp" placeholder="Enter a copy of your national ID/Passport" id="passport" name="passport" required>
                               </div>
+                          </div>
                               <button type="submit" class="opacity-0" id="submit1" hidden>Send</button>
                           </form>`;
                     callButton("0", ok => {
-                        ok.innerText = "Accept";
+                        ok.innerText = "Yes I agree";
                         let getFooter = placeHolder.nextElementSibling;
                         let getForm = placeHolder.querySelector("form");
                         ok.addEventListener("click", () => {
