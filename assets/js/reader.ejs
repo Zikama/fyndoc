@@ -257,6 +257,101 @@
 
             _preview_work_("#preview_proposal", ["#read_tempo_proposal"]);
         }();
+
+
+
+        function doneEdit() {
+            let editorInputs = document.querySelectorAll('.editor_input');
+            for (let editorInput of editorInputs) {
+                let editTemp = `<button type='button' class='edito-done-edit hidden editable_'>Edit</button>`;
+                if (editorInput) {
+                    editorInput.addEventListener('blur', _ => {
+                        if (_.currentTarget.value !== '') {
+                            let parent = _.currentTarget.parentElement;
+                            let currentVal = _.currentTarget.value;
+                            let b = document.createElement('b');
+                            b.className = _.currentTarget.classList;
+                            b.innerText = currentVal;
+                            b.setAttribute('art-placeholder', _.currentTarget.getAttribute('placeholder'));
+                            b.setAttribute('art-name', _.currentTarget.getAttribute('name'));
+                            b.setAttribute('art-type', _.currentTarget.getAttribute('type'));
+                            b.insertAdjacentHTML('beforeEnd', editTemp);
+
+                            if (parent) {
+                                parent.insertBefore(b, _.currentTarget);
+                                parent.removeChild(_.currentTarget);
+                                edit_done_edito(parent);
+                            }
+                            b.addEventListener('mouseover', t => {
+                                let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
+                                if (edito_edit) {
+                                    edito_edit.classList.remove('hidden')
+                                }
+                            })
+
+                            b.addEventListener('mouseleave', t => {
+                                let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
+                                if (edito_edit) {
+                                    edito_edit.classList.add('hidden')
+                                }
+                            })
+                        }
+                    })
+                }
+            }
+        }
+        doneEdit();
+
+        function edit_done_edito(parent) {
+            let edit_editos = document.querySelectorAll('.edito-done-edit');
+            for (let edit_edito of edit_editos) {
+                if (edit_edito) {
+
+                    edit_edito.parentElement.addEventListener('click', _ => {
+                        if (_.currentTarget.querySelector('.edito-done-edit').classList.contains('editable_')) {
+                            parent = parent || _.currentTarget.parentElement;
+                            let input = document.createElement('input');
+                            _.currentTarget.querySelector('.edito-done-edit').innerText = '';
+                            let currentVal = _.currentTarget.innerText;
+                            input.type = _.currentTarget.getAttribute('art-type');
+                            input.className = _.currentTarget.classList;
+                            input.value = currentVal;
+
+                            input.setAttribute('placeholder', _.currentTarget.getAttribute('art-placeholder'));
+                            input.setAttribute('name', _.currentTarget.getAttribute('art-name'));
+
+                            if (parent) {
+                                parent.insertBefore(input, _.currentTarget);
+                                input.focus();
+                                parent.removeChild(_.currentTarget);
+                            }
+                            doneEdit();
+                        }
+                    });
+
+                    edit_edito.addEventListener('click', _ => {
+                        parent = parent || _.currentTarget.parentElement.parentElement;
+                        let input = document.createElement('input');
+                        _.currentTarget.innerText = '';
+                        let currentVal = _.currentTarget.parentElement.innerText;
+                        input.type = _.currentTarget.getAttribute('art-type');
+                        input.className = _.currentTarget.parentElement.classList;
+                        input.value = currentVal;
+
+                        input.setAttribute('placeholder', _.currentTarget.parentElement.getAttribute('art-placeholder'));
+                        input.setAttribute('name', _.currentTarget.parentElement.getAttribute('art-name'));
+
+                        if (parent) {
+                            parent.insertBefore(input, _.currentTarget.parentElement);
+                            input.focus();
+                            parent.removeChild(_.currentTarget.parentElement);
+                        }
+                        doneEdit();
+                    });
+                }
+            }
+
+        }
     </script>
 
     <%}%>

@@ -1468,6 +1468,10 @@ transform: translate(-500%, 0); */
     /* Mobile */
     
     @media screen and (min-width: 320px) {
+        ._sign {
+            font-size: 13pt;
+            line-height: 0.52em;
+        }
         .Rectangle-1 {
             padding-top: 3.5pc;
         }
@@ -1592,12 +1596,12 @@ width: auto;
         #read_tempo_proposal,
         .editable,
         #read_tempo {
-            padding: 1pc;
-            font-size: inherit;
+            padding: 0.5pc;
+            font-size: 10pt;
             word-spacing: inherit;
             letter-spacing: 0px;
+            line-height: 1.8em;
             font-family: 'Roboto', sans-serif;
-            line-height: 1.6em;
         }
         .post {
             width: 100%;
@@ -1662,6 +1666,10 @@ width: auto;
     /* Tablet */
     
     @media screen and (min-width: 768px) {
+        ._sign {
+            font-size: 21pt;
+            line-height: 0.52em;
+        }
         .Rectangle-1 {
             padding-top: 7pc;
         }
