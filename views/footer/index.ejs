@@ -1,21 +1,21 @@
 <div class="footer">
     <div class="Rectangle-2">
 
-            <a href="" class="menu_btn"><img src="../assets/img/sadja.png" class="company-logo" alt="Sadja Web Solutions" /></a>
+        <a href="" class="menu_btn"><img src="../assets/img/sadja.png" class="company-logo" alt="Sadja Web Solutions" /></a>
 
-            <div class="Rounded-Rectangle-<%if(typeof who !== 'undefined' && who === 'admin'){%>3<%}%>" 
-                <%if(typeof who !== "undefined" && who === "login"){%> style="width: 50%;" <%}%>>
-                <%if(typeof who !== 'undefined' && who === 'admin'){%>  
+        <div class="Rounded-Rectangle-<%if(typeof who !== 'undefined' && who === 'admin'){%>3<%}%>" <%if(typeof who !=="undefined" && who==="login" ){%> style="width: 50%;"
+            <%}%>>
+                <%if(typeof who !== 'undefined' && who === 'admin'){%>
                     <button class="tab">Contracts</button>
                     <button class="tab">Approved Contracts</button>
                     <button class="tab">Proposals</button>
                     <button class="tab">Approved Proposals</button>
                     <button class="tab">Requests</button>
-                <%}%>
-            </div>
+                    <%}%>
+        </div>
 
-            <%if(typeof who !== 'undefined' && who === 'admin'){%>
-            <div class="Ellipse-1">
+        <%if(typeof who !== 'undefined' && who === 'admin'){%>
+            <div class="Ellipse-1 hidden">
                 <svg xmlns="http://www.w3.org/2000/svg" width="62.688" height="60">
                     <defs>
                         <linearGradient id="a" x1="0%" x2="0%" y1="100%" y2="0%">
@@ -29,7 +29,7 @@
                         d="M23.5 0C36.479 0 47 10.074 47 22.5S36.479 45 23.5 45 0 34.926 0 22.5 10.521 0 23.5 0z"
                         />
                     </svg>
-            </div> 
+            </div>
             <%}%>
     </div>
 </div>

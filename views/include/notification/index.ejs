@@ -1,0 +1,182 @@
+<style>
+    *,
+    *::after,
+    *::before {
+        box-sizing: border-box;
+        transition: .57s cubic-bezier(0.28, 1.49, 1, 1);
+    }
+    
+    .notify_modal {
+        display: none;
+        max-width: 98vw;
+        padding: 5px;
+        position: fixed;
+        right: 15px;
+        top: 50px;
+        z-index: 44;
+    }
+    
+    .notify_modal_body {
+        max-width: 50vw;
+        min-width: 49%;
+        border-radius: 15px;
+        flex-wrap: wrap;
+        flex-direction: column;
+        box-shadow: 0 2px 80px 0 rgb(236, 224, 247), 0 0px 0px 1px rgb(230, 224, 235);
+        z-index: 1;
+        background: white;
+    }
+    
+    .notify_modal_card_header {
+        display: flex;
+        padding: 10px;
+        width: 100%;
+        justify-content: space-around;
+        font-family: sans-serif;
+        font-size: x-small;
+        border: 0;
+        border-bottom: 1px solid rgb(230, 224, 235);
+    }
+    
+    .notify_modal_card {
+        max-width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        overflow: auto;
+    }
+    
+    .notify_modal_card_header_title {
+        align-self: center;
+        margin: 0;
+        width: 85%;
+        text-align: center;
+        text-transform: uppercase;
+        color: #7423c6;
+        letter-spacing: 4px;
+    }
+    
+    .notify_modal_layer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: transparent;
+        z-index: 0;
+    }
+    
+    .btn.notify_modal_closer {
+        align-self: center;
+        margin: 0;
+        overflow: hidden;
+        font-size: large;
+        font-weight: bold;
+    }
+    
+    .notify_modal_no_notification {
+        width: 100%;
+        height: auto;
+        margin: 3pc auto;
+    }
+    
+    .notify_modal_no_notification img {
+        width: 95%;
+    }
+    
+    .no-notification_msg {
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        color: #b3aeae;
+        font-family: sans-serif;
+        text-transform: uppercase;
+        font-size: x-small;
+        margin: 3pc auto auto;
+    }
+    
+    @media screen and (min-width: 320px) {
+        .notify_modal {
+            right: 0;
+            top: 0;
+            max-width: 100vw;
+        }
+        .notify_modal_layer {
+            background-color: rgba(96, 125, 139, 0.15);
+        }
+        .notify_modal_body {
+            max-width: 100vw;
+        }
+    }
+    
+    @media screen and (min-width: 768px) {
+        .notify_modal {
+            right: 15px;
+            top: 77px;
+            max-width: 50vw;
+        }
+        .notify_modal_layer {
+            background-color: transparent;
+        }
+        .notify_modal_body {
+            max-width: 60vw;
+        }
+    }
+    
+    @media screen and (min-width: 1024px) {
+        .notify_modal_body {
+            max-width: 50vw;
+        }
+    }
+</style>
+
+
+<div class="notify_modal sm_animate_opacity">
+    <span class="notify_modal_layer notify_none_displayer"></span>
+    <div class="notify_modal_body">
+        <span class="notify_modal_card_header">
+            <h2 class="notify_modal_card_header_title">Notifications</h2> 
+            <button class="btn notify_modal_closer">X</button>
+        </span>
+        <div class="notify_modal_card">
+            <div class="notify_modal_no_notification"><img src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../../../'%>../../../assets/img/no-notification.png"></div>
+            <div class="no-notification_msg">
+                <h1>No Notification</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let [g, gA] = [k => document.querySelector(k), k => document.querySelectorAll(k)];
+
+    let notify_modal_layer = g('.notify_modal_layer');
+    let notify_modal_closer = g('.notify_modal_closer');
+    let notify_display = g('.notify_display');
+    if (notify_modal_layer) {
+        notify_modal_layer.addEventListener('click', _ => {
+            let notify_modal = g('.notify_modal');
+            notify_modal.classList.add('sm_animate_opacity_0');
+            setTimeout(_ => {
+                notify_modal.classList.remove('sm_animate_opacity_0');
+                notify_modal.style.display = 'none';
+            }, 100)
+        })
+    }
+    if (notify_modal_closer) {
+        notify_modal_closer.addEventListener('click', _ => {
+            let notify_modal = g('.notify_modal');
+            notify_modal.classList.add('sm_animate_opacity_0');
+            setTimeout(_ => {
+                notify_modal.classList.remove('sm_animate_opacity_0');
+                notify_modal.style.display = 'none';
+            }, 100)
+        })
+    }
+    if (notify_display) {
+        notify_display.addEventListener('click', _ => {
+            let notify_modal = g('.notify_modal');
+            notify_modal.style.display = 'flex';
+        })
+    }
+</script>

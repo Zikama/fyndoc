@@ -21,7 +21,7 @@
                                     <%}%>
                     </div>
 
-                    <div class="Rounded-<%if(typeof who !== 'undefined' && who === 'admin'){%>3<%}%> bell_container <%=typeof who !== 'undefined' && who ==='error'?'opacity-0':'' %>" <%if(typeof who !=="undefined" && who==="login" ) {%> hidden style="display:none"
+                    <div class="Rounded-<%if(typeof who !== 'undefined' && who === 'admin'){%>3<%}%> bell_container <%=typeof who !== 'undefined' && who ==='error'?'opacity-0':'' %> notify_display" <%if(typeof who !=="undefined" && who==="login" ) {%> hidden style="display:none"
                         <%}%>>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 229.238 229.238" class="notification">
         <path
@@ -48,3 +48,4 @@
                         <%}%>
     </div>
 </div>
+<% include ../include/notification/index%>
