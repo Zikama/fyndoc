@@ -121,6 +121,9 @@
                 let sock;
                 let connectTmout, submitContract, submitProposal, create_contract_template, create_proposal_template, sendProposalData, sendContractData, contractSent, proposalSent;
 
+                // _drafter
+                let _draft, draft;
+
                 function connect() {
                     sock = new WebSocket(soc);
 
@@ -156,12 +159,16 @@
                         );
 
                         connectTmout = setTimeout( /* ()=>{window.location.reload()} */ connect, 5000);
+
+                        connectTmout = setTimeout(() => {
+                            socketMessage(sock);
+                        }, 5000);
                     };
 
                     sock.onerror = function(err) {
                         console.error(
-                            "Socket encountered error: ",
-                            err.message,
+                            "Socket encountered error: " +
+                            err +
                             "Closing socket"
                         );
                         sock.close();
@@ -173,8 +180,6 @@
                     create_contract_template = document.querySelector(
                         "#create_contract_template"
                     );
-                    // _drafter
-                    let _draft, draft;
                     if (create_contract_template) {
                         _draft = create_contract_template.querySelector(".under_draft");
 
@@ -329,6 +334,13 @@
                     }
                     keepLive1();
                     keepLive2();
+
+                };
+                connect();
+                socketMessage(sock);
+
+                function socketMessage(sock) {
+
                     sock.onmessage = function(json) {
                         json = JSON.parse(json.data);
 
@@ -413,9 +425,9 @@
                             }, 5000);
 
                         }
-                    }
-                };
-                connect();
+                    };
+                }
+                /*On Socket message end*/
 
                 function preview_work(under_preview, templates) {
                     let under_previews = document.querySelectorAll("." + under_preview);
