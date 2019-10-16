@@ -339,6 +339,7 @@
                 connect();
                 socketMessage(sock);
 
+                /* Start Listening to socket messages */
                 function socketMessage(sock) {
 
                     sock.onmessage = function(json) {
