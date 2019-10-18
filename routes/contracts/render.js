@@ -47,21 +47,24 @@ class render {
                                 }, { new: true })
                                 .then((rwa) => {
                                     // Doc updated
-                                    // Notify the main sadja web solutions' email
-                                    sendNotificationViaEmail('index', "Contract viewed [" + rwa.more_details.viewTimes + " time(s)]", 'melisa@sadjawebsolutions.com', 'saphira@sadjawebtools.com', [{
-                                            filename: 'contract-agreement.png',
-                                            path: './views/templates/output.png',
-                                            cid: 'output.png',
-                                            contentType: 'image/png'
-                                        }], {
-                                            name: `The Proposal ID is : ${rwa.ref}`,
-                                            title: `${rwa.company}, has successfully seen the Contract`,
-                                            regards: `Sadja WebSolutions LTD`,
-                                            _no: 'no display'
-                                        })
-                                        .then(sent => {
-                                            // Mail sent
-                                        }).catch((err) => console.log(err))
+                                    // Atleast 10 times
+                                    if (rwa.more_details.viewTimes <= 10) {
+                                        // Notify the main sadja web solutions' email
+                                        sendNotificationViaEmail('index', "Contract viewed [" + rwa.more_details.viewTimes + " time(s)]", 'melisa@sadjawebsolutions.com', 'saphira@sadjawebtools.com', [{
+                                                filename: 'contract-agreement.png',
+                                                path: './views/templates/output.png',
+                                                cid: 'output.png',
+                                                contentType: 'image/png'
+                                            }], {
+                                                name: `The Proposal ID is : ${rwa.ref}`,
+                                                title: `${rwa.company}, has successfully seen the Contract`,
+                                                regards: `Sadja WebSolutions LTD`,
+                                                _no: 'no display'
+                                            })
+                                            .then(sent => {
+                                                // Mail sent
+                                            }).catch((err) => console.log(err))
+                                    }
 
                                 })
                                 .catch(err => console.log(err));
