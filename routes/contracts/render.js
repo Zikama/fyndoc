@@ -19,7 +19,7 @@ class render {
             readerPR.title.name = '';
             readerPR.title.name = company + ' Contract';
             // Double check the url params exists in our database
-            contract.find({ shortCode, /*  ref, */ company })
+            contract.find({ shortCode /*,  ref, company */ })
                 .then((results) => {
                     if (results && results.length) {
 
