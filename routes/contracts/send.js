@@ -59,7 +59,7 @@ class send {
                                 }], {
                                     name: `${results.message}`,
                                     title: `Hi ${results.person.split(" ")[0]},`,
-                                    regards: `Kind regards: Nemie`,
+                                    regards: `Kind regards: Saphira`,
                                     url: `${req.headers['origin'] + '/' + results.link}`
                                 })
                                 .then(sent => {

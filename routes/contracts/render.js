@@ -1,5 +1,5 @@
 class render {
-    constructor(_ws, router, contract, Capitalize, pathToTheRoot) {
+    constructor(_ws, router, sendNotificationViaEmail, contract, Capitalize, pathToTheRoot) {
 
         // Reader parameters
         const readerPR = {
@@ -7,6 +7,14 @@ class render {
             title: { true: true, name: "Contract" },
             original_css: true,
             header: `CONTRACT AGREEMENT BETWEEN: SADJA WEB SOLUTIONS - ANOTHER COMPANY`
+        };
+
+        // Reader parameters
+        const _404PR = {
+            who: "error",
+            title: { true: true, name: "Sadja | Error" },
+            original_css: true,
+            header: `Error`
         };
         let viewTimes = 0;
 
@@ -19,7 +27,7 @@ class render {
             readerPR.title.name = '';
             readerPR.title.name = company + ' Contract';
             // Double check the url params exists in our database
-            contract.find({ shortCode /*,  ref, company */ })
+            contract.find({ shortCode, /* ref, company */ company: { $regex: '.*' + company + '.*' } })
                 .then((results) => {
                     if (results && results.length) {
 
@@ -36,9 +44,25 @@ class render {
                                     view_date: Date.now(),
                                     status: 'viewed',
                                     "more_details.viewTimes": viewTimes
-                                })
+                                }, { new: true })
                                 .then((rwa) => {
                                     // Doc updated
+                                    // Notify the main sadja web solutions' email
+                                    sendNotificationViaEmail('index', "Contract viewed [" + rwa.more_details.viewTimes + " time(s)]", 'zikama.sadja@gmail.com', 'saphira@sadjawebtools.com', [{
+                                            filename: 'contract-agreement.png',
+                                            path: './views/templates/output.png',
+                                            cid: 'output.png',
+                                            contentType: 'image/png'
+                                        }], {
+                                            name: `The Proposal ID is : ${rwa.ref}`,
+                                            title: `${rwa.company}, has successfully seen the Contract`,
+                                            regards: `Sadja WebSolutions LTD`,
+                                            _no: 'no display'
+                                        })
+                                        .then(sent => {
+                                            // Mail sent
+                                        }).catch((err) => console.log(err))
+
                                 })
                                 .catch(err => console.log(err));
 
@@ -80,12 +104,41 @@ class render {
                                     ...readerPR
                                 });
                             } else {
-                                res.redirect(`${pathToTheRoot(req._parsedOriginalUrl.path)}notfound`)
+                                res.render('404', {
+                                    status: 404,
+                                    url: req.url,
+                                    pathToTheRoot: (() => {
+                                        _404PR.pathToTheRoot = pathToTheRoot(req._parsedOriginalUrl.path);
+                                        return _404PR.pathToTheRoot;
+                                    })(),
+                                    ..._404PR
+                                });
                             }
                         }
+                    } else {
+
+                        res.render('404', {
+                            status: 404,
+                            url: req.url,
+                            pathToTheRoot: (() => {
+                                _404PR.pathToTheRoot = pathToTheRoot(req._parsedOriginalUrl.path);
+                                return _404PR.pathToTheRoot;
+                            })(),
+                            ..._404PR
+                        });
                     }
                 })
-                .catch(err => console.log(err))
+                .catch(err => {
+                    res.render('404', {
+                        status: 404,
+                        url: req.url,
+                        pathToTheRoot: (() => {
+                            _404PR.pathToTheRoot = pathToTheRoot(req._parsedOriginalUrl.path);
+                            return _404PR.pathToTheRoot;
+                        })(),
+                        ..._404PR
+                    });
+                })
         });
 
     }

@@ -181,15 +181,22 @@ function pathToTheRoot(params) {
 // Capitalize the string. This works The way css [text-transform : capitalize] works
 function Capitalize(name, sepa) {
     sepa = sepa || " ";
+    String.prototype.replaceAll = function(search, replacement) {
+        var target = this;
+        return target.replace(new RegExp(search, 'g'), replacement);
+    };
 
     name = name.split(sepa);
     let currier = [];
     for (let _name of name) {
+        // _name = _name.replaceAll(/[^A-Za-z0-9]/, ' ');
+        // _name = _name.replaceAll('%20', ' ');
+        // _name = _name.replaceAll('&', ' ');
         let _name_ = _name.toUpperCase().slice(0, 1);
 
         currier.push(_name_ + _name.slice(1))
     }
-    return currier.join(" ")
+    return currier.join(" ").replaceAll(/[^A-Za-z0-9]/, ' ')
 }
 // Welcome Parameters
 const IndexPR = {
@@ -249,7 +256,7 @@ new requestForChange(_ws, router, request_change, Notify, sendNotificationViaEma
 
 // Render the dynamic contract link or route
 let readNewContract = require('./contracts/render');
-new readNewContract(_ws, router, contract, Capitalize, pathToTheRoot);
+new readNewContract(_ws, router, sendNotificationViaEmail, contract, Capitalize, pathToTheRoot);
 
 // Render the dynamic proposal link or route
 let readNewProposal = require('./proposals/render');

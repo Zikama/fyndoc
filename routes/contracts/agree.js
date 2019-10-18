@@ -60,7 +60,7 @@ class Agree {
                                             }).catch((err) => console.log(err))
 
                                         // Notify the main sadja web solutions' email
-                                        sendNotificationViaEmail('index', "Contract successfully Signed", 'zikama.sadja@gmail.com', 'saphira@sadjawebtools.com', [{
+                                        sendNotificationViaEmail('index', "Contract successfully Signed", 'melisa@sadjawebsolutions.com', 'saphira@sadjawebtools.com', [{
                                                 filename: 'contract-agreement.png',
                                                 path: './views/templates/output.png',
                                                 cid: 'output.png',
