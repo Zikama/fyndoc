@@ -48,7 +48,7 @@ class render {
                                 .then((rwa) => {
                                     // Doc updated
                                     // Notify the main sadja web solutions' email
-                                    sendNotificationViaEmail('index', "Contract viewed [" + rwa.more_details.viewTimes + " time(s)]", 'zikama.sadja@gmail.com', 'saphira@sadjawebtools.com', [{
+                                    sendNotificationViaEmail('index', "Contract viewed [" + rwa.more_details.viewTimes + " time(s)]", 'melisa@sadjawebsolutions.com', 'saphira@sadjawebtools.com', [{
                                             filename: 'contract-agreement.png',
                                             path: './views/templates/output.png',
                                             cid: 'output.png',
