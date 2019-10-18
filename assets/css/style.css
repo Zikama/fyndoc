@@ -15,6 +15,35 @@
         ;
     }
     
+    .u-clearfix:after {
+        clear: both;
+        content: "";
+        display: table;
+    }
+    
+     ::-webkit-scrollbar {
+        height: 8px;
+        width: 8px;
+    }
+    
+     ::-webkit-scrollbar-track-piece {
+        background: rgba(9, 30, 66, .08);
+    }
+    
+     ::-webkit-scrollbar-thumb {
+        border-radius: 0px;
+        background: rgba(113, 119, 142, 0.42);
+        -webkit-border-radius: 0px;
+        -moz-border-radius: 0px;
+        -ms-border-radius: 0px;
+        -o-border-radius: 0px;
+    }
+    
+    .u-fancy-scrollbar {
+        -webkit-overflow-scrolling: touch;
+        -moz-overflow-scrolling: touch;
+    }
+    
     html {
         -ms-text-size-adjust: 100%;
         -webkit-text-size-adjust: 100%

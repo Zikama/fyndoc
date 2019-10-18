@@ -167,9 +167,7 @@
 
                     sock.onerror = function(err) {
                         console.error(
-                            "Socket encountered error: " +
-                            err +
-                            "Closing socket"
+                            err
                         );
                         sock.close();
                     };

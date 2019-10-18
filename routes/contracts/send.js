@@ -11,6 +11,15 @@ class send {
         }
         // Check if type of message is send and is to contract
         if (message.type === 'send' && message.to === 'contract') {
+            // Quickly respond back
+            if (typeof _ws !== 'undefined') {
+                // We can now send an email 
+                _ws.send(fy({
+                    type: 'sent',
+                    to: 'contract',
+                    status: "successful"
+                }));
+            }
             // Find the saved contract in db
             // NOTE: The saved contract draft is saved with auto: false so it can not be modified until 
             // it's saved
@@ -59,12 +68,12 @@ class send {
                                     if (sent && sent.match(/accepted/)) {
                                         if (typeof _ws !== 'undefined') {
                                             // We can now send an email 
-                                            _ws.send(fy({
+                                            /* _ws.send(fy({
                                                 type: 'sent',
                                                 to: 'contract',
                                                 status: "successful",
                                                 title: `You've successfully sent a new Contract to ${results.email} with a proposal ID: #${results.ref}`
-                                            }));
+                                            })); */
                                         }
                                         // Store Notification
                                         let newNotify = new Notify({

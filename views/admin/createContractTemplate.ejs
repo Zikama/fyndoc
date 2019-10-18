@@ -31,8 +31,8 @@
 
     <script>
         /* var doc = new jsPDF();
-                                                                                                                                                                                                                doc.text('Jspdf text!', 10, 10);
-                                                                                                                                                                                                                doc.save('test.pdf'); */
+                                                                                                                                                                                                                                doc.text('Jspdf text!', 10, 10);
+                                                                                                                                                                                                                                doc.save('test.pdf'); */
         rangy.init();
 
         var HighlighterButton = MediumEditor.extensions.button.extend({
@@ -123,8 +123,12 @@
                             edit_edito.parentElement.addEventListener('click', _ => {
                                 parent = parent || _.currentTarget.parentElement;
                                 let input = document.createElement('input');
-                                _.currentTarget.querySelector('.edito-done-edit').innerText = '';
-                                let currentVal = _.currentTarget.innerText;
+                                if (_.currentTarget.querySelector('.edito-done-edit')) {
+                                    _.currentTarget.querySelector('.edito-done-edit').innerText = '';
+                                }
+                                if (_.currentTarget) {
+                                    let currentVal = _.currentTarget.innerText;
+                                }
                                 input.type = _.currentTarget.getAttribute('art-type');
                                 input.className = _.currentTarget.classList;
                                 input.value = currentVal;
@@ -143,10 +147,14 @@
                             function editAction(_) {
                                 parent = parent || _.currentTarget.parentElement.parentElement;
                                 let input = document.createElement('input');
-                                _.currentTarget.innerText = '';
-                                let currentVal = _.currentTarget.parentElement.innerText;
-                                input.type = 'text';
-                                input.className = _.currentTarget.parentElement.classList;
+                                if (_.currentTarget) {
+                                    _.currentTarget.innerText = '';
+                                }
+                                if (_.currentTarget) {
+                                    let currentVal = _.currentTarget.parentElement.innerText;
+                                    input.type = _.currentTarget.parentElement.getAttribute('art-type');
+                                    input.className = _.currentTarget.parentElement.classList;
+                                }
                                 input.value = currentVal;
 
                                 input.setAttribute('placeholder', _.currentTarget.parentElement.getAttribute('art-placeholder'));
