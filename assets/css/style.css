@@ -2051,9 +2051,9 @@ color: #a2e617; */
     }
     
     .proposal_tem_form {
-        background: transparent;
-        border: 0;
-        box-shadow: none;
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
     }
     
     #read_tempo_proposal,
