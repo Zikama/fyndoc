@@ -485,7 +485,7 @@
     }
     
     .sm_animate_input:focus {
-        width: 100%!important
+        width: 100% !important
     }
     
     .sm_opacity,
@@ -2037,6 +2037,25 @@ color: #a2e617; */
         font-size: larger;
     }
     
+    #read_tempo_proposal::selection,
+    .editable::selection,
+    #read_tempo::selection {
+        background: #4e39c1;
+        color: #000;
+    }
+    
+    *::-webkit-selection {
+        color: #f55;
+        font-weight: bolder;
+        background: #4e39c1;
+    }
+    
+    .proposal_tem_form {
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+    }
+    
     #read_tempo_proposal,
     #read_tempo {
         padding: 2pc;
@@ -2146,7 +2165,7 @@ transform: translate(-500%, 0); */
     .p_body_content_wrapper form legend {
         box-shadow: 0 0 0px 1px rgba(58, 83, 107, 0.38);
         margin-bottom: 0;
-        border-bottom: 0.21px solid rgba(58, 83, 107, 0.38)!important;
+        border-bottom: 0.21px solid rgba(58, 83, 107, 0.38) !important;
     }
     /* Mobile */
     
