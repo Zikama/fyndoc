@@ -3,7 +3,7 @@
     *::after,
     *::before {
         box-sizing: border-box;
-        transition: .57s cubic-bezier(0.28, 1.49, 1, 1);
+        transition: 0.57s cubic-bezier(0.28, 1.49, 1, 1);
     }
     
     .notify_modal {
@@ -65,12 +65,13 @@
         z-index: 0;
     }
     
-    .btn.notify_modal_closer {
+    .notify_modal_closer {
         align-self: center;
         margin: 0;
         overflow: hidden;
         font-size: large;
         font-weight: bold;
+        background: transparent;
     }
     
     .notify_modal_no_notification {
@@ -130,16 +131,17 @@
     }
 </style>
 
-
 <div class="notify_modal sm_animate_opacity">
     <span class="notify_modal_layer notify_none_displayer"></span>
     <div class="notify_modal_body">
         <span class="notify_modal_card_header">
-            <h2 class="notify_modal_card_header_title">Notifications</h2> 
-            <button class="btn notify_modal_closer">X</button>
-        </span>
+      <h2 class="notify_modal_card_header_title">Notifications</h2>
+      <button class="btn notify_modal_closer">X</button>
+    </span>
         <div class="notify_modal_card">
-            <div class="notify_modal_no_notification"><img src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../../../'%>../../../assets/img/no-notification.png"></div>
+            <div class="notify_modal_no_notification">
+                <img src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../../../'%>../../../assets/img/no-notification.png" />
+            </div>
             <div class="no-notification_msg">
                 <h1>No Notification</h1>
             </div>
@@ -148,35 +150,38 @@
 </div>
 
 <script>
-    let [g, gA] = [k => document.querySelector(k), k => document.querySelectorAll(k)];
+    let [g, gA] = [
+        k => document.querySelector(k),
+        k => document.querySelectorAll(k)
+    ];
 
-    let notify_modal_layer = g('.notify_modal_layer');
-    let notify_modal_closer = g('.notify_modal_closer');
-    let notify_display = g('.notify_display');
+    let notify_modal_layer = g(".notify_modal_layer");
+    let notify_modal_closer = g(".notify_modal_closer");
+    let notify_display = g(".notify_display");
     if (notify_modal_layer) {
-        notify_modal_layer.addEventListener('click', _ => {
-            let notify_modal = g('.notify_modal');
-            notify_modal.classList.add('sm_animate_opacity_0');
+        notify_modal_layer.addEventListener("click", _ => {
+            let notify_modal = g(".notify_modal");
+            notify_modal.classList.add("sm_animate_opacity_0");
             setTimeout(_ => {
-                notify_modal.classList.remove('sm_animate_opacity_0');
-                notify_modal.style.display = 'none';
-            }, 100)
-        })
+                notify_modal.classList.remove("sm_animate_opacity_0");
+                notify_modal.style.display = "none";
+            }, 100);
+        });
     }
     if (notify_modal_closer) {
-        notify_modal_closer.addEventListener('click', _ => {
-            let notify_modal = g('.notify_modal');
-            notify_modal.classList.add('sm_animate_opacity_0');
+        notify_modal_closer.addEventListener("click", _ => {
+            let notify_modal = g(".notify_modal");
+            notify_modal.classList.add("sm_animate_opacity_0");
             setTimeout(_ => {
-                notify_modal.classList.remove('sm_animate_opacity_0');
-                notify_modal.style.display = 'none';
-            }, 100)
-        })
+                notify_modal.classList.remove("sm_animate_opacity_0");
+                notify_modal.style.display = "none";
+            }, 100);
+        });
     }
     if (notify_display) {
-        notify_display.addEventListener('click', _ => {
-            let notify_modal = g('.notify_modal');
-            notify_modal.style.display = 'flex';
-        })
+        notify_display.addEventListener("click", _ => {
+            let notify_modal = g(".notify_modal");
+            notify_modal.style.display = "flex";
+        });
     }
 </script>
