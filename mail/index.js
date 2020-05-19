@@ -3,16 +3,15 @@ class Art_mailer {
         this.nodemailer = nodemailer;
         this.user = user;
         this.pass = pass;
-        this.to;
-        this.subject;
-        this.text;
-        this.transporter;
+        // this.to;
+        // this.subject;
+        // this.text;
+        // this.transporter;
         this.init();
 
     }
     init() {
         let hbs = require("nodemailer-express-handlebars");
-
 
         /*  hbs.create({
              helpers: {
@@ -24,12 +23,13 @@ class Art_mailer {
                  }
              }
          }); */
+
         const nodemailer = this.nodemailer,
             user = this.user,
             pass = this.pass;
         this.transporter = nodemailer.createTransport({
-            // service: 'throneshoppers.com', 
-            host: "smtpout.europe.secureserver.net",
+            // service: 'throneshoppers.com',smtpout.europe.secureserver.net, 
+            host: "mail.alenzone.com",
             port: 465,
             auth: {
                 user,
@@ -58,7 +58,7 @@ class Art_mailer {
                 //     return attach
 
                 // }
-                return attachments
+                return attachments;
             }
 
             const mailOptions = {
@@ -110,7 +110,7 @@ class Art_mailer {
                     return resolve('Email sent: ' + info.response);
                 }
             });
-        })
+        });
     }
 }
 

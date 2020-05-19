@@ -10,7 +10,7 @@ class Changes {
                 .then((saved) => {
                     if (saved) {
                         // We can send an email to the client
-                        sendNotificationViaEmail('index', "Request sent", saved.email, 'saphira@sadjawebtools.com', [{
+                        sendNotificationViaEmail('index', "Request sent", saved.email, require('../../config/keys').defaultEmail, [{
                                 filename: 'contract-agreement.png',
                                 path: './views/templates/output.png',
                                 cid: 'output.png',

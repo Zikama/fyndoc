@@ -29,7 +29,7 @@ contract_draft_.find({}, (err, results) => {
     if (results.length) {
         return
     } else {
-        data = [{ auto: "true" }, { auto: "false" }]
+        data = [{ auto: "true" }]
 
         let total = data.length,
             result = [];

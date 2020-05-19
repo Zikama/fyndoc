@@ -32,14 +32,14 @@ Menu.find({}, (err, results) => {
                     id: "contract_document"
                 },
                 container: [{
-                        title: "Create a contract",
-                        classes: ['li', 'tex_no_deco'],
-                        classesB: ['art-btn-a', 'art-tablink', 'active']
-                    },
-                    {
                         title: "Send a contract",
                         classes: ['li', 'tex_no_deco'],
                         classesB: ['art-btn-a', 'art-tablink']
+                    },
+                    {
+                        title: "Create a contract",
+                        classes: ['li', 'tex_no_deco'],
+                        classesB: ['art-btn-a', 'art-tablink', 'active']
                     }
                 ]
             },

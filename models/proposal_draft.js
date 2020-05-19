@@ -27,10 +27,10 @@ let proposal_draft_ = mongoose.model("proposal_draft", proposal_draft);
 proposal_draft_.find({}, (err, results) => {
     if (err) throw err;
     if (results.length) {
-        return
+        return;
     } else {
 
-        data = [{ auto: "true" }, { auto: "false" }]
+        data = [{ auto: "true" }];
 
         let total = data.length,
             result = [];
@@ -45,7 +45,7 @@ proposal_draft_.find({}, (err, results) => {
                 result.push(saved[0]);
 
                 if (--total) saveAll();
-            })
+            });
         }
 
         saveAll();

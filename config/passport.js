@@ -7,6 +7,8 @@ const LocalStrategy = require("passport-local").Strategy,
     User = require("../models/User"),
     // Initial Menu
     Menu = require("../models/menu"),
+    contractTemp = require("../models/contract_template"),
+    proposalTemp = require("../models/proposal_template"),
     ContractDraft = require("../models/contract_draft"),
     ProposalDraft = require("../models/proposal_draft");
 
@@ -28,7 +30,7 @@ module.exports = (passport) => {
                     if (!user) {
                         return done(null, false, {
                             message: 'That email is not registered'
-                        })
+                        });
                     }
                     // match the user password
                     bcrypt.compare(password, user.password, (err, isMatch) => {
@@ -37,18 +39,18 @@ module.exports = (passport) => {
                             /* if (!user.email_verified) {
                                 return sendNotification();
                             } */
-                            return done(null, user)
+                            return done(null, user);
                         } else {
                             return done(null, false, {
                                 message: 'Password incorrect, check your password and try again!'
-                            })
+                            });
                         }
-                    })
+                    });
                 })
-                .catch(err => console.log(err))
+                .catch(err => console.log(err));
 
         })
-    )
+    );
 
     passport.serializeUser(function(user, done) {
         done(null, user.id);
@@ -63,10 +65,10 @@ module.exports = (passport) => {
                             .then((co_draft) => {
                                 ProposalDraft.findOne({})
                                     .then((pro_draft) => {
-                                        ContractDraft.find({}).sort([
+                                        contractTemp.find({}).sort([
                                             ['date', -1]
                                         ]).then(contracts => {
-                                            ProposalDraft.find({}).sort([
+                                            proposalTemp.find({}).sort([
                                                 ['date', -1]
                                             ]).then(proposals => {
                                                 done(err, [user, menu, co_draft, pro_draft, contracts, proposals]);
@@ -84,10 +86,10 @@ module.exports = (passport) => {
 
                     }).catch((err) => console.log(err));
             } else {
-                done(err, user)
+                done(err, user);
             }
         });
     });
 
 
-}
+};

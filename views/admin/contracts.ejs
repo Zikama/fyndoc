@@ -1,0 +1,214 @@
+<div class="post art-tab-names art-tab" id="contracts_collection" style="margin-top: 0; display: none;" hidden>
+    <div class="p_body">
+        <div class="p_body_content">
+            <div class="p_body_content_wrapper">
+                <div class="uls under_submit_form" id="contracts_container">
+
+                    <legend class="art-dop_down io_aro  lis " id="dashboard">
+                        Contracts
+                    </legend>
+
+                    <ul class="art-dop_col_ no-shado w-100 ul art_flex art_flex_wr " id="pa-contracts_collection">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let menuOptions = (_id) => `<div class="art_contract_option art_contract_option_hide">
+                            <button class="art-btn art_contract_option_title" art-data-id="${_id}">Edit</button>
+                            <button class="art-btn art_contract_option_title" art-data-id="${_id}">Send</button>
+                            <button class="art-btn art_contract_option_title" art-data-id="${_id}">Rename</button>
+                            <button class="art-btn art_contract_option_title art-danger art-contract-delete" art-data-id="${_id}">Delete</button>
+                        </div>`;
+    let temp = (_id, originalname, date, last_date) => `
+                <li class="li art_contract_co " style="margin-bottom: 1pc;" art-data-id="${_id}" art-data-date="${date}" art-data-last_modified="${last_date}">
+                    <div class="art_contract_options">
+                        <button class="art-btn art_contract_options_more">...</button>
+                        ${menuOptions(_id)}
+                    </div>
+                    <div class="art_contract_title_co">
+                        <p class="art_contract_title">${originalname}</p>
+                    </div>
+                </li>`;
+    <% 
+    
+    if(typeof contractTemplate != 'undefined' && contractTemplate.length) {
+        for (let contract of contractTemplate) { %>
+
+    document.querySelector("#pa-contracts_collection").insertAdjacentHTML("beforeEnd", temp('<%=contract._id%>', '<%=contract.originalname%>', '<%=contract.date%>', '<%=contract.last_date%>'));
+
+    <%   }
+    }%>
+    let initial = Promise.resolve((() => {
+
+            return function formData(form) {
+                let _form = document.querySelector(form),
+                    inputs_ = _form.querySelectorAll("input"),
+                    textArea_ = _form.querySelectorAll("textarea"),
+                    select_ = _form.querySelectorAll("select");
+
+                let form_inputs = () => {
+                    for (let input of inputs_) {
+                        return {
+                            [input.name]: input.value
+                        }
+                    }
+                };
+                let form_textereas = () => {
+                    for (let input of textArea_) {
+                        return {
+                            [input.name]: input.value
+                        }
+                    }
+                };
+                let form_selects = () => {
+                    for (let input of select_) {
+                        return {
+                            [input.name]: input.value
+                        }
+                    }
+                };
+                return {...form_inputs(),
+                    ...form_textereas(),
+                    ...form_selects()
+                }
+            }
+        })())
+        .then(formData => {
+            return Promise.resolve(((formData) => {
+                function toggleOptions(e) {
+                    e = window.event || e;
+                    let target = e.target;
+                    let container1 = target.parentElement;
+
+                    let art_contract_option = container1.querySelector('.art_contract_option');
+
+                    function onhideElement() {
+                        art_contract_option.classList.add('art_contract_option_hide');
+                    }
+
+                    function onShowElement() {
+                        art_contract_option.classList.remove('art_contract_option_hide');
+                    }
+
+                    function autoHideAnywhere(e) {
+                        let doc = window.event.target || e.target;
+                        doc = doc || e;
+
+                        if (doc !== target) {
+                            if (art_contract_option && !art_contract_option.classList.contains('art_contract_option_hide')) {
+                                onhideElement();
+                            }
+                            document.removeEventListener('click', autoHideAnywhere);
+                            return;
+                        }
+                    }
+
+                    // Toggle class art_contract_option_hide
+                    if (art_contract_option) {
+                        if (art_contract_option.classList.contains('art_contract_option_hide')) {
+                            onShowElement();
+                            document.addEventListener('click', autoHideAnywhere);
+                            return;
+                        } else {
+                            onhideElement();
+                            return;
+                        }
+                        document.removeEventListener('click', autoHideAnywhere);
+                    }
+                }
+
+                let art_contract_options_mores = document.querySelectorAll('.art_contract_options_more');
+                if (art_contract_options_mores.length) {
+                    for (let art_contract_options_more of art_contract_options_mores) {
+                        art_contract_options_more.addEventListener('click', toggleOptions)
+                    }
+                }
+                return formData;
+            })(formData))
+        })
+        .then(formData => {
+            return Promise.resolve((formData => {
+                let falsePlace = false;
+                let pa_contracts = document.querySelector('#pa-contracts');
+                let art_contract_con = document.querySelectorAll('.art_contract_co');
+
+                if (pa_contracts) {
+                    pa_contracts.addEventListener('contextmenu', pa_contract = e => {
+                        e = window.event || e;
+                        e.preventDefault();
+                        let target_ = e.target;
+                        if (!falsePlace)
+                            console.log("hg");
+
+                    });
+                    pa_contracts.addEventListener('click', pa_contract = e => {
+                        e = window.event || e;
+                        e.preventDefault();
+                        let target_ = e.target;
+                        if (!falsePlace)
+
+                            for (let art_contract_co of art_contract_con) {
+                            art_contract_co.classList.remove('active_doc');
+                        }
+
+                    });
+                }
+
+
+                let target = [...art_contract_con];
+
+                if (art_contract_con.length) {
+                    for (let art_contract_co of art_contract_con) {
+                        art_contract_co.addEventListener('contextmenu', e => {
+                            falsePlace = true;
+                            e = window.event || e;
+                            e.preventDefault();
+                            target = e.target;
+
+                            for (let art_contract_co of art_contract_con) {
+                                art_contract_co.classList.remove('active_doc');
+                            }
+                            art_contract_co.classList.add('active_doc');
+
+                            console.log("...target.children");
+
+                            return setTimeout(_ => falsePlace = false, 500);
+                        });
+
+                        art_contract_co.addEventListener('click', e => {
+                            falsePlace = true;
+                            e = window.event || e;
+                            e.preventDefault();
+                            target = e.target;
+
+                            if (!target.classList.contains('art_contract_options_more')) {
+                                for (let art_contract_co of art_contract_con) {
+                                    art_contract_co.classList.remove('active_doc');
+                                }
+                                art_contract_co.classList.add('active_doc');
+                            }
+
+                            return setTimeout(_ => falsePlace = false, 500);
+                        });
+                    }
+                }
+
+            })(formData))
+        })
+        .then(formData => {
+            return Promise.resolve((formData => {
+
+
+            })(formData))
+        })
+
+
+    // <% if (typeof contractTemplate != 'undefined') { %>
+    // // document.querySelector("#contract_template_send").insertAdjacentHTML("beforeEnd", `<%-contractTemplate.data%>`);
+
+    // <%}%>
+</script>

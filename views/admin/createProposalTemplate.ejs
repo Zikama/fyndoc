@@ -5,16 +5,22 @@
                 <form class="uls " action="create/proposal" method="POST" id="create_proposal_template" style="max-height: inherit;">
                     <!-- Dashboard -->
                     <legend class="art-dop_down io_aro  lis " id="upload_proposal_header">
-                        <p class="leg-title">Create Proposal Template Editor</p>
+                        <input readonly class="leg-title" value="New Proposal" name="title">
                         <div class="container_ ">
                             <!-- Preview  the work-->
-                            <input type="button" class="under_preview" value="Preview">
-                            <!-- Save the content -->
-                            <button type="submit" class="under_submit">Save</button>
-                            <!-- Save and send the proposal -->
-                            <input type="button" class="under_save_send" id="save_send_proposal" value="Save and send">
-                            <!-- Save as a Draft = Auto in future-->
-                            <input type="button" class="under_draft hidden" value="Save draft">
+                            <input type="button" class="under_more" value="...">
+
+
+                            <div class="container__ sm_animate_opacity">
+                                <!-- Preview  the work-->
+                                <input type="button" class="under_preview" value="Preview">
+                                <!-- Save the content -->
+                                <button type="submit" class="under_submit">Save</button>
+                                <!-- Save and send the proposal -->
+                                <input type="button" class="under_save_send" id="save_send_proposal" value="Save and send">
+                                <!-- Save as a Draft = Auto in future-->
+                                <input type="button" class="under_draft hidden" value="Save draft">
+                            </div>
                         </div>
                     </legend>
                     <!-- Editor -->
@@ -27,10 +33,6 @@
             </div>
         </div>
     </div>
-    <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets_/medium-editor/dist/js/medium-editor.js"></script>
-    <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets_/medium-editor-embed-button/dist/js/medium-editor-embed-button.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangy/1.3.0/rangy-core.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangy/1.3.0/rangy-classapplier.min.js"></script>
 
     <script>
         rangy.init();

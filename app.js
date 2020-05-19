@@ -15,7 +15,8 @@ const app = express(),
             uri: sessionsURI || mongoURI,
             // databaseName: sessions,
             collection: dbname,
-            useNewUrlParser: true
+            useNewUrlParser: true,
+            clear_interval: 3600
 
         },
         function(error) {
@@ -71,7 +72,7 @@ app.use((req, res, next) => {
     res.locals.art_p_success_msg = req.flash("art_p_success_msg");
     res.locals.art_p_error_msg = req.flash("art_p_error_msg");
     res.locals.error = req.flash("error");
-    next()
+    next();
 })
 
 // EJS
@@ -83,14 +84,17 @@ PORT = process.env.PORT || 5002;
 let server = app.listen(PORT, () => {
     console.log("app listening to " + PORT);
 });
+
 // Web socket
 let ws = new webSocket(server);
+
 global.web_socket = ws;
 
 // routes
 app.use("/", require("./routes/index"));
 app.use("/send", require("./routes/send"));
 app.use("/upload", require("./routes/upload").router);
+
 // handle 404
 app.use(function(req, res, next) {
 
@@ -104,9 +108,9 @@ app.use(function(req, res, next) {
         rootPath = rootPath.split("");
         for (let rootPath_ of rootPath) {
             if (rootPath_ === "/") { // make sure the contains have the [/]
-                rPath.push(".." + rootPath_) // append the ..[dots] to each [/]
+                rPath.push(".." + rootPath_); // append the ..[dots] to each [/]
             }
-        };
+        }
         return rPath.join(""); ///return the real path [now this is like ../../etc]
     }
 
@@ -129,7 +133,7 @@ app.use(function(req, res, next) {
         })(),
         ..._404PR
     });
-    next()
+    next();
 });
 
 

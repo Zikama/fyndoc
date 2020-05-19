@@ -5,16 +5,22 @@
                 <form class="uls " action="create/contract" method="POST" id="create_contract_template" style="max-height: inherit;">
                     <!-- Dashboard -->
                     <legend class="art-dop_down io_aro  lis " id="upload_contract_header">
-                        <p class="leg-title">Create Contract Template Editor</p>
+                        <input readonly class="leg-title" value="New Contract" name="title" autocapitalize="on" autocomplete="off" spellcheck="false">
+                        <input type="hidden" value="" name="art_id" autocapitalize="on" autocomplete="off" spellcheck="false">
                         <div class="container_ ">
                             <!-- Preview  the work-->
-                            <input type="button" class="under_preview" value="Preview">
-                            <!-- Save the content -->
-                            <button type="submit" class="under_submit">Save</button>
-                            <!-- Save and send the contract -->
-                            <input type="button" class="under_save_send" id="save_send_contract" value="Save and send">
+                            <input type="button" class="under_more" id="more_options" value="...">
+
+                            <div class="container__ sm_animate_opacity">
+                                <!-- Preview  the work-->
+                                <input type="button" class="under_preview" value="Preview">
+                                <!-- Save the content -->
+                                <input type="submit" class="under_submit" value="Save" />
+                                <!-- Save and send the contract -->
+                                <input type="button" class="under_save_send" id="save_send_contract" value="Save and send">
+                            </div>
                             <!-- Save as a Draft = Auto in future-->
-                            <input type="button" class="under_draft hidden" value="Save draft">
+                            <input type="button" class="under_draft hidden" value="Save draft" style="color: #3b659a;">
                         </div>
                     </legend>
                     <!-- Editor -->
@@ -24,16 +30,13 @@
             </div>
         </div>
     </div>
-    <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets_/medium-editor/dist/js/medium-editor.js"></script>
-    <script src="<%=typeof pathToTheRoot !=='undefined'?pathToTheRoot:'../'%>assets_/medium-editor-embed-button/dist/js/medium-editor-embed-button.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangy/1.3.0/rangy-core.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangy/1.3.0/rangy-classapplier.min.js"></script>
 
     <script>
-        /* var doc = new jsPDF();
-                                                                                                                                                                                                                                doc.text('Jspdf text!', 10, 10);
-                                                                                                                                                                                                                                doc.save('test.pdf'); */
-        rangy.init();
+        /* var doc = new jsPDF();*/
+
+        if (typeof rangy !== 'undefined') {
+            rangy.init();
+        }
 
         var HighlighterButton = MediumEditor.extensions.button.extend({
             name: 'highlighter',
@@ -48,10 +51,12 @@
             init: function() {
                 MediumEditor.extensions.button.prototype.init.call(this);
 
-                this.classApplier = rangy.createClassApplier('highlight', {
-                    elementTagName: 'input',
-                    normalize: true
-                });
+                if (typeof rangy !== 'undefined')
+                    this.classApplier = rangy.createClassApplier('highlight', {
+                        elementTagName: 'input',
+                        normalize: true
+                    });
+
                 this.button.title = 'Insert an input';
             },
 
@@ -193,10 +198,12 @@
             init: function() {
                 MediumEditor.extensions.button.prototype.init.call(this);
 
-                this.classApplier = rangy.createClassApplier('esignature', {
-                    elementTagName: 'input',
-                    normalize: true
-                });
+                if (typeof rangy !== 'undefined')
+                    this.classApplier = rangy.createClassApplier('esignature', {
+                        elementTagName: 'input',
+                        normalize: true
+                    });
+
                 this.button.title = 'User E-signature';
             },
 
@@ -319,8 +326,9 @@
                 hideOnClick: true
             }
         });
-        <% if(typeof contractDraft != 'undefined') { %>
+        <% if(typeof contractDraft != 'undefined'&&contractDraft.data!=='') {  %>
         document.querySelector("#contract_template").insertAdjacentHTML("beforeEnd", `<%-contractDraft.data%>`);
+        document.querySelector("#create_contract_template").querySelector('.editable.medium-editor-element').setAttribute('data-placeholder', '');
 
         function doneEdit1() {
             let editorInputs = document.querySelectorAll('.editor_input');

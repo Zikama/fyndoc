@@ -21,7 +21,8 @@ class send {
                 }));
             }
             // Find the saved contract in db
-            // NOTE: The saved contract draft is saved with auto: false so it can not be modified until 
+            // NOTE: The saved contract draft is saved with auto: false so it can not be modified until
+            //
             // it's saved
             // contract_draft.findOne({ auto: "false" }).then(contracts => {
             // We don;t send empty contract
@@ -51,7 +52,7 @@ class send {
                         //#############done#################
                         if (results) {
                             // We can send an email to client
-                            sendNotificationViaEmail('index', "New Contract for proposal ID: " + results.ref, results.email, 'saphira@sadjawebtools.com', [{
+                            sendNotificationViaEmail('index', "New Contract for proposal ID: " + results.ref, results.email, require('../../config/keys').defaultEmail, [{
                                     filename: 'contract-agreement.png',
                                     path: './views/templates/output.png',
                                     cid: 'output.png',
@@ -108,6 +109,7 @@ class send {
                                             ref: `${done._id}`,
                                             link: "/contracts/failure" + done.ref
                                         });
+
                                         newNotify.save().then((_done) => {
                                             // Notify the admin
                                             // if() socket is open

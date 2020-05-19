@@ -1,0 +1,948 @@
+<!-- <script>
+    /* var doc = new jsPDF();*/
+
+    if (typeof rangy !== 'undefined') {
+        rangy.init();
+    }
+
+    var HighlighterButton = MediumEditor.extensions.button.extend({
+        name: 'highlighter',
+        tagNames: ['input'],
+        contentDefault: '<b>Input</b>',
+        contentFA: '<i title="Insert an input" class="fa fa-paint-brush"></i>',
+        aria: 'input',
+        action: 'highlight',
+        title: 'Insert an input',
+        placeHolder: 'input',
+
+        init: function() {
+            MediumEditor.extensions.button.prototype.init.call(this);
+
+            if (typeof rangy !== 'undefined')
+                this.classApplier = rangy.createClassApplier('highlight', {
+                    elementTagName: 'input',
+                    normalize: true
+                });
+
+            this.button.title = 'Insert an input';
+        },
+
+        handleClick: function(event) {
+            this.classApplier.toggleSelection();
+
+            var range = MediumEditor.selection.getSelectionRange(this.document);
+            let inserted = range.endContainer.parentElement;
+            let insertedUneder = range.endContainer.wholeText;
+            inserted.setAttribute("placeholder", insertedUneder);
+            inserted.setAttribute("class", "editor_input");
+            inserted.setAttribute("size", "1");
+            inserted.setAttribute("type", "tex");
+            inserted.setAttribute("name", insertedUneder);
+            if (insertedUneder.toLowerCase() == 'date') {
+                inserted.setAttribute("type", "date");
+            }
+            if (insertedUneder.toLowerCase() == '0' || insertedUneder.toLowerCase() == '0000' || insertedUneder.toLowerCase() == '123' || insertedUneder.toLowerCase() == 'number') {
+                inserted.setAttribute("type", "number");
+            }
+
+            function doneEdit() {
+                let editorInputs = document.querySelectorAll('.editor_input');
+                for (let editorInput of editorInputs) {
+                    let editTemp = `<button type='button' class='edito-done-edit hidden'>Edit</button>`;
+                    if (editorInput) {
+                        editorInput.addEventListener('blur', _ => {
+                            if (_.currentTarget.value !== '') {
+                                let parent = _.currentTarget.parentElement;
+                                let currentVal = _.currentTarget.value;
+                                let b = document.createElement('b');
+                                b.className = _.currentTarget.classList;
+                                b.innerText = currentVal;
+                                b.setAttribute('art-placeholder', _.currentTarget.getAttribute('placeholder'));
+                                b.setAttribute('art-name', _.currentTarget.getAttribute('name'));
+                                b.setAttribute('art-type', _.currentTarget.getAttribute('type'));
+
+                                b.insertAdjacentHTML('beforeEnd', editTemp);
+                                if (parent) {
+                                    parent.insertBefore(b, _.currentTarget);
+                                    parent.removeChild(_.currentTarget);
+                                    edit_done_edito(parent);
+                                }
+                                b.addEventListener('mouseover', t => {
+                                    let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
+                                    if (edito_edit) {
+                                        edito_edit.classList.remove('hidden')
+                                    }
+                                })
+
+                                b.addEventListener('mouseleave', t => {
+                                    let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
+                                    if (edito_edit) {
+                                        edito_edit.classList.add('hidden')
+                                    }
+                                })
+                            }
+                        })
+                    }
+                }
+            }
+            doneEdit();
+
+            function edit_done_edito(parent) {
+                let edit_editos = document.querySelectorAll('.edito-done-edit');
+                for (let edit_edito of edit_editos) {
+                    if (edit_edito) {
+
+                        edit_edito.parentElement.addEventListener('click', _ => {
+                            parent = parent || _.currentTarget.parentElement;
+                            let input = document.createElement('input');
+                            if (_.currentTarget.querySelector('.edito-done-edit')) {
+                                _.currentTarget.querySelector('.edito-done-edit').innerText = '';
+                            }
+                            if (_.currentTarget) {
+                                let currentVal = _.currentTarget.innerText;
+                            }
+                            input.type = _.currentTarget.getAttribute('art-type');
+                            input.className = _.currentTarget.classList;
+                            input.value = currentVal;
+
+                            input.setAttribute('placeholder', _.currentTarget.getAttribute('art-placeholder'));
+                            input.setAttribute('name', _.currentTarget.getAttribute('art-name'));
+
+                            if (parent) {
+                                parent.insertBefore(input, _.currentTarget);
+                                input.focus();
+                                parent.removeChild(_.currentTarget);
+                            }
+                            doneEdit();
+                        });
+
+                        function editAction(_) {
+                            parent = parent || _.currentTarget.parentElement.parentElement;
+                            let input = document.createElement('input');
+                            if (_.currentTarget) {
+                                _.currentTarget.innerText = '';
+                            }
+                            if (_.currentTarget) {
+                                let currentVal = _.currentTarget.parentElement.innerText;
+                                input.type = _.currentTarget.parentElement.getAttribute('art-type');
+                                input.className = _.currentTarget.parentElement.classList;
+                            }
+                            input.value = currentVal;
+
+                            input.setAttribute('placeholder', _.currentTarget.parentElement.getAttribute('art-placeholder'));
+                            input.setAttribute('name', _.currentTarget.parentElement.getAttribute('art-name'));
+                            if (parent) {
+                                parent.insertBefore(input, _.currentTarget.parentElement);
+                                input.focus();
+                                parent.removeChild(_.currentTarget.parentElement);
+                            }
+                            doneEdit();
+                        }
+                        // parent.addEventListener('click', editAction)
+                        // edit_edito.addEventListener('click', editAction)
+                    }
+                }
+
+            }
+
+            // Ensure the editor knows about an html change so watchers are notified
+            // ie: <textarea> elements depend on the editableInput event to stay synchronized
+            this.base.checkContentChanged();
+
+        }
+    });
+
+    var Esign = MediumEditor.extensions.button.extend({
+        name: 'esignature',
+        tagNames: ['input'],
+        contentDefault: '<b>E-sign</b>',
+        contentFA: '<i title="Sign" class="fas fa-user-edit"></i>',
+        aria: 'input',
+        action: 'esignature',
+        title: 'e-sign',
+        placeHolder: 'e-sign',
+
+        init: function() {
+            MediumEditor.extensions.button.prototype.init.call(this);
+
+            if (typeof rangy !== 'undefined')
+                this.classApplier = rangy.createClassApplier('esignature', {
+                    elementTagName: 'input',
+                    normalize: true
+                });
+
+            this.button.title = 'User E-signature';
+        },
+
+        handleClick: function(event) {
+            this.classApplier.toggleSelection();
+
+            var range = MediumEditor.selection.getSelectionRange(this.document);
+            let inserted = range.endContainer.parentElement;
+            let insertedUneder = range.endContainer.wholeText;
+            inserted.setAttribute("placeholder", insertedUneder);
+
+            inserted.setAttribute("class", "editor_input _sign");
+            inserted.setAttribute("size", "1");
+            inserted.setAttribute("name", insertedUneder);
+
+            function doneEdit() {
+                let editorInputs = document.querySelectorAll('.editor_input');
+                for (let editorInput of editorInputs) {
+                    let editTemp = `<button type='button' class='edito-done-edit hidden'>Edit</button>`;
+                    if (editorInput) {
+                        editorInput.addEventListener('blur', _ => {
+                            if (_.currentTarget.value !== '') {
+                                let parent = _.currentTarget.parentElement;
+                                let currentVal = _.currentTarget.value;
+                                let b = document.createElement('b');
+                                b.className = _.currentTarget.classList;
+                                b.innerText = currentVal;
+                                b.setAttribute('art-placeholder', _.currentTarget.getAttribute('placeholder'));
+                                b.setAttribute('art-name', _.currentTarget.getAttribute('name'));
+                                b.insertAdjacentHTML('beforeEnd', editTemp);
+                                if (parent) {
+                                    parent.insertBefore(b, _.currentTarget);
+                                    parent.removeChild(_.currentTarget);
+                                    edit_done_edito(parent);
+                                }
+                                b.addEventListener('mouseover', t => {
+                                    let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
+                                    if (edito_edit) {
+                                        edito_edit.setAttribute('contenteditable', 'false');
+                                        edito_edit.classList.remove('hidden')
+                                    }
+                                })
+
+                                b.addEventListener('mouseleave', t => {
+                                    let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
+                                    if (edito_edit) {
+                                        edito_edit.setAttribute('contenteditable', 'false');
+                                        edito_edit.classList.add('hidden')
+                                    }
+                                })
+                            }
+                        })
+                    }
+                }
+            }
+            doneEdit();
+
+            function edit_done_edito(parent) {
+                let edit_editos = document.querySelectorAll('.edito-done-edit');
+                for (let edit_edito of edit_editos) {
+                    if (edit_edito) {
+                        edit_edito.addEventListener('click', _ => {
+                            parent = parent || _.currentTarget.parentElement.parentElement;
+
+                            let input = document.createElement('input');
+                            _.currentTarget.innerText = '';
+                            let currentVal = _.currentTarget.parentElement.innerText;
+                            input.type = 'text';
+                            input.className = _.currentTarget.parentElement.classList;
+                            input.value = currentVal;
+
+                            input.setAttribute('placeholder', _.currentTarget.parentElement.getAttribute('art-placeholder'));
+                            input.setAttribute('name', _.currentTarget.parentElement.getAttribute('art-name'));
+                            if (parent) {
+                                parent.insertBefore(input, _.currentTarget.parentElement);
+                                input.focus();
+                                parent.removeChild(_.currentTarget.parentElement);
+                            }
+                            doneEdit();
+                        })
+                    }
+                }
+
+            }
+
+
+            // Ensure the editor knows about an html change so watchers are notified
+            // ie: <textarea> elements depend on the editableInput event to stay synchronized
+            this.base.checkContentChanged();
+
+        }
+    });
+    var editor = new MediumEditor('.editable', {
+        toolbar: {
+            buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3',
+                'unorderedlist',
+                'orderedlist', 'quote', 'highlighter', 'esignature',
+                'embedButton'
+            ]
+        },
+        buttonLabels: 'fontawesome',
+        paste: {
+            cleanPastedHTML: true,
+            forcePlainText: false
+        },
+        extensions: {
+            'highlighter': new HighlighterButton(),
+            'esignature': new Esign(),
+            embedButton: new EmbedButtonExtension({
+                embedOpts: {
+                    /* 3bef8c4238179ff9306315 Don not use this API, is a third part key, only use it for development/testing not for production */
+                    "oembedProxy": "http://iframe.ly/api/oembed?api_key=0f38366c7bce9ee000b5e6&url=",
+                    "msgSelectOnlyEmbadableUrl": "The URL you selected is not supported!",
+                    "msgSelectOnlyUrl": "The text you selected is not a valid URL!"
+                }
+            })
+        },
+        placeholder: {
+            text: 'Enter your text',
+            hideOnClick: true
+        }
+    });
+    <% if(typeof contractDraft != 'undefined') { %>
+    document.querySelector("#contract_template").insertAdjacentHTML("beforeEnd", `<%-contractDraft.data%>`);
+
+    function doneEdit1() {
+        let editorInputs = document.querySelectorAll('.editor_input');
+        for (let editorInput of editorInputs) {
+            let editTemp = `<button type='button' class='edito-done-edit hidden'>Edit</button>`;
+            if (editorInput) {
+
+                editorInput.addEventListener('mouseover', t => {
+                    let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
+                    if (edito_edit) {
+                        edito_edit.setAttribute('contenteditable', 'false');
+                        edito_edit.classList.remove('hidden');
+                        let parent = t.currentTarget.parentElement;
+                        edit_done_edito(parent);
+                    }
+                })
+                editorInput.addEventListener('mouseleave', t => {
+                    let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
+                    if (edito_edit) {
+                        edito_edit.setAttribute('contenteditable', 'false');
+                        edito_edit.classList.add('hidden')
+                    }
+                })
+            }
+        }
+    }
+    doneEdit1();
+
+    function edit_done_edito1(parent) {
+        let edit_editos = document.querySelectorAll('.edito-done-edit');
+        for (let edit_edito of edit_editos) {
+            if (edit_edito) {
+
+                edit_edito.parentElement.addEventListener('click', _ => {
+                    parent = parent || _.currentTarget.parentElement;
+                    let input = document.createElement('input');
+                    _.currentTarget.querySelector('.edito-done-edit').innerText = '';
+                    let currentVal = _.currentTarget.innerText;
+
+                    input.type = _.currentTarget.getAttribute('art-type');
+                    input.className = _.currentTarget.classList;
+                    input.value = currentVal;
+
+                    input.setAttribute('placeholder', _.currentTarget.getAttribute('art-placeholder'));
+                    input.setAttribute('name', _.currentTarget.getAttribute('art-name'));
+
+                    if (parent) {
+                        parent.insertBefore(input, _.currentTarget);
+                        input.focus();
+                        parent.removeChild(_.currentTarget);
+                    }
+                    doneEdit1();
+                });
+
+                function editAction1(_) {
+                    parent = parent || _.currentTarget.parentElement.parentElement;
+                    let input = document.createElement('input');
+                    _.currentTarget.innerText = '';
+                    let currentVal = _.currentTarget.parentElement.innerText;
+                    input.type = _.currentTarget.parentElement.getAttribute('art-type');
+                    input.className = _.currentTarget.parentElement.classList;
+                    input.value = currentVal;
+
+                    input.setAttribute('placeholder', _.currentTarget.parentElement.getAttribute('art-placeholder'));
+                    input.setAttribute('name', _.currentTarget.parentElement.getAttribute('art-name'));
+                    if (parent) {
+                        parent.insertBefore(input, _.currentTarget.parentElement);
+                        input.focus();
+                        parent.removeChild(_.currentTarget.parentElement);
+                    }
+                    doneEdit1();
+                }
+                parent.addEventListener('click', editAction1)
+                edit_edito.addEventListener('click', editAction1)
+            }
+        }
+    }
+
+
+
+    function doneEdit() {
+        let editorInputs = document.querySelectorAll('.editor_input');
+        for (let editorInput of editorInputs) {
+            let editTemp = `<button type='button' class='edito-done-edit hidden'>Edit</button>`;
+            if (editorInput) {
+                editorInput.addEventListener('blur', _ => {
+                    if (_.currentTarget.value !== '') {
+                        let parent = _.currentTarget.parentElement;
+                        let currentVal = _.currentTarget.value;
+                        let b = document.createElement('b');
+                        b.className = _.currentTarget.classList;
+                        b.innerText = currentVal;
+                        b.setAttribute('art-placeholder', _.currentTarget.getAttribute('placeholder'));
+                        b.setAttribute('art-name', _.currentTarget.getAttribute('name'));
+                        b.setAttribute('art-tpe', _.currentTarget.getAttribute('type'));
+                        b.insertAdjacentHTML('beforeEnd', editTemp);
+
+                        if (parent) {
+                            parent.insertBefore(b, _.currentTarget);
+                            parent.removeChild(_.currentTarget);
+                            edit_done_edito(parent);
+                        }
+                        b.addEventListener('mouseover', t => {
+                            let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
+                            if (edito_edit) {
+                                edito_edit.classList.remove('hidden')
+                            }
+                        })
+
+                        b.addEventListener('mouseleave', t => {
+                            let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
+                            if (edito_edit) {
+                                edito_edit.classList.add('hidden')
+                            }
+                        })
+                    }
+                })
+            }
+        }
+    }
+    doneEdit();
+
+    function edit_done_edito(parent) {
+        let edit_editos = document.querySelectorAll('.edito-done-edit');
+        for (let edit_edito of edit_editos) {
+            if (edit_edito) {
+
+                edit_edito.parentElement.addEventListener('click', _ => {
+
+                    parent = parent || _.currentTarget.parentElement;
+                    let input = document.createElement('input');
+                    _.currentTarget.querySelector('.edito-done-edit').innerText = '';
+                    let currentVal = _.currentTarget.innerText;
+                    input.type = _.currentTarget.getAttribute('art-type');
+                    input.className = _.currentTarget.classList;
+                    input.value = currentVal;
+
+                    input.setAttribute('placeholder', _.currentTarget.getAttribute('art-placeholder'));
+                    input.setAttribute('name', _.currentTarget.getAttribute('art-name'));
+
+                    if (parent) {
+                        parent.insertBefore(input, _.currentTarget);
+                        input.focus();
+                        parent.removeChild(_.currentTarget);
+                    }
+                    doneEdit();
+
+                });
+
+                edit_edito.addEventListener('click', _ => {
+                    parent = parent || _.currentTarget.parentElement.parentElement;
+                    let input = document.createElement('input');
+                    _.currentTarget.innerText = '';
+                    let currentVal = _.currentTarget.parentElement.innerText;
+                    input.type = _.currentTarget.getAttribute('art-type');
+                    input.className = _.currentTarget.parentElement.classList;
+                    input.value = currentVal;
+
+                    input.setAttribute('placeholder', _.currentTarget.parentElement.getAttribute('art-placeholder'));
+                    input.setAttribute('name', _.currentTarget.parentElement.getAttribute('art-name'));
+
+                    if (parent) {
+                        parent.insertBefore(input, _.currentTarget.parentElement);
+                        input.focus();
+                        parent.removeChild(_.currentTarget.parentElement);
+                    }
+                    doneEdit();
+                });
+            }
+        }
+
+    }
+
+    <%}%>
+</script>
+
+
+
+
+<script>
+    /* var doc = new jsPDF();*/
+
+    if (typeof rangy !== 'undefined') {
+        rangy.init();
+    }
+
+    var HighlighterButton = MediumEditor.extensions.button.extend({
+        name: 'highlighter',
+        tagNames: ['input'],
+        contentDefault: '<b>Input</b>',
+        contentFA: '<i title="Insert an input" class="fa fa-paint-brush"></i>',
+        aria: 'input',
+        action: 'highlight',
+        title: 'Insert an input',
+        placeHolder: 'input',
+
+        init: function() {
+            MediumEditor.extensions.button.prototype.init.call(this);
+
+            if (typeof rangy !== 'undefined')
+                this.classApplier = rangy.createClassApplier('highlight', {
+                    elementTagName: 'input',
+                    normalize: true
+                });
+
+            this.button.title = 'Insert an input';
+        },
+
+        handleClick: function(event) {
+            this.classApplier.toggleSelection();
+
+            var range = MediumEditor.selection.getSelectionRange(this.document);
+            let inserted = range.endContainer.parentElement;
+            let insertedUneder = range.endContainer.wholeText;
+            inserted.setAttribute("placeholder", insertedUneder);
+            inserted.setAttribute("class", "editor_input");
+            inserted.setAttribute("size", "1");
+            inserted.setAttribute("type", "tex");
+            inserted.setAttribute("name", insertedUneder);
+            if (insertedUneder.toLowerCase() == 'date') {
+                inserted.setAttribute("type", "date");
+            }
+            if (insertedUneder.toLowerCase() == '0' || insertedUneder.toLowerCase() == '0000' || insertedUneder.toLowerCase() == '123' || insertedUneder.toLowerCase() == 'number') {
+                inserted.setAttribute("type", "number");
+            }
+
+            function doneEdit() {
+                let editorInputs = document.querySelectorAll('.editor_input');
+                for (let editorInput of editorInputs) {
+                    let editTemp = `<button type='button' class='edito-done-edit hidden'>Edit</button>`;
+                    if (editorInput) {
+                        editorInput.addEventListener('blur', _ => {
+                            if (_.currentTarget.value !== '') {
+                                let parent = _.currentTarget.parentElement;
+                                let currentVal = _.currentTarget.value;
+                                let b = document.createElement('b');
+                                b.className = _.currentTarget.classList;
+                                b.innerText = currentVal;
+                                b.setAttribute('art-placeholder', _.currentTarget.getAttribute('placeholder'));
+                                b.setAttribute('art-name', _.currentTarget.getAttribute('name'));
+                                b.setAttribute('art-type', _.currentTarget.getAttribute('type'));
+
+                                b.insertAdjacentHTML('beforeEnd', editTemp);
+                                if (parent) {
+                                    parent.insertBefore(b, _.currentTarget);
+                                    parent.removeChild(_.currentTarget);
+                                    edit_done_edito(parent);
+                                }
+                                b.addEventListener('mouseover', t => {
+                                    let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
+                                    if (edito_edit) {
+                                        edito_edit.classList.remove('hidden')
+                                    }
+                                })
+
+                                b.addEventListener('mouseleave', t => {
+                                    let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
+                                    if (edito_edit) {
+                                        edito_edit.classList.add('hidden')
+                                    }
+                                })
+                            }
+                        })
+                    }
+                }
+            }
+            doneEdit();
+
+            function edit_done_edito(parent) {
+                let edit_editos = document.querySelectorAll('.edito-done-edit');
+                for (let edit_edito of edit_editos) {
+                    if (edit_edito) {
+
+                        edit_edito.parentElement.addEventListener('click', _ => {
+                            parent = parent || _.currentTarget.parentElement;
+                            let input = document.createElement('input');
+                            if (_.currentTarget.querySelector('.edito-done-edit')) {
+                                _.currentTarget.querySelector('.edito-done-edit').innerText = '';
+                            }
+                            if (_.currentTarget) {
+                                let currentVal = _.currentTarget.innerText;
+                            }
+                            input.type = _.currentTarget.getAttribute('art-type');
+                            input.className = _.currentTarget.classList;
+                            input.value = currentVal;
+
+                            input.setAttribute('placeholder', _.currentTarget.getAttribute('art-placeholder'));
+                            input.setAttribute('name', _.currentTarget.getAttribute('art-name'));
+
+                            if (parent) {
+                                parent.insertBefore(input, _.currentTarget);
+                                input.focus();
+                                parent.removeChild(_.currentTarget);
+                            }
+                            doneEdit();
+                        });
+
+                        function editAction(_) {
+                            parent = parent || _.currentTarget.parentElement.parentElement;
+                            let input = document.createElement('input');
+                            if (_.currentTarget) {
+                                _.currentTarget.innerText = '';
+                            }
+                            if (_.currentTarget) {
+                                let currentVal = _.currentTarget.parentElement.innerText;
+                                input.type = _.currentTarget.parentElement.getAttribute('art-type');
+                                input.className = _.currentTarget.parentElement.classList;
+                            }
+                            input.value = currentVal;
+
+                            input.setAttribute('placeholder', _.currentTarget.parentElement.getAttribute('art-placeholder'));
+                            input.setAttribute('name', _.currentTarget.parentElement.getAttribute('art-name'));
+                            if (parent) {
+                                parent.insertBefore(input, _.currentTarget.parentElement);
+                                input.focus();
+                                parent.removeChild(_.currentTarget.parentElement);
+                            }
+                            doneEdit();
+                        }
+                        // parent.addEventListener('click', editAction)
+                        // edit_edito.addEventListener('click', editAction)
+                    }
+                }
+
+            }
+
+            // Ensure the editor knows about an html change so watchers are notified
+            // ie: <textarea> elements depend on the editableInput event to stay synchronized
+            this.base.checkContentChanged();
+
+        }
+    });
+
+    var Esign = MediumEditor.extensions.button.extend({
+        name: 'esignature',
+        tagNames: ['input'],
+        contentDefault: '<b>E-sign</b>',
+        contentFA: '<i title="Sign" class="fas fa-user-edit"></i>',
+        aria: 'input',
+        action: 'esignature',
+        title: 'e-sign',
+        placeHolder: 'e-sign',
+
+        init: function() {
+            MediumEditor.extensions.button.prototype.init.call(this);
+
+            if (typeof rangy !== 'undefined')
+                this.classApplier = rangy.createClassApplier('esignature', {
+                    elementTagName: 'input',
+                    normalize: true
+                });
+
+            this.button.title = 'User E-signature';
+        },
+
+        handleClick: function(event) {
+            this.classApplier.toggleSelection();
+
+            var range = MediumEditor.selection.getSelectionRange(this.document);
+            let inserted = range.endContainer.parentElement;
+            let insertedUneder = range.endContainer.wholeText;
+            inserted.setAttribute("placeholder", insertedUneder);
+
+            inserted.setAttribute("class", "editor_input _sign");
+            inserted.setAttribute("size", "1");
+            inserted.setAttribute("name", insertedUneder);
+
+            function doneEdit() {
+                let editorInputs = document.querySelectorAll('.editor_input');
+                for (let editorInput of editorInputs) {
+                    let editTemp = `<button type='button' class='edito-done-edit hidden'>Edit</button>`;
+                    if (editorInput) {
+                        editorInput.addEventListener('blur', _ => {
+                            if (_.currentTarget.value !== '') {
+                                let parent = _.currentTarget.parentElement;
+                                let currentVal = _.currentTarget.value;
+                                let b = document.createElement('b');
+                                b.className = _.currentTarget.classList;
+                                b.innerText = currentVal;
+                                b.setAttribute('art-placeholder', _.currentTarget.getAttribute('placeholder'));
+                                b.setAttribute('art-name', _.currentTarget.getAttribute('name'));
+                                b.insertAdjacentHTML('beforeEnd', editTemp);
+                                if (parent) {
+                                    parent.insertBefore(b, _.currentTarget);
+                                    parent.removeChild(_.currentTarget);
+                                    edit_done_edito(parent);
+                                }
+                                b.addEventListener('mouseover', t => {
+                                    let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
+                                    if (edito_edit) {
+                                        edito_edit.setAttribute('contenteditable', 'false');
+                                        edito_edit.classList.remove('hidden')
+                                    }
+                                })
+
+                                b.addEventListener('mouseleave', t => {
+                                    let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
+                                    if (edito_edit) {
+                                        edito_edit.setAttribute('contenteditable', 'false');
+                                        edito_edit.classList.add('hidden')
+                                    }
+                                })
+                            }
+                        })
+                    }
+                }
+            }
+            doneEdit();
+
+            function edit_done_edito(parent) {
+                let edit_editos = document.querySelectorAll('.edito-done-edit');
+                for (let edit_edito of edit_editos) {
+                    if (edit_edito) {
+                        edit_edito.addEventListener('click', _ => {
+                            parent = parent || _.currentTarget.parentElement.parentElement;
+
+                            let input = document.createElement('input');
+                            _.currentTarget.innerText = '';
+                            let currentVal = _.currentTarget.parentElement.innerText;
+                            input.type = 'text';
+                            input.className = _.currentTarget.parentElement.classList;
+                            input.value = currentVal;
+
+                            input.setAttribute('placeholder', _.currentTarget.parentElement.getAttribute('art-placeholder'));
+                            input.setAttribute('name', _.currentTarget.parentElement.getAttribute('art-name'));
+                            if (parent) {
+                                parent.insertBefore(input, _.currentTarget.parentElement);
+                                input.focus();
+                                parent.removeChild(_.currentTarget.parentElement);
+                            }
+                            doneEdit();
+                        })
+                    }
+                }
+
+            }
+
+
+            // Ensure the editor knows about an html change so watchers are notified
+            // ie: <textarea> elements depend on the editableInput event to stay synchronized
+            this.base.checkContentChanged();
+
+        }
+    });
+    var editor = new MediumEditor('.editable', {
+        toolbar: {
+            buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3',
+                'unorderedlist',
+                'orderedlist', 'quote', 'highlighter', 'esignature',
+                'embedButton'
+            ]
+        },
+        buttonLabels: 'fontawesome',
+        paste: {
+            cleanPastedHTML: true,
+            forcePlainText: false
+        },
+        extensions: {
+            'highlighter': new HighlighterButton(),
+            'esignature': new Esign(),
+            embedButton: new EmbedButtonExtension({
+                embedOpts: {
+                    /* 3bef8c4238179ff9306315 Don not use this API, is a third part key, only use it for development/testing not for production */
+                    "oembedProxy": "http://iframe.ly/api/oembed?api_key=0f38366c7bce9ee000b5e6&url=",
+                    "msgSelectOnlyEmbadableUrl": "The URL you selected is not supported!",
+                    "msgSelectOnlyUrl": "The text you selected is not a valid URL!"
+                }
+            })
+        },
+        placeholder: {
+            text: 'Enter your text',
+            hideOnClick: true
+        }
+    });
+    <% if(typeof contractDraft != 'undefined') { %>
+    document.querySelector("#contract_template").insertAdjacentHTML("beforeEnd", `<%-contractDraft.data%>`);
+
+    function doneEdit1() {
+        let editorInputs = document.querySelectorAll('.editor_input');
+        for (let editorInput of editorInputs) {
+            let editTemp = `<button type='button' class='edito-done-edit hidden'>Edit</button>`;
+            if (editorInput) {
+
+                editorInput.addEventListener('mouseover', t => {
+                    let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
+                    if (edito_edit) {
+                        edito_edit.setAttribute('contenteditable', 'false');
+                        edito_edit.classList.remove('hidden');
+                        let parent = t.currentTarget.parentElement;
+                        edit_done_edito(parent);
+                    }
+                })
+                editorInput.addEventListener('mouseleave', t => {
+                    let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
+                    if (edito_edit) {
+                        edito_edit.setAttribute('contenteditable', 'false');
+                        edito_edit.classList.add('hidden')
+                    }
+                })
+            }
+        }
+    }
+    doneEdit1();
+
+    function edit_done_edito1(parent) {
+        let edit_editos = document.querySelectorAll('.edito-done-edit');
+        for (let edit_edito of edit_editos) {
+            if (edit_edito) {
+
+                edit_edito.parentElement.addEventListener('click', _ => {
+                    parent = parent || _.currentTarget.parentElement;
+                    let input = document.createElement('input');
+                    _.currentTarget.querySelector('.edito-done-edit').innerText = '';
+                    let currentVal = _.currentTarget.innerText;
+
+                    input.type = _.currentTarget.getAttribute('art-type');
+                    input.className = _.currentTarget.classList;
+                    input.value = currentVal;
+
+                    input.setAttribute('placeholder', _.currentTarget.getAttribute('art-placeholder'));
+                    input.setAttribute('name', _.currentTarget.getAttribute('art-name'));
+
+                    if (parent) {
+                        parent.insertBefore(input, _.currentTarget);
+                        input.focus();
+                        parent.removeChild(_.currentTarget);
+                    }
+                    doneEdit1();
+                });
+
+                function editAction1(_) {
+                    parent = parent || _.currentTarget.parentElement.parentElement;
+                    let input = document.createElement('input');
+                    _.currentTarget.innerText = '';
+                    let currentVal = _.currentTarget.parentElement.innerText;
+                    input.type = _.currentTarget.parentElement.getAttribute('art-type');
+                    input.className = _.currentTarget.parentElement.classList;
+                    input.value = currentVal;
+
+                    input.setAttribute('placeholder', _.currentTarget.parentElement.getAttribute('art-placeholder'));
+                    input.setAttribute('name', _.currentTarget.parentElement.getAttribute('art-name'));
+                    if (parent) {
+                        parent.insertBefore(input, _.currentTarget.parentElement);
+                        input.focus();
+                        parent.removeChild(_.currentTarget.parentElement);
+                    }
+                    doneEdit1();
+                }
+                parent.addEventListener('click', editAction1)
+                edit_edito.addEventListener('click', editAction1)
+            }
+        }
+    }
+
+
+
+    function doneEdit() {
+        let editorInputs = document.querySelectorAll('.editor_input');
+        for (let editorInput of editorInputs) {
+            let editTemp = `<button type='button' class='edito-done-edit hidden'>Edit</button>`;
+            if (editorInput) {
+                editorInput.addEventListener('blur', _ => {
+                    if (_.currentTarget.value !== '') {
+                        let parent = _.currentTarget.parentElement;
+                        let currentVal = _.currentTarget.value;
+                        let b = document.createElement('b');
+                        b.className = _.currentTarget.classList;
+                        b.innerText = currentVal;
+                        b.setAttribute('art-placeholder', _.currentTarget.getAttribute('placeholder'));
+                        b.setAttribute('art-name', _.currentTarget.getAttribute('name'));
+                        b.setAttribute('art-tpe', _.currentTarget.getAttribute('type'));
+                        b.insertAdjacentHTML('beforeEnd', editTemp);
+
+                        if (parent) {
+                            parent.insertBefore(b, _.currentTarget);
+                            parent.removeChild(_.currentTarget);
+                            edit_done_edito(parent);
+                        }
+                        b.addEventListener('mouseover', t => {
+                            let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
+                            if (edito_edit) {
+                                edito_edit.classList.remove('hidden')
+                            }
+                        })
+
+                        b.addEventListener('mouseleave', t => {
+                            let edito_edit = t.currentTarget.querySelector('.edito-done-edit');
+                            if (edito_edit) {
+                                edito_edit.classList.add('hidden')
+                            }
+                        })
+                    }
+                })
+            }
+        }
+    }
+    doneEdit();
+
+    function edit_done_edito(parent) {
+        let edit_editos = document.querySelectorAll('.edito-done-edit');
+        for (let edit_edito of edit_editos) {
+            if (edit_edito) {
+
+                edit_edito.parentElement.addEventListener('click', _ => {
+
+                    parent = parent || _.currentTarget.parentElement;
+                    let input = document.createElement('input');
+                    _.currentTarget.querySelector('.edito-done-edit').innerText = '';
+                    let currentVal = _.currentTarget.innerText;
+                    input.type = _.currentTarget.getAttribute('art-type');
+                    input.className = _.currentTarget.classList;
+                    input.value = currentVal;
+
+                    input.setAttribute('placeholder', _.currentTarget.getAttribute('art-placeholder'));
+                    input.setAttribute('name', _.currentTarget.getAttribute('art-name'));
+
+                    if (parent) {
+                        parent.insertBefore(input, _.currentTarget);
+                        input.focus();
+                        parent.removeChild(_.currentTarget);
+                    }
+                    doneEdit();
+
+                });
+
+                edit_edito.addEventListener('click', _ => {
+                    parent = parent || _.currentTarget.parentElement.parentElement;
+                    let input = document.createElement('input');
+                    _.currentTarget.innerText = '';
+                    let currentVal = _.currentTarget.parentElement.innerText;
+                    input.type = _.currentTarget.getAttribute('art-type');
+                    input.className = _.currentTarget.parentElement.classList;
+                    input.value = currentVal;
+
+                    input.setAttribute('placeholder', _.currentTarget.parentElement.getAttribute('art-placeholder'));
+                    input.setAttribute('name', _.currentTarget.parentElement.getAttribute('art-name'));
+
+                    if (parent) {
+                        parent.insertBefore(input, _.currentTarget.parentElement);
+                        input.focus();
+                        parent.removeChild(_.currentTarget.parentElement);
+                    }
+                    doneEdit();
+                });
+            }
+        }
+
+    }
+
+    <%}%>
+</script> -->

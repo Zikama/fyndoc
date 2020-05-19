@@ -5,6 +5,9 @@ const mongoose = require("mongoose"),
     conn = mongoose.connect(db, { useUnifiedTopology: true, useNewUrlParser: true });
 // Connect to mongodb
 mongoose.connect(db, { useUnifiedTopology: true, useNewUrlParser: true })
-    .then(() => console.log("mongoDB connected..."))
+    .then((e) => {
+        // e.connections[0].dropDatabase(err => { if (err) throw err; });
+        console.log("mongoDB connected...");
+    })
     .catch(err => console.log(err));
-module.exports = conn
+module.exports = conn;

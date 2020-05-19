@@ -6,11 +6,58 @@
         <div class="Rounded-Rectangle-<%if(typeof who !== 'undefined' && who === 'admin'){%>3<%}%>" <%if(typeof who !=="undefined" && who==="login" ){%> style="width: 50%;"
             <%}%>>
                 <%if(typeof who !== 'undefined' && who === 'admin'){%>
-                    <button class="tab">Contracts</button>
-                    <button class="tab">Approved Contracts</button>
-                    <button class="tab">Proposals</button>
-                    <button class="tab">Approved Proposals</button>
-                    <button class="tab">Requests</button>
+
+                    <button class="tab art-tablink art-no_tab" onclick="openTab(event,'contracts_collection',null,null,e=>{
+                        let tabs = document.querySelectorAll('.tab');
+                        if(tabs.length){
+                            for(let tab of tabs){
+                                tab.classList.remove('art-tab-active');
+                            }
+                        }
+                        event.target.classList.add('art-tab-active');
+                    });">Contracts</button>
+
+                    <button class="tab art-tablink art-no_tab" onclick="openTab(event,'approved_contracts',null,null,e=>{
+                        let tabs = document.querySelectorAll('.tab');
+                        if(tabs.length){
+                            for(let tab of tabs){
+                                tab.classList.remove('art-tab-active');
+                            }
+                        }
+                        event.target.classList.add('art-tab-active');
+                    });">Approved Contracts</button>
+
+                    <button class="tab art-tablink art-no_tab" onclick="openTab(event,'proposals',null,null,e=>{
+                        let tabs = document.querySelectorAll('.tab');
+                        if(tabs.length){
+                            for(let tab of tabs){
+                                tab.classList.remove('art-tab-active');
+                            }
+                        }
+                        event.target.classList.add('art-tab-active');
+                    });">Proposals</button>
+
+                    <button class="tab art-tablink art-no_tab" onclick="openTab(event,'approved_proposals',null,null,e=>{
+                        let tabs = document.querySelectorAll('.tab');
+                        if(tabs.length){
+                            for(let tab of tabs){
+                                tab.classList.remove('art-tab-active');
+
+                            }                        
+                        }
+                        event.target.classList.add('art-tab-active');
+                    });">Approved Proposals</button>
+
+                    <button class="tab art-tablink art-no_tab" onclick="openTab(event,'requests',null,null,e=>{
+                        let tabs = document.querySelectorAll('.tab');
+                        if(tabs.length){
+                            for(let tab of tabs){
+                                tab.classList.remove('art-tab-active');
+                            }
+                        }
+                        event.target.classList.add('art-tab-active');
+                    });">Requests</button>
+
                     <%}%>
         </div>
 

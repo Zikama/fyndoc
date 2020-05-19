@@ -19,10 +19,10 @@ class SocketWorker {
                 normSize = wsServer;
             CLIENS.push(normSize.clients.size);
 
-            function clienSize() { return CLIENS[CLIENS.length - 1] }
+            function clienSize() { return CLIENS[CLIENS.length - 1]; }
             // console.log('Clients connected:',clienSize());		
             if (callback)
-                callback(ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize)
+                callback(ws, req, Websocket, normSize, HISTORY, CLIENS, clienSize);
         });
         wsServer.on("error", function(err) {
             console.error(err);
@@ -34,10 +34,10 @@ class SocketWorker {
                 callback();
     }
     getExData(data) {
-        return data
+        return data;
     }
     parsse(bck) {
-        bck()
+        bck();
     }
 
 }
@@ -45,4 +45,5 @@ class SocketWorker {
 function socketWorker(svr) {
     return new SocketWorker(svr);
 }
-module.exports = socketWorker
+
+module.exports = socketWorker;

@@ -7,9 +7,13 @@ const contract_template = new mongoose.Schema({
         type: Number,
         default: randexp.gen(new Date())
     },
-    path: {
+    data: {
         type: String,
         required: true
+    },
+    path: {
+        type: String,
+        default: ''
     },
     destination: {
         type: String,
@@ -29,13 +33,18 @@ const contract_template = new mongoose.Schema({
     },
     status: {
         type: String,
-        default: "sent"
+        default: "saved"
     },
     date: {
         type: Date,
         default: Date.now
+    },
+    last_date: {
+        type: Date,
+        default: 0
     }
 });
+
 mongoose.set('useFindAndModify', false);
 let contract_template_ = mongoose.model("contractTemplate", contract_template);
 

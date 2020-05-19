@@ -50,15 +50,23 @@ class render {
                                     // Atleast 10 times
                                     if (rwa.more_details.viewTimes <= 10) {
                                         // Notify the main sadja web solutions' email
-                                        sendNotificationViaEmail('index', "Contract viewed [" + rwa.more_details.viewTimes + " time(s)]", 'melisa@sadjawebsolutions.com', 'saphira@sadjawebtools.com', [{
+                                        function times() {
+                                            if (rwa.more_details.viewTimes === 1) {
+                                                return "for the first time";
+                                            }
+                                            if (rwa.more_details.viewTimes > 1) {
+                                                return "so far (" + rwa.more_details.viewTimes + ") times";
+                                            }
+                                        }
+                                        sendNotificationViaEmail('index', "Contract viewed [" + rwa.more_details.viewTimes + " time(s)]", require('../../config/keys').altEmail, require('../../config/keys').defaultEmail, [{
                                                 filename: 'contract-agreement.png',
                                                 path: './views/templates/output.png',
                                                 cid: 'output.png',
                                                 contentType: 'image/png'
                                             }], {
-                                                name: `The Proposal ID is : ${rwa.ref}`,
-                                                title: `${rwa.company}, has successfully seen the Contract`,
-                                                regards: `Sadja WebSolutions LTD`,
+                                                name: `Has seen this contract ${ times() }, ${rwa.company} is looking forward for signing the contract.\nThe contract viewed is for Proposal ID: ${rwa.ref}`,
+                                                title: `${rwa.company}, has successfully seen your Contract`,
+                                                regards: `Sadja WebSolutions`,
                                                 _no: 'no display'
                                             })
                                             .then(sent => {

@@ -9,12 +9,13 @@
                 <% include ./include/left_sidebar%>
                     <!-- This contains all the cards -->
                     <div class="posts_con" style="min-height: 70vh;margin-top: 0;">
-                        <% include ./admin/sendContract %>
-                            <% include ./admin/sendProposal %>
-                                <%
-      include ./admin/createContractTemplate %>
-                                    <% include
-      ./admin/createProposalTemplate %>
+
+                        <% include ./admin/includeScriptsTop %>
+                            <% include ./admin/sendContract %>
+                                <% include ./admin/sendProposal %>
+                                    <% include ./admin/createContractTemplate %>
+                                        <% include ./admin/contracts %>
+                                            <% include ./admin/createProposalTemplate %>
                     </div>
                     <!-- Insert the right side bar -->
                     <% include ./include/right_sidebar %>
